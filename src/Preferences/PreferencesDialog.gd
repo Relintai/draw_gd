@@ -149,7 +149,6 @@ func _on_PreferencesDialog_about_to_show(changed_language := false) -> void:
 	if OS.get_name() != "HTML5":
 		list.add_item("  " + tr("Startup"))
 	list.add_item("  " + tr("Language"))
-	list.add_item("  " + tr("Themes"))
 	list.add_item("  " + tr("Canvas"))
 	list.add_item("  " + tr("Image"))
 	list.add_item("  " + tr("Shortcuts"))
@@ -167,7 +166,7 @@ func _on_PreferencesDialog_popup_hide() -> void:
 func _on_List_item_selected(index : int) -> void:
 	selected_item = index
 	for child in right_side.get_children():
-		var content_list = ["Startup", "Languages", "Themes", "Canvas", "Image", "Shortcuts", "Backup", "Indicators"]
+		var content_list = ["Startup", "Languages", "Canvas", "Image", "Shortcuts", "Backup", "Indicators"]
 		if OS.get_name() == "HTML5":
 			content_list.erase("Startup")
 		child.visible = child.name == content_list[index]

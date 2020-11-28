@@ -60,11 +60,6 @@ func _ready() -> void:
 	else: # If the user doesn't have a language preference, set it to their OS' locale
 		TranslationServer.set_locale(OS.get_locale())
 
-	if is_cjk(TranslationServer.get_locale()):
-		Global.control.theme.default_font = preload("res://assets/fonts/CJK/NotoSansCJKtc-Regular.tres")
-	else:
-		Global.control.theme.default_font = preload("res://assets/fonts/Roboto-Regular.tres")
-
 	for child in get_children():
 		if child is Button:
 			child.connect("pressed", self, "_on_Language_pressed", [child.get_index()])

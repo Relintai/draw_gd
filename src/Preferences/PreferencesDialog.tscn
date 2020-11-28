@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://src/Preferences/PreferencesDialog.gd" type="Script" id=1]
 [ext_resource path="res://src/Preferences/HandleLanguages.gd" type="Script" id=4]
-[ext_resource path="res://src/Preferences/HandleThemes.gd" type="Script" id=5]
 [ext_resource path="res://src/Preferences/HandleShortcuts.gd" type="Script" id=6]
 
 [sub_resource type="ButtonGroup" id=1]
@@ -110,26 +109,6 @@ mouse_default_cursor_shape = 2
 pressed = true
 group = SubResource( 1 )
 text = "System Language"
-
-[node name="Themes" type="HBoxContainer" parent="HSplitContainer/ScrollContainer/VBoxContainer"]
-visible = false
-margin_right = 498.0
-script = ExtResource( 5 )
-
-[node name="ThemeButtons" type="VBoxContainer" parent="HSplitContainer/ScrollContainer/VBoxContainer/Themes"]
-
-[node name="ThemeColorsSpacer" type="VBoxContainer" parent="HSplitContainer/ScrollContainer/VBoxContainer/Themes"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="Control" type="Control" parent="HSplitContainer/ScrollContainer/VBoxContainer/Themes/ThemeColorsSpacer"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="ThemeColors" type="VBoxContainer" parent="HSplitContainer/ScrollContainer/VBoxContainer/Themes/ThemeColorsSpacer"]
-margin_left = 4.0
-margin_right = 4.0
-custom_constants/separation = 12
 
 [node name="Canvas" type="VBoxContainer" parent="HSplitContainer/ScrollContainer/VBoxContainer"]
 visible = false
@@ -909,6 +888,7 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="about_to_show" from="." to="." method="_on_PreferencesDialog_about_to_show"]
 [connection signal="popup_hide" from="." to="." method="_on_PreferencesDialog_popup_hide"]
 [connection signal="item_selected" from="HSplitContainer/List" to="." method="_on_List_item_selected"]
