@@ -11,8 +11,6 @@ func _ready() -> void:
 	setup_edit_menu()
 	setup_view_menu()
 	setup_image_menu()
-	setup_help_menu()
-
 
 func setup_file_menu() -> void:
 	var file_menu_items := {
@@ -107,24 +105,6 @@ func setup_image_menu() -> void:
 		i += 1
 
 	image_menu.connect("id_pressed", self, "image_menu_id_pressed")
-
-
-func setup_help_menu() -> void:
-	var help_menu_items := {
-		"View Splash Screen" : 0,
-		"Online Docs" : InputMap.get_action_list("open_docs")[0].get_scancode_with_modifiers(),
-		"Issue Tracker" : 0,
-		"Changelog" : 0,
-		"About Pixelorama" : 0
-		}
-	var help_menu : PopupMenu = Global.help_menu.get_popup()
-
-	var i := 0
-	for item in help_menu_items.keys():
-		help_menu.add_item(item, i, help_menu_items[item])
-		i += 1
-
-	help_menu.connect("id_pressed", self, "help_menu_id_pressed")
 
 
 func file_menu_id_pressed(id : int) -> void:
@@ -367,19 +347,3 @@ func show_add_outline_popup() -> void:
 func show_hsv_configuration_popup() -> void:
 	Global.control.get_node("Dialogs/ImageEffects/HSVDialog").popup_centered()
 	Global.dialog_open(true)
-
-
-func help_menu_id_pressed(id : int) -> void:
-	match id:
-		0: # Splash Screen
-			Global.control.get_node("Dialogs/SplashDialog").popup_centered()
-			Global.dialog_open(true)
-		1: # Online Docs
-			OS.shell_open("https://orama-interactive.github.io/Pixelorama-Docs/")
-		2: # Issue Tracker
-			OS.shell_open("https://github.com/Orama-Interactive/Pixelorama/issues")
-		3: # Changelog
-			if OS.get_name() == "OSX":
-				OS.shell_open("https://github.com/Orama-Interactive/Pixelorama/blob/master/CHANGELOG.md")
-			else:
-				OS.shell_open("https://github.com/Orama-Interactive/Pixelorama/blob/master/CHANGELOG.md#v08---2020-10-14")
