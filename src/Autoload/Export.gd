@@ -1,8 +1,5 @@
 extends Node
 
-# Gif exporter
-const gifexporter = preload("res://addons/gdgifexporter/gifexporter.gd")
-var quantization = preload("res://addons/gdgifexporter/quantization/median_cut.gd").new()
 
 enum ExportTab { FRAME = 0, SPRITESHEET = 1, ANIMATION = 2 }
 var current_tab : int = ExportTab.FRAME
@@ -36,7 +33,7 @@ var new_dir_for_each_frame_tag : bool = true # you don't need to store this afte
 var directory_path := ""
 var file_name := "untitled"
 var file_format : int = FileFormat.PNG
-enum FileFormat { PNG = 0, GIF = 1}
+enum FileFormat { PNG = 0}
 
 var was_exported : bool = false
 
@@ -48,12 +45,6 @@ var file_exists_alert = "File %s already exists. Overwrite?"
 # Export progress variables
 var export_progress_fraction := 0.0
 var export_progress := 0.0
-onready var gif_export_thread := Thread.new()
-
-
-func _exit_tree() -> void:
-	if gif_export_thread.is_active():
-		gif_export_thread.wait_to_finish()
 
 
 func external_export() -> void:
@@ -176,12 +167,7 @@ func export_processed_images(ignore_overwrites: bool, export_dialog: AcceptDialo
 	scale_processed_images()
 
 	if current_tab == ExportTab.ANIMATION and animation_type == AnimationType.ANIMATED:
-		if OS.get_name() == "HTML5":
-			export_gif({"export_dialog": export_dialog, "export_paths": export_paths})
-		else:
-			if gif_export_thread.is_active():
-				gif_export_thread.wait_to_finish()
-			gif_export_thread.start(self, "export_gif", {"export_dialog": export_dialog, "export_paths": export_paths})
+		pass
 	else:
 		for i in range(processed_images.size()):
 			if OS.get_name() == "HTML5":
@@ -200,47 +186,6 @@ func export_processed_images(ignore_overwrites: bool, export_dialog: AcceptDialo
 		Global.notification_label("File(s) exported")
 	return true
 
-
-func export_gif(args: Dictionary) -> void:
-	# Export progress popup
-	export_progress_fraction = 100 / processed_images.size() # one fraction per each frame, one fraction for write to disk
-	export_progress = 0.0
-	args["export_dialog"].set_export_progress_bar(export_progress)
-	args["export_dialog"].toggle_export_progress_popup(true)
-
-	# Export and save gif
-	var exporter = gifexporter.new(processed_images[0].get_width(), processed_images[0].get_height())
-	match direction:
-		AnimationDirection.FORWARD:
-			for i in range(processed_images.size()):
-				write_frame_to_gif(processed_images[i], Global.animation_timer.wait_time, exporter, args["export_dialog"])
-		AnimationDirection.BACKWARDS:
-			for i in range(processed_images.size() - 1, -1, -1):
-				write_frame_to_gif(processed_images[i], Global.animation_timer.wait_time, exporter, args["export_dialog"])
-		AnimationDirection.PING_PONG:
-			export_progress_fraction = 100 / (processed_images.size() * 2)
-			for i in range(0, processed_images.size()):
-				write_frame_to_gif(processed_images[i], Global.animation_timer.wait_time, exporter, args["export_dialog"])
-			for i in range(processed_images.size() - 2, 0, -1):
-				write_frame_to_gif(processed_images[i], Global.animation_timer.wait_time, exporter, args["export_dialog"])
-
-	if OS.get_name() == "HTML5":
-		Html5FileExchange.save_gif(exporter.export_file_data(), args["export_paths"][0])
-
-	else:
-		var file: File = File.new()
-		file.open(args["export_paths"][0], File.WRITE)
-		file.store_buffer(exporter.export_file_data())
-		file.close()
-	args["export_dialog"].toggle_export_progress_popup(false)
-	Global.notification_label("File(s) exported")
-
-
-func write_frame_to_gif(image: Image, wait_time: float, exporter: Reference, export_dialog: Node) -> void:
-	exporter.write_frame(image, wait_time, quantization)
-	increase_export_progress(export_dialog)
-
-
 func increase_export_progress(export_dialog: Node) -> void:
 	export_progress += export_progress_fraction
 	export_dialog.set_export_progress_bar(export_progress)
@@ -257,8 +202,6 @@ func file_format_string(format_enum : int) -> String:
 	match format_enum:
 		0: # PNG
 			return '.png'
-		1: # GIF
-			return '.gif'
 		_:
 			return ''
 
