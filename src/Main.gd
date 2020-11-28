@@ -80,11 +80,7 @@ func setup_application_window_size() -> void:
 func show_splash_screen() -> void:
 	# Wait for the window to adjust itself, so the popup is correctly centered
 	yield(get_tree().create_timer(0.2), "timeout")
-	if Global.config_cache.get_value("preferences", "startup"):
-		$Dialogs/SplashDialog.popup_centered() # Splash screen
-		modulate = Color(0.5, 0.5, 0.5)
-	else:
-		Global.can_draw = true
+	Global.can_draw = true
 
 
 func handle_backup() -> void:
