@@ -160,9 +160,9 @@ func commit_undo(action : String) -> void:
 	var project : Project = DrawGD.current_project
 	var frame := -1
 	var layer := -1
-	if DrawGD.animation_timer.is_stopped():
-		frame = project.current_frame
-		layer = project.current_layer
+
+	frame = project.current_frame
+	layer = project.current_layer
 
 	project.undos += 1
 	project.undo_redo.create_action(action)
@@ -511,8 +511,9 @@ func _get_undo_data() -> Dictionary:
 	var data = {}
 	var project : Project = DrawGD.current_project
 	var frames := project.frames
-	if DrawGD.animation_timer.is_stopped():
-		frames = [project.frames[project.current_frame]]
+
+	frames = [project.frames[project.current_frame]]
+	
 	for frame in frames:
 		var image : Image = frame.cels[project.current_layer].image
 		image.unlock()

@@ -20,10 +20,7 @@ func _draw() -> void:
 	if frame >= current_project.frames.size():
 		frame = current_project.current_frame
 
-	$AnimationTimer.wait_time = DrawGD.animation_timer.wait_time
-
-	if animation_timer.is_stopped():
-		frame = current_project.current_frame
+		
 	var current_cels : Array = current_project.frames[frame].cels
 
 	# Draw current frame layers

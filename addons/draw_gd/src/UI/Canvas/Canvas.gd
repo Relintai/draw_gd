@@ -37,8 +37,6 @@ func _draw() -> void:
 	DrawGD.small_preview_viewport.get_child(0).get_node("CanvasPreview").update()
 
 	var current_cels : Array = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels
-	if DrawGD.onion_skinning:
-		onion_skinning()
 
 	# Draw current frame layers
 	for i in range(DrawGD.current_project.layers.size()):

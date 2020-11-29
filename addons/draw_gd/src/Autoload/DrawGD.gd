@@ -75,13 +75,6 @@ var tile_mode := false
 var draw_grid := false
 var show_rulers := true
 var show_guides := true
-var show_animation_timeline := true
-
-# Onion skinning options
-var onion_skinning := false
-var onion_skinning_past_rate := 1.0
-var onion_skinning_future_rate := 1.0
-var onion_skinning_blue_red := false
 
 # Palettes
 var palettes := {}
@@ -127,13 +120,8 @@ var patterns_popup : Popup
 
 var animation_timeline : Panel
 
-var animation_timer : Timer
 var frame_ids : HBoxContainer
 var current_frame_mark_label : Label
-var onion_skinning_button : BaseButton
-var loop_animation_button : BaseButton
-var play_forward : BaseButton
-var play_backwards : BaseButton
 var layers_container : VBoxContainer
 var frames_container : VBoxContainer
 var tag_container : Control
@@ -243,13 +231,8 @@ func refresh_nodes():
 
 	layers_container = find_node_by_name(animation_timeline, "LayersContainer")
 	frames_container = find_node_by_name(animation_timeline, "FramesContainer")
-	animation_timer = find_node_by_name(animation_timeline, "AnimationTimer")
 	frame_ids = find_node_by_name(animation_timeline, "FrameIDs")
 	current_frame_mark_label = find_node_by_name(control, "CurrentFrameMark")
-	onion_skinning_button = find_node_by_name(animation_timeline, "OnionSkinning")
-	loop_animation_button = find_node_by_name(animation_timeline, "LoopAnim")
-	play_forward = find_node_by_name(animation_timeline, "PlayForward")
-	play_backwards = find_node_by_name(animation_timeline, "PlayBackwards")
 	tag_container = find_node_by_name(animation_timeline, "TagContainer")
 	tag_dialog = find_node_by_name(animation_timeline, "FrameTagDialog")
 
@@ -338,13 +321,6 @@ func undo(_frame_index := -1, _layer_index := -1, project : Project = current_pr
 			canvas.grid.update()
 			cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
 
-	elif "Frame" in action_name:
-		# This actually means that frames.size is one, but it hasn't been updated yet
-		if project.frames.size() == 2: # Stop animating
-			play_forward.pressed = false
-			play_backwards.pressed = false
-			animation_timer.stop()
-
 	canvas.update()
 	if !project.has_changed:
 		project.has_changed = true
@@ -369,11 +345,6 @@ func redo(_frame_index := -1, _layer_index := -1, project : Project = current_pr
 			canvas.grid.update()
 			cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
 
-	elif "Frame" in action_name:
-		if project.frames.size() == 1: # Stop animating
-			play_forward.pressed = false
-			play_backwards.pressed = false
-			animation_timer.stop()
 
 	canvas.update()
 	if !project.has_changed:
@@ -493,34 +464,6 @@ Hold %s to make a line""") % ["", "", "Shift"]
 	color_switch.hint_tooltip = tr("""Switch left and right colors
 (%s)""") % ""
 #InputMap.get_action_list("switch_colors")[0].as_text()
-
-	var first_frame : BaseButton = find_node_by_name(self, "FirstFrame")
-	first_frame.hint_tooltip = tr("""Jump to the first frame
-(%s)""") % ""
-#InputMap.get_action_list("go_to_first_frame")[0].as_text()
-
-	var previous_frame : BaseButton = find_node_by_name(self, "PreviousFrame")
-	previous_frame.hint_tooltip = tr("""Go to the previous frame
-(%s)""") % ""
-#InputMap.get_action_list("go_to_previous_frame")[0].as_text()
-
-	play_backwards.hint_tooltip = tr("""Play the animation backwards (from end to beginning)
-(%s)""") % ""
-#InputMap.get_action_list("play_backwards")[0].as_text()
-
-	play_forward.hint_tooltip = tr("""Play the animation forward (from beginning to end)
-(%s)""") % ""
-#InputMap.get_action_list("play_forward")[0].as_text()
-
-	var next_frame : BaseButton = find_node_by_name(self, "NextFrame")
-	next_frame.hint_tooltip = tr("""Go to the next frame
-(%s)""") % ""
-#InputMap.get_action_list("go_to_next_frame")[0].as_text()
-
-	var last_frame : BaseButton = find_node_by_name(self, "LastFrame")
-	last_frame.hint_tooltip = tr("""Jump to the last frame
-(%s)""") % ""
-#InputMap.get_action_list("go_to_last_frame")[0].as_text()
 
 
 func _exit_tree() -> void:

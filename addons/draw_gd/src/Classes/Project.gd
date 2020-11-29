@@ -443,10 +443,6 @@ func frame_changed(value : int) -> void:
 	if layers and current_frame < layers[current_layer].frame_container.get_child_count():
 		layers[current_layer].frame_container.get_child(current_frame).pressed = true
 
-	DrawGD.disable_button(DrawGD.remove_frame_button, frames.size() == 1)
-	DrawGD.disable_button(DrawGD.move_left_frame_button, frames.size() == 1 or current_frame == 0)
-	DrawGD.disable_button(DrawGD.move_right_frame_button, frames.size() == 1 or current_frame == frames.size() - 1)
-
 	DrawGD.canvas.update()
 	DrawGD.transparent_checker._ready() # To update the rect size
 
