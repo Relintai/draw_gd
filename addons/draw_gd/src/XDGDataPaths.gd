@@ -1,3 +1,4 @@
+tool
 extends Reference
 
 # These are *with* the config subdirectory name

@@ -1,3 +1,4 @@
+tool
 extends Node
 
 var default_shortcuts_preset := {}

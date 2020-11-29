@@ -1,3 +1,4 @@
+tool
 extends VBoxContainer
 
 
@@ -20,6 +21,9 @@ func _ready() -> void:
 
 
 func _input(event : InputEvent) -> void:
+	#TODO TEMP
+	return
+	
 	if not DrawGD.has_focus:
 		return
 	for action in ["undo", "redo", "redo_secondary"]:

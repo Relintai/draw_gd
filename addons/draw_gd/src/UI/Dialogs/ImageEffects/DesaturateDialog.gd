@@ -1,3 +1,4 @@
+tool
 extends ImageEffect
 
 var DrawingAlgos = preload("res://addons/draw_gd/src/Autoload/DrawingAlgos.gd")

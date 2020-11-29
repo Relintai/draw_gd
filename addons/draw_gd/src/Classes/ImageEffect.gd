@@ -1,3 +1,4 @@
+tool
 class_name ImageEffect extends AcceptDialog
 # Parent class for all image effects
 # Methods that have "pass" are meant to be replaced by the inherited Scripts

@@ -1,3 +1,4 @@
+tool
 extends Panel
 
 var fps := 6.0

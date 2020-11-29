@@ -1,3 +1,4 @@
+tool
 class_name Guide extends Line2D
 
 enum Types {HORIZONTAL, VERTICAL}

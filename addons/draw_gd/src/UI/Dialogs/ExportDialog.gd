@@ -1,3 +1,4 @@
+tool
 extends AcceptDialog
 
 var ExportScript = preload("res://addons/draw_gd/src/Autoload/Export.gd")

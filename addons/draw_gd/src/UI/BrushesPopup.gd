@@ -1,3 +1,4 @@
+tool
 extends Popup
 class_name Brushes
 

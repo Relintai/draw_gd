@@ -1,3 +1,4 @@
+tool
 extends Control
 
 var Export = preload("res://addons/draw_gd/src/Autoload/Export.gd")
@@ -55,6 +56,9 @@ func _input(event : InputEvent) -> void:
 	if event is InputEventKey and (event.scancode == KEY_ENTER or event.scancode == KEY_KP_ENTER):
 		if get_focus_owner() is LineEdit:
 			get_focus_owner().release_focus()
+
+	#TODO TEMP
+	return 
 
 	if event.is_action_pressed("redo_secondary"): # Shift + Ctrl + Z
 		redone = true

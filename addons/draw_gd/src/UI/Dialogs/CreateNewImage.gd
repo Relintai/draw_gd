@@ -1,3 +1,4 @@
+tool
 extends ConfirmationDialog
 
 onready var templates_options = $VBoxContainer/OptionsContainer/TemplatesOptions

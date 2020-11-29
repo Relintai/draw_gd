@@ -1,3 +1,4 @@
+tool
 class_name Project extends Reference
 # A class for project properties.
 

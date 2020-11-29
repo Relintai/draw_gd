@@ -1,3 +1,4 @@
+tool
 extends WindowDialog
 
 var palette_button = preload("res://addons/draw_gd/src/Palette/PaletteButton.tscn")

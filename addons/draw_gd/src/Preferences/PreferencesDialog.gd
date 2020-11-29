@@ -1,3 +1,4 @@
+tool
 extends AcceptDialog
 
 # Preferences table: [Prop name in DrawGD, relative node path, value type, default value]

@@ -1,3 +1,4 @@
+tool
 extends "res://addons/draw_gd/src/Tools/Base.gd"
 
 

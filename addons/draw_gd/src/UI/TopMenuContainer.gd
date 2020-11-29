@@ -1,3 +1,4 @@
+tool
 extends Panel
 
 var Export = preload("res://addons/draw_gd/src/Autoload/Export.gd")
