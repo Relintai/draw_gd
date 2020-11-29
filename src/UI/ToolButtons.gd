@@ -27,9 +27,9 @@ func _input(event : InputEvent) -> void:
 			return
 	for t in tools: # Handle tool shortcuts
 		if event.is_action_pressed("right_" + t[1] + "_tool"): # Shortcut for right button (with Alt)
-			Tools.assign_tool(t[0].name, BUTTON_RIGHT)
+			DrawGD.tools.assign_tool(t[0].name, BUTTON_RIGHT)
 		elif event.is_action_pressed("left_" + t[1] + "_tool"): # Shortcut for left button
-			Tools.assign_tool(t[0].name, BUTTON_LEFT)
+			DrawGD.tools.assign_tool(t[0].name, BUTTON_LEFT)
 
 
 func _on_Tool_pressed(tool_pressed : BaseButton) -> void:
@@ -37,4 +37,4 @@ func _on_Tool_pressed(tool_pressed : BaseButton) -> void:
 	button = BUTTON_LEFT if Input.is_action_just_released("left_mouse") else button
 	button = BUTTON_RIGHT if Input.is_action_just_released("right_mouse") else button
 	if button != -1:
-		Tools.assign_tool(tool_pressed.name, button)
+		DrawGD.tools.assign_tool(tool_pressed.name, button)

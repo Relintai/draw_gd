@@ -72,7 +72,7 @@ func _input(event : InputEvent) -> void:
 			DrawGD.left_cursor.visible = false
 			DrawGD.right_cursor.visible = false
 
-	Tools.handle_draw(current_pixel.floor(), event)
+	DrawGD.tools.handle_draw(current_pixel.floor(), event)
 
 	if sprite_changed_this_frame:
 		update_texture(current_project.current_layer)

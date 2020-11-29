@@ -11,7 +11,7 @@ func draw_start(position : Vector2) -> void:
 	if DrawGD.selection_rectangle.has_point(position):
 		_move = true
 		_offset = position
-		DrawGD.selection_rectangle.move_start(Tools.shift)
+		DrawGD.selection_rectangle.move_start(DrawGD.tools.shift)
 		_set_cursor_text(DrawGD.selection_rectangle.get_rect())
 	else:
 		_drag = true

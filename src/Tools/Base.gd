@@ -1,8 +1,7 @@
 extends VBoxContainer
 
-
 var kname : String
-var tool_slot : Tools.Slot = null
+var tool_slot = null
 var cursor_text := ""
 
 var _cursor := Vector2.INF
@@ -29,7 +28,7 @@ func _on_Horizontal_toggled(button_pressed : bool):
 	tool_slot.save_config()
 	DrawGD.show_y_symmetry_axis = button_pressed
 	# If the button is not pressed but another button is, keep the symmetry guide visible
-	if !button_pressed and (Tools._slots[BUTTON_LEFT].horizontal_mirror or Tools._slots[BUTTON_RIGHT].horizontal_mirror):
+	if !button_pressed and (DrawGD.tools._slots[BUTTON_LEFT].horizontal_mirror or DrawGD.tools._slots[BUTTON_RIGHT].horizontal_mirror):
 		DrawGD.show_y_symmetry_axis = true
 	DrawGD.current_project.y_symmetry_axis.visible = DrawGD.show_y_symmetry_axis and DrawGD.show_guides
 
@@ -39,7 +38,7 @@ func _on_Vertical_toggled(button_pressed : bool):
 	tool_slot.save_config()
 	DrawGD.show_x_symmetry_axis = button_pressed
 	# If the button is not pressed but another button is, keep the symmetry guide visible
-	if !button_pressed and (Tools._slots[BUTTON_LEFT].vertical_mirror or Tools._slots[BUTTON_RIGHT].vertical_mirror):
+	if !button_pressed and (DrawGD.tools._slots[BUTTON_LEFT].vertical_mirror or DrawGD.tools._slots[BUTTON_RIGHT].vertical_mirror):
 		DrawGD.show_x_symmetry_axis = true
 	DrawGD.current_project.x_symmetry_axis.visible = DrawGD.show_x_symmetry_axis and DrawGD.show_guides
 

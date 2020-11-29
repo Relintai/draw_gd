@@ -54,7 +54,7 @@ func draw_start(position : Vector2) -> void:
 	prepare_undo()
 	_drawer.reset()
 
-	_draw_line = Tools.shift
+	_draw_line = DrawGD.tools.shift
 	if _draw_line:
 		_line_start = position
 		_line_end = position

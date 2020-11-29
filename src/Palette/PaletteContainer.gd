@@ -267,9 +267,9 @@ func on_color_select(index : int) -> void:
 	var color : Color = DrawGD.palettes[current_palette].get_color(index)
 
 	if Input.is_action_just_pressed("left_mouse"):
-		Tools.assign_color(color, BUTTON_LEFT)
+		DrawGD.tools.assign_color(color, BUTTON_LEFT)
 	elif Input.is_action_just_pressed("right_mouse"):
-		Tools.assign_color(color, BUTTON_RIGHT)
+		DrawGD.tools.assign_color(color, BUTTON_RIGHT)
 
 
 func _load_palettes() -> void:

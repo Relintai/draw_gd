@@ -166,6 +166,9 @@ var quit_and_save_dialog : ConfirmationDialog
 
 onready var current_version : String = ProjectSettings.get_setting("application/config/Version")
 
+var tools_script = preload("res://src/Autoload/Tools.gd")
+var tools = null
+
 
 func _ready() -> void:
 	randomize()
@@ -173,6 +176,9 @@ func _ready() -> void:
 		root_directory = OS.get_executable_path().get_base_dir()
 	# Load settings from the config file
 	config_cache.load("user://cache.ini")
+	
+	tools = tools_script.new()
+	add_child(tools)
 
 	# The fact that root_dir is set earlier than this is important
 	# XDGDataDirs depends on it nyaa

@@ -22,7 +22,7 @@ var _polylines := []
 var _line_polylines := []
 
 func _ready() -> void:
-	Tools.connect("color_changed", self, "_on_Color_changed")
+	DrawGD.tools.connect("color_changed", self, "_on_Color_changed")
 	DrawGD.brushes_popup.connect("brush_removed", self, "_on_Brush_removed")
 
 
@@ -181,7 +181,7 @@ func draw_tool(position : Vector2) -> void:
 		return
 	var strength := _strength
 	if DrawGD.pressure_sensitivity_mode == DrawGD.Pressure_Sensitivity.ALPHA:
-		strength *= Tools.pen_pressure
+		strength *= DrawGD.tools.pen_pressure
 
 	_drawer.pixel_perfect = tool_slot.pixel_perfect if _brush_size == 1 else false
 	_drawer.horizontal_mirror = tool_slot.horizontal_mirror
@@ -344,8 +344,8 @@ func _set_pixel(position : Vector2) -> void:
 
 	var image := _get_draw_image()
 	var i := int(position.x + position.y * image.get_size().x)
-	if _mask[i] < Tools.pen_pressure:
-		_mask[i] = Tools.pen_pressure
+	if _mask[i] < DrawGD.tools.pen_pressure:
+		_mask[i] = DrawGD.tools.pen_pressure
 		_drawer.set_pixel(image, position, tool_slot.color)
 
 
@@ -484,7 +484,7 @@ func _line_angle_constraint(start : Vector2, end : Vector2) -> Dictionary:
 	var result := {}
 	var angle := rad2deg(end.angle_to_point(start))
 	var distance := start.distance_to(end)
-	if Tools.control:
+	if DrawGD.tools.control:
 		if tool_slot.pixel_perfect:
 			angle = stepify(angle, 22.5)
 			if step_decimals(angle) != 0:

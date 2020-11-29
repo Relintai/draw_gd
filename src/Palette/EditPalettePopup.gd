@@ -28,8 +28,8 @@ func open(palette : String) -> void:
 		self.popup_centered()
 		DrawGD.dialog_open(true)
 
-	left_color_button.modulate = Tools.get_assigned_color(BUTTON_LEFT)
-	right_color_button.modulate = Tools.get_assigned_color(BUTTON_RIGHT)
+	left_color_button.modulate = DrawGD.tools.get_assigned_color(BUTTON_LEFT)
+	right_color_button.modulate = DrawGD.tools.get_assigned_color(BUTTON_RIGHT)
 
 
 func _display_palette() -> void:
@@ -180,12 +180,12 @@ func _refresh_hint_tooltip(_index : int) -> void:
 
 
 func _on_LeftColor_pressed() -> void:
-	color_picker.color = Tools.get_assigned_color(BUTTON_LEFT)
+	color_picker.color = DrawGD.tools.get_assigned_color(BUTTON_LEFT)
 	_on_EditPaletteColorPicker_color_changed(color_picker.color)
 
 
 func _on_RightColor_pressed() -> void:
-	color_picker.color = Tools.get_assigned_color(BUTTON_RIGHT)
+	color_picker.color = DrawGD.tools.get_assigned_color(BUTTON_RIGHT)
 	_on_EditPaletteColorPicker_color_changed(color_picker.color)
 
 
