@@ -1,5 +1,5 @@
 tool
-extends Panel
+extends Control
 
 var Export = preload("res://addons/draw_gd/src/Autoload/Export.gd")
 var DrawingAlgos = preload("res://addons/draw_gd/src/Autoload/DrawingAlgos.gd")

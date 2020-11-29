@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/draw_gd/src/UI/Tabs.gd" type="Script" id=1]
+
+[node name="Tabs" type="Tabs"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 895.0
+margin_bottom = 31.0
+tab_align = 0
+tab_close_display_policy = 1
+drag_to_rearrange_enabled = true
+script = ExtResource( 1 )
+
+[connection signal="reposition_active_tab_request" from="." to="." method="_on_Tabs_reposition_active_tab_request"]
+[connection signal="tab_changed" from="." to="." method="_on_Tabs_tab_changed"]
+[connection signal="tab_close" from="." to="." method="_on_Tabs_tab_close"]

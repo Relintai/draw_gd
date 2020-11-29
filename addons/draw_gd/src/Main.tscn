@@ -45,8 +45,13 @@ __meta__ = {
 }
 
 [node name="TopMenuContainer" parent="DrawGDControl/MenuAndUI" instance=ExtResource( 11 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1280.0
+margin_bottom = 42.0
 
 [node name="UI" parent="DrawGDControl/MenuAndUI" instance=ExtResource( 6 )]
+margin_top = 42.0
 
 [node name="Dialogs" type="Control" parent="DrawGDControl"]
 mouse_filter = 2

@@ -79,7 +79,7 @@ var palettes := {}
 
 # Nodes
 var control : Node
-var top_menu_container : Panel
+var top_menu_container : Control
 var canvas : Canvas
 var tabs : Tabs
 var main_viewport : ViewportContainer
