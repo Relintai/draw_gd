@@ -2,7 +2,6 @@
 
 [ext_resource path="res://addons/draw_gd/src/UI/TopMenuContainer.gd" type="Script" id=2]
 
-
 [node name="TopMenuContainer" type="Panel"]
 margin_right = 1280.0
 margin_bottom = 28.0
@@ -77,35 +76,3 @@ margin_right = 128.0
 margin_bottom = 21.0
 text = "[64×64]"
 align = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -330.0
-margin_top = -10.0
-margin_right = 0.00012207
-margin_bottom = 13.0
-grow_horizontal = 2
-alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CurrentFrame" type="Label" parent="HBoxContainer"]
-margin_left = 106.0
-margin_right = 198.0
-margin_bottom = 23.0
-size_flags_vertical = 1
-text = "Current frame:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CurrentFrameMark" type="Label" parent="HBoxContainer"]
-margin_left = 202.0
-margin_right = 223.0
-margin_bottom = 23.0
-size_flags_vertical = 1
-text = "1/2"

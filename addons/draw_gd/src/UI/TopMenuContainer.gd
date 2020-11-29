@@ -206,10 +206,7 @@ func save_project_file() -> void:
 	DrawGD.control.is_quitting_on_save = false
 	var path = DrawGD.opensave.current_save_paths[DrawGD.current_project_index]
 	if path == "":
-		if OS.get_name() == "HTML5":
-			DrawGD.save_sprites_html5_dialog.popup_centered()
-		else:
-			DrawGD.save_sprites_dialog.popup_centered()
+		DrawGD.save_sprites_dialog.popup_centered()
 		DrawGD.dialog_open(true)
 	else:
 		DrawGD.control._on_SaveSprite_file_selected(path)
@@ -217,10 +214,7 @@ func save_project_file() -> void:
 
 func save_project_file_as() -> void:
 	DrawGD.control.is_quitting_on_save = false
-	if OS.get_name() == "HTML5":
-		DrawGD.save_sprites_html5_dialog.popup_centered()
-	else:
-		DrawGD.save_sprites_dialog.popup_centered()
+	DrawGD.save_sprites_dialog.popup_centered()
 	DrawGD.dialog_open(true)
 
 

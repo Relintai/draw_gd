@@ -428,7 +428,6 @@ func remove_cel_buttons() -> void:
 
 func frame_changed(value : int) -> void:
 	current_frame = value
-	DrawGD.current_frame_mark_label.text = "%s/%s" % [str(current_frame + 1), frames.size()]
 
 	for i in frames.size():
 		var text_color := Color.white

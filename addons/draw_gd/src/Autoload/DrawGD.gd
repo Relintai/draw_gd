@@ -121,7 +121,6 @@ var patterns_popup : Popup
 var animation_timeline : Panel
 
 var frame_ids : HBoxContainer
-var current_frame_mark_label : Label
 var layers_container : VBoxContainer
 var frames_container : VBoxContainer
 var tag_container : Control
@@ -228,7 +227,6 @@ func refresh_nodes():
 	layers_container = find_node_by_name(animation_timeline, "LayersContainer")
 	frames_container = find_node_by_name(animation_timeline, "FramesContainer")
 	frame_ids = find_node_by_name(animation_timeline, "FrameIDs")
-	current_frame_mark_label = find_node_by_name(control, "CurrentFrameMark")
 	tag_container = find_node_by_name(animation_timeline, "TagContainer")
 	tag_dialog = find_node_by_name(animation_timeline, "FrameTagDialog")
 
