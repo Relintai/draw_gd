@@ -27,7 +27,7 @@ func setup_file_menu() -> void:
 		"Export as..." : InputMap.get_action_list("export_file_as")[0].get_scancode_with_modifiers(),
 		"Quit" : InputMap.get_action_list("quit")[0].get_scancode_with_modifiers(),
 		}
-	file_menu = Global.file_menu.get_popup()
+	file_menu = DrawGD.file_menu.get_popup()
 	var i := 0
 
 	for item in file_menu_items.keys():
@@ -51,7 +51,7 @@ func setup_edit_menu() -> void:
 		"Clear Selection" : 0,
 		"Preferences" : 0
 		}
-	var edit_menu : PopupMenu = Global.edit_menu.get_popup()
+	var edit_menu : PopupMenu = DrawGD.edit_menu.get_popup()
 	var i := 0
 
 	for item in edit_menu_items.keys():
@@ -71,7 +71,7 @@ func setup_view_menu() -> void:
 		"Zen Mode" : InputMap.get_action_list("zen_mode")[0].get_scancode_with_modifiers(),
 		"Fullscreen Mode" : InputMap.get_action_list("toggle_fullscreen")[0].get_scancode_with_modifiers(),
 		}
-	view_menu = Global.view_menu.get_popup()
+	view_menu = DrawGD.view_menu.get_popup()
 
 	var i := 0
 	for item in view_menu_items.keys():
@@ -99,7 +99,7 @@ func setup_image_menu() -> void:
 		"Gradient" : 0,
 		# "Shader" : 0
 		}
-	var image_menu : PopupMenu = Global.image_menu.get_popup()
+	var image_menu : PopupMenu = DrawGD.image_menu.get_popup()
 
 	var i := 0
 	for item in image_menu_items.keys():
@@ -126,59 +126,59 @@ func file_menu_id_pressed(id : int) -> void:
 		5: # Export
 			export_file()
 		6: # Export as
-			Global.export_dialog.popup_centered()
-			Global.dialog_open(true)
+			DrawGD.export_dialog.popup_centered()
+			DrawGD.dialog_open(true)
 		7: # Quit
-			Global.control.show_quit_dialog()
+			DrawGD.control.show_quit_dialog()
 
 
 func on_new_project_file_menu_option_pressed() -> void:
-	Global.new_image_dialog.popup_centered()
-	Global.dialog_open(true)
+	DrawGD.new_image_dialog.popup_centered()
+	DrawGD.dialog_open(true)
 
 
 func open_project_file() -> void:
-	Global.open_sprites_dialog.popup_centered()
-	Global.dialog_open(true)
-	Global.control.opensprite_file_selected = false
+	DrawGD.open_sprites_dialog.popup_centered()
+	DrawGD.dialog_open(true)
+	DrawGD.control.opensprite_file_selected = false
 
 
 func on_open_last_project_file_menu_option_pressed() -> void:
 	# Check if last project path is set and if yes then open
-	if Global.config_cache.has_section_key("preferences", "last_project_path"):
-		Global.control.load_last_project()
+	if DrawGD.config_cache.has_section_key("preferences", "last_project_path"):
+		DrawGD.control.load_last_project()
 	else: # if not then warn user that he didn't edit any project yet
-		Global.error_dialog.set_text("You haven't saved or opened any project in Pixelorama yet!")
-		Global.error_dialog.popup_centered()
-		Global.dialog_open(true)
+		DrawGD.error_dialog.set_text("You haven't saved or opened any project in Pixelorama yet!")
+		DrawGD.error_dialog.popup_centered()
+		DrawGD.dialog_open(true)
 
 
 func save_project_file() -> void:
-	Global.control.is_quitting_on_save = false
-	var path = OpenSave.current_save_paths[Global.current_project_index]
+	DrawGD.control.is_quitting_on_save = false
+	var path = OpenSave.current_save_paths[DrawGD.current_project_index]
 	if path == "":
 		if OS.get_name() == "HTML5":
-			Global.save_sprites_html5_dialog.popup_centered()
+			DrawGD.save_sprites_html5_dialog.popup_centered()
 		else:
-			Global.save_sprites_dialog.popup_centered()
-		Global.dialog_open(true)
+			DrawGD.save_sprites_dialog.popup_centered()
+		DrawGD.dialog_open(true)
 	else:
-		Global.control._on_SaveSprite_file_selected(path)
+		DrawGD.control._on_SaveSprite_file_selected(path)
 
 
 func save_project_file_as() -> void:
-	Global.control.is_quitting_on_save = false
+	DrawGD.control.is_quitting_on_save = false
 	if OS.get_name() == "HTML5":
-		Global.save_sprites_html5_dialog.popup_centered()
+		DrawGD.save_sprites_html5_dialog.popup_centered()
 	else:
-		Global.save_sprites_dialog.popup_centered()
-	Global.dialog_open(true)
+		DrawGD.save_sprites_dialog.popup_centered()
+	DrawGD.dialog_open(true)
 
 
 func export_file() -> void:
 	if was_exported == false:
-		Global.export_dialog.popup_centered()
-		Global.dialog_open(true)
+		DrawGD.export_dialog.popup_centered()
+		DrawGD.dialog_open(true)
 	else:
 		Export.external_export()
 
@@ -186,25 +186,25 @@ func export_file() -> void:
 func edit_menu_id_pressed(id : int) -> void:
 	match id:
 		0: # Undo
-			Global.current_project.undo_redo.undo()
+			DrawGD.current_project.undo_redo.undo()
 		1: # Redo
-			Global.control.redone = true
-			Global.current_project.undo_redo.redo()
-			Global.control.redone = false
+			DrawGD.control.redone = true
+			DrawGD.current_project.undo_redo.redo()
+			DrawGD.control.redone = false
 		2: # Copy
-			Global.selection_rectangle.copy()
+			DrawGD.selection_rectangle.copy()
 		3: # cut
-			Global.selection_rectangle.cut()
+			DrawGD.selection_rectangle.cut()
 		4: # paste
-			Global.selection_rectangle.paste()
+			DrawGD.selection_rectangle.paste()
 		5: # Delete
-			Global.selection_rectangle.delete()
+			DrawGD.selection_rectangle.delete()
 		6: # Clear selection
-			Global.selection_rectangle.set_rect(Rect2(0, 0, 0, 0))
-			Global.selection_rectangle.select_rect()
+			DrawGD.selection_rectangle.set_rect(Rect2(0, 0, 0, 0))
+			DrawGD.selection_rectangle.select_rect()
 		7: # Preferences
-			Global.preferences_dialog.popup_centered(Vector2(400, 280))
-			Global.dialog_open(true)
+			DrawGD.preferences_dialog.popup_centered(Vector2(400, 280))
+			DrawGD.dialog_open(true)
 
 
 func view_menu_id_pressed(id : int) -> void:
@@ -224,54 +224,54 @@ func view_menu_id_pressed(id : int) -> void:
 		6: # Fullscreen mode
 			toggle_fullscreen()
 
-	Global.canvas.update()
+	DrawGD.canvas.update()
 
 
 func toggle_tile_mode() -> void:
-	Global.tile_mode = !Global.tile_mode
-	view_menu.set_item_checked(0, Global.tile_mode)
+	DrawGD.tile_mode = !DrawGD.tile_mode
+	view_menu.set_item_checked(0, DrawGD.tile_mode)
 
 
 func toggle_show_grid() -> void:
-	Global.draw_grid = !Global.draw_grid
-	view_menu.set_item_checked(1, Global.draw_grid)
-	Global.canvas.grid.update()
+	DrawGD.draw_grid = !DrawGD.draw_grid
+	view_menu.set_item_checked(1, DrawGD.draw_grid)
+	DrawGD.canvas.grid.update()
 
 
 func toggle_show_rulers() -> void:
-	Global.show_rulers = !Global.show_rulers
-	view_menu.set_item_checked(2, Global.show_rulers)
-	Global.horizontal_ruler.visible = Global.show_rulers
-	Global.vertical_ruler.visible = Global.show_rulers
+	DrawGD.show_rulers = !DrawGD.show_rulers
+	view_menu.set_item_checked(2, DrawGD.show_rulers)
+	DrawGD.horizontal_ruler.visible = DrawGD.show_rulers
+	DrawGD.vertical_ruler.visible = DrawGD.show_rulers
 
 
 func toggle_show_guides() -> void:
-	Global.show_guides = !Global.show_guides
-	view_menu.set_item_checked(3, Global.show_guides)
-	for guide in Global.canvas.get_children():
-		if guide is Guide and guide in Global.current_project.guides:
-			guide.visible = Global.show_guides
+	DrawGD.show_guides = !DrawGD.show_guides
+	view_menu.set_item_checked(3, DrawGD.show_guides)
+	for guide in DrawGD.canvas.get_children():
+		if guide is Guide and guide in DrawGD.current_project.guides:
+			guide.visible = DrawGD.show_guides
 			if guide is SymmetryGuide:
 				if guide.type == Guide.Types.HORIZONTAL:
-					guide.visible = Global.show_x_symmetry_axis and Global.show_guides
+					guide.visible = DrawGD.show_x_symmetry_axis and DrawGD.show_guides
 				else:
-					guide.visible = Global.show_y_symmetry_axis and Global.show_guides
+					guide.visible = DrawGD.show_y_symmetry_axis and DrawGD.show_guides
 
 
 func toggle_show_anim_timeline() -> void:
 	if zen_mode:
 		return
-	Global.show_animation_timeline = !Global.show_animation_timeline
-	view_menu.set_item_checked(4, Global.show_animation_timeline)
-	Global.animation_timeline.visible = Global.show_animation_timeline
+	DrawGD.show_animation_timeline = !DrawGD.show_animation_timeline
+	view_menu.set_item_checked(4, DrawGD.show_animation_timeline)
+	DrawGD.animation_timeline.visible = DrawGD.show_animation_timeline
 
 
 func toggle_zen_mode() -> void:
-	if Global.show_animation_timeline:
-		Global.animation_timeline.visible = zen_mode
-	Global.control.get_node("MenuAndUI/UI/ToolPanel").visible = zen_mode
-	Global.control.get_node("MenuAndUI/UI/RightPanel").visible = zen_mode
-	Global.control.get_node("MenuAndUI/UI/CanvasAndTimeline/ViewportAndRulers/TabsContainer").visible = zen_mode
+	if DrawGD.show_animation_timeline:
+		DrawGD.animation_timeline.visible = zen_mode
+	DrawGD.control.get_node("MenuAndUI/UI/ToolPanel").visible = zen_mode
+	DrawGD.control.get_node("MenuAndUI/UI/RightPanel").visible = zen_mode
+	DrawGD.control.get_node("MenuAndUI/UI/CanvasAndTimeline/ViewportAndRulers/TabsContainer").visible = zen_mode
 	zen_mode = !zen_mode
 	view_menu.set_item_checked(5, zen_mode)
 
@@ -282,9 +282,9 @@ func toggle_fullscreen() -> void:
 
 
 func image_menu_id_pressed(id : int) -> void:
-	if Global.current_project.layers[Global.current_project.current_layer].locked: # No changes if the layer is locked
+	if DrawGD.current_project.layers[DrawGD.current_project.current_layer].locked: # No changes if the layer is locked
 		return
-	var image : Image = Global.current_project.frames[Global.current_project.current_frame].cels[Global.current_project.current_layer].image
+	var image : Image = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels[DrawGD.current_project.current_layer].image
 	match id:
 		0: # Scale Image
 			show_scale_image_popup()
@@ -296,19 +296,19 @@ func image_menu_id_pressed(id : int) -> void:
 			show_resize_canvas_popup()
 
 		3: # Flip
-			Global.control.get_node("Dialogs/ImageEffects/FlipImageDialog").popup_centered()
-			Global.dialog_open(true)
+			DrawGD.control.get_node("Dialogs/ImageEffects/FlipImageDialog").popup_centered()
+			DrawGD.dialog_open(true)
 
 		4: # Rotate
 			show_rotate_image_popup()
 
 		5: # Invert Colors
-			Global.control.get_node("Dialogs/ImageEffects/InvertColorsDialog").popup_centered()
-			Global.dialog_open(true)
+			DrawGD.control.get_node("Dialogs/ImageEffects/InvertColorsDialog").popup_centered()
+			DrawGD.dialog_open(true)
 
 		6: # Desaturation
-			Global.control.get_node("Dialogs/ImageEffects/DesaturateDialog").popup_centered()
-			Global.dialog_open(true)
+			DrawGD.control.get_node("Dialogs/ImageEffects/DesaturateDialog").popup_centered()
+			DrawGD.dialog_open(true)
 
 		7: # Outline
 			show_add_outline_popup()
@@ -317,34 +317,34 @@ func image_menu_id_pressed(id : int) -> void:
 			show_hsv_configuration_popup()
 
 		9: # Gradient
-			Global.control.get_node("Dialogs/ImageEffects/GradientDialog").popup_centered()
-			Global.dialog_open(true)
+			DrawGD.control.get_node("Dialogs/ImageEffects/GradientDialog").popup_centered()
+			DrawGD.dialog_open(true)
 
 		10: # Shader
-			Global.control.get_node("Dialogs/ImageEffects/ShaderEffect").popup_centered()
-			Global.dialog_open(true)
+			DrawGD.control.get_node("Dialogs/ImageEffects/ShaderEffect").popup_centered()
+			DrawGD.dialog_open(true)
 
 
 func show_scale_image_popup() -> void:
-	Global.control.get_node("Dialogs/ImageEffects/ScaleImage").popup_centered()
-	Global.dialog_open(true)
+	DrawGD.control.get_node("Dialogs/ImageEffects/ScaleImage").popup_centered()
+	DrawGD.dialog_open(true)
 
 
 func show_resize_canvas_popup() -> void:
-	Global.control.get_node("Dialogs/ImageEffects/ResizeCanvas").popup_centered()
-	Global.dialog_open(true)
+	DrawGD.control.get_node("Dialogs/ImageEffects/ResizeCanvas").popup_centered()
+	DrawGD.dialog_open(true)
 
 
 func show_rotate_image_popup() -> void:
-	Global.control.get_node("Dialogs/ImageEffects/RotateImage").popup_centered()
-	Global.dialog_open(true)
+	DrawGD.control.get_node("Dialogs/ImageEffects/RotateImage").popup_centered()
+	DrawGD.dialog_open(true)
 
 
 func show_add_outline_popup() -> void:
-	Global.control.get_node("Dialogs/ImageEffects/OutlineDialog").popup_centered()
-	Global.dialog_open(true)
+	DrawGD.control.get_node("Dialogs/ImageEffects/OutlineDialog").popup_centered()
+	DrawGD.dialog_open(true)
 
 
 func show_hsv_configuration_popup() -> void:
-	Global.control.get_node("Dialogs/ImageEffects/HSVDialog").popup_centered()
-	Global.dialog_open(true)
+	DrawGD.control.get_node("Dialogs/ImageEffects/HSVDialog").popup_centered()
+	DrawGD.dialog_open(true)

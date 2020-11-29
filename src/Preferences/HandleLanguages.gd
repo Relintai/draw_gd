@@ -49,8 +49,8 @@ func _ready() -> void:
 		add_child(button)
 
 	# Load language
-	if Global.config_cache.has_section_key("preferences", "locale"):
-		var saved_locale : String = Global.config_cache.get_value("preferences", "locale")
+	if DrawGD.config_cache.has_section_key("preferences", "locale"):
+		var saved_locale : String = DrawGD.config_cache.get_value("preferences", "locale")
 		TranslationServer.set_locale(saved_locale)
 
 		# Set the language option menu's default selected option to the loaded locale
@@ -74,17 +74,17 @@ func _on_Language_pressed(index : int) -> void:
 		TranslationServer.set_locale(loaded_locales[index - 1])
 
 	if is_cjk(TranslationServer.get_locale()):
-		Global.control.theme.default_font = preload("res://assets/fonts/CJK/NotoSansCJKtc-Regular.tres")
+		DrawGD.control.theme.default_font = preload("res://assets/fonts/CJK/NotoSansCJKtc-Regular.tres")
 	else:
-		Global.control.theme.default_font = preload("res://assets/fonts/Roboto-Regular.tres")
+		DrawGD.control.theme.default_font = preload("res://assets/fonts/Roboto-Regular.tres")
 
-	Global.config_cache.set_value("preferences", "locale", TranslationServer.get_locale())
-	Global.config_cache.save("user://cache.ini")
+	DrawGD.config_cache.set_value("preferences", "locale", TranslationServer.get_locale())
+	DrawGD.config_cache.save("user://cache.ini")
 
 	# Update Translations
-	Global.update_hint_tooltips()
-	Global.preferences_dialog._on_PreferencesDialog_popup_hide()
-	Global.preferences_dialog._on_PreferencesDialog_about_to_show(true)
+	DrawGD.update_hint_tooltips()
+	DrawGD.preferences_dialog._on_PreferencesDialog_popup_hide()
+	DrawGD.preferences_dialog._on_PreferencesDialog_about_to_show(true)
 
 
 func is_cjk(locale : String) -> bool:

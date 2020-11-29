@@ -178,7 +178,7 @@ func _ready() -> void:
 	# XDGDataDirs depends on it nyaa
 	directory_module = XDGDataPaths.new()
 	image_clipboard = Image.new()
-	Input.set_custom_mouse_cursor(Global.cursor_image, Input.CURSOR_CROSS, Vector2(15, 15))
+	Input.set_custom_mouse_cursor(DrawGD.cursor_image, Input.CURSOR_CROSS, Vector2(15, 15))
 
 	var root = get_tree().get_root()
 	control = find_node_by_name(root, "Control")
@@ -314,9 +314,9 @@ func undo(_frame_index := -1, _layer_index := -1, project : Project = current_pr
 
 		if action_name == "Scale":
 			canvas.camera_zoom()
-			Global.canvas.grid.isometric_polylines.clear()
-			Global.canvas.grid.update()
-			Global.cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
+			DrawGD.canvas.grid.isometric_polylines.clear()
+			DrawGD.canvas.grid.update()
+			DrawGD.cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
 
 	elif "Frame" in action_name:
 		# This actually means that frames.size is one, but it hasn't been updated yet
@@ -345,9 +345,9 @@ func redo(_frame_index := -1, _layer_index := -1, project : Project = current_pr
 
 		if action_name == "Scale":
 			canvas.camera_zoom()
-			Global.canvas.grid.isometric_polylines.clear()
-			Global.canvas.grid.update()
-			Global.cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
+			DrawGD.canvas.grid.isometric_polylines.clear()
+			DrawGD.canvas.grid.update()
+			DrawGD.cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
 
 	elif "Frame" in action_name:
 		if project.frames.size() == 1: # Stop animating

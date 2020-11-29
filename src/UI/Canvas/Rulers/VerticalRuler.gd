@@ -11,7 +11,7 @@ var last : Vector2
 
 
 func _ready() -> void:
-	Global.main_viewport.connect("item_rect_changed", self, "update")
+	DrawGD.main_viewport.connect("item_rect_changed", self, "update")
 
 
 # Code taken and modified from Godot's source code
@@ -20,10 +20,10 @@ func _draw() -> void:
 	var ruler_transform := Transform2D()
 	var major_subdivide := Transform2D()
 	var minor_subdivide := Transform2D()
-	var zoom: float = 1 / Global.camera.zoom.x
+	var zoom: float = 1 / DrawGD.camera.zoom.x
 	transform.y = Vector2(zoom, zoom)
 
-	transform.origin = Global.main_viewport.rect_size / 2 + Global.camera.offset * -zoom
+	transform.origin = DrawGD.main_viewport.rect_size / 2 + DrawGD.camera.offset * -zoom
 
 	var basic_rule := 100.0
 	var i := 0
@@ -41,7 +41,7 @@ func _draw() -> void:
 	minor_subdivide = minor_subdivide.scaled(Vector2(1.0 / minor_subdivision, 1.0 / minor_subdivision))
 
 	first = (transform * ruler_transform * major_subdivide * minor_subdivide).affine_inverse().xform(Vector2.ZERO)
-	last = (transform * ruler_transform * major_subdivide * minor_subdivide).affine_inverse().xform(Global.main_viewport.rect_size)
+	last = (transform * ruler_transform * major_subdivide * minor_subdivide).affine_inverse().xform(DrawGD.main_viewport.rect_size)
 
 	for j in range(ceil(first.y), ceil(last.y)):
 		var position : Vector2 = (transform * ruler_transform * major_subdivide * minor_subdivide).xform(Vector2(0, j))
@@ -60,15 +60,15 @@ func _draw() -> void:
 
 
 func _on_VerticalRuler_pressed() -> void:
-	if !Global.show_guides:
+	if !DrawGD.show_guides:
 		return
 	var guide := Guide.new()
 	guide.type = guide.Types.VERTICAL
-	guide.add_point(Vector2(Global.canvas.current_pixel.x, -19999))
-	guide.add_point(Vector2(Global.canvas.current_pixel.x, 19999))
+	guide.add_point(Vector2(DrawGD.canvas.current_pixel.x, -19999))
+	guide.add_point(Vector2(DrawGD.canvas.current_pixel.x, 19999))
 	if guide.points.size() < 2:
 		guide.queue_free()
 		return
-	Global.canvas.add_child(guide)
-	Global.has_focus = false
+	DrawGD.canvas.add_child(guide)
+	DrawGD.has_focus = false
 	update()

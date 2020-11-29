@@ -15,13 +15,13 @@ func _ready() -> void:
 
 
 func _on_FrameTagDialog_about_to_show() -> void:
-	Global.dialog_open(true)
+	DrawGD.dialog_open(true)
 	for vbox in tag_vboxes:
 		vbox.queue_free()
 	tag_vboxes.clear()
 
 	var i := 0
-	for tag in Global.current_project.animation_tags:
+	for tag in DrawGD.current_project.animation_tags:
 		var vbox_cont := VBoxContainer.new()
 		var hbox_cont := HBoxContainer.new()
 		var tag_label := Label.new()
@@ -57,23 +57,23 @@ func _on_FrameTagDialog_about_to_show() -> void:
 
 
 func _on_FrameTagDialog_popup_hide() -> void:
-	Global.dialog_open(false)
+	DrawGD.dialog_open(false)
 
 
 func _on_AddTag_pressed() -> void:
 	options_dialog.popup_centered()
-	current_tag_id = Global.current_project.animation_tags.size()
-	options_dialog.get_node("GridContainer/FromSpinBox").value = Global.current_project.current_frame + 1
-	options_dialog.get_node("GridContainer/ToSpinBox").value = Global.current_project.current_frame + 1
+	current_tag_id = DrawGD.current_project.animation_tags.size()
+	options_dialog.get_node("GridContainer/FromSpinBox").value = DrawGD.current_project.current_frame + 1
+	options_dialog.get_node("GridContainer/ToSpinBox").value = DrawGD.current_project.current_frame + 1
 
 
 func _on_EditButton_pressed(_tag_id : int) -> void:
 	options_dialog.popup_centered()
 	current_tag_id = _tag_id
-	options_dialog.get_node("GridContainer/NameLineEdit").text = Global.current_project.animation_tags[_tag_id].name
-	options_dialog.get_node("GridContainer/ColorPickerButton").color = Global.current_project.animation_tags[_tag_id].color
-	options_dialog.get_node("GridContainer/FromSpinBox").value = Global.current_project.animation_tags[_tag_id].from
-	options_dialog.get_node("GridContainer/ToSpinBox").value = Global.current_project.animation_tags[_tag_id].to
+	options_dialog.get_node("GridContainer/NameLineEdit").text = DrawGD.current_project.animation_tags[_tag_id].name
+	options_dialog.get_node("GridContainer/ColorPickerButton").color = DrawGD.current_project.animation_tags[_tag_id].color
+	options_dialog.get_node("GridContainer/FromSpinBox").value = DrawGD.current_project.animation_tags[_tag_id].from
+	options_dialog.get_node("GridContainer/ToSpinBox").value = DrawGD.current_project.animation_tags[_tag_id].to
 	if !delete_tag_button:
 		delete_tag_button = options_dialog.add_button("Delete", true, "delete_tag")
 	else:
@@ -86,19 +86,19 @@ func _on_TagOptions_confirmed() -> void:
 	var tag_from : int = options_dialog.get_node("GridContainer/FromSpinBox").value
 	var tag_to : int = options_dialog.get_node("GridContainer/ToSpinBox").value
 
-	if tag_to > Global.current_project.frames.size():
-		tag_to = Global.current_project.frames.size()
+	if tag_to > DrawGD.current_project.frames.size():
+		tag_to = DrawGD.current_project.frames.size()
 
 	if tag_from > tag_to:
 		tag_from = tag_to
 
-	var new_animation_tags := Global.current_project.animation_tags.duplicate()
+	var new_animation_tags := DrawGD.current_project.animation_tags.duplicate()
 	# Loop through the tags to create new classes for them, so that they won't be the same
-	# as Global.current_project.animation_tags's classes. Needed for undo/redo to work properly.
+	# as DrawGD.current_project.animation_tags's classes. Needed for undo/redo to work properly.
 	for i in new_animation_tags.size():
 		new_animation_tags[i] = AnimationTag.new(new_animation_tags[i].name, new_animation_tags[i].color, new_animation_tags[i].from, new_animation_tags[i].to)
 
-	if current_tag_id == Global.current_project.animation_tags.size():
+	if current_tag_id == DrawGD.current_project.animation_tags.size():
 		new_animation_tags.append(AnimationTag.new(tag_name, tag_color, tag_from, tag_to))
 	else:
 		new_animation_tags[current_tag_id].name = tag_name
@@ -107,28 +107,28 @@ func _on_TagOptions_confirmed() -> void:
 		new_animation_tags[current_tag_id].to = tag_to
 
 	# Handle Undo/Redo
-	Global.current_project.undos += 1
-	Global.current_project.undo_redo.create_action("Modify Frame Tag")
-	Global.current_project.undo_redo.add_do_method(Global, "general_redo")
-	Global.current_project.undo_redo.add_undo_method(Global, "general_undo")
-	Global.current_project.undo_redo.add_do_property(Global.current_project, "animation_tags", new_animation_tags)
-	Global.current_project.undo_redo.add_undo_property(Global.current_project, "animation_tags", Global.current_project.animation_tags)
-	Global.current_project.undo_redo.commit_action()
+	DrawGD.current_project.undos += 1
+	DrawGD.current_project.undo_redo.create_action("Modify Frame Tag")
+	DrawGD.current_project.undo_redo.add_do_method(DrawGD, "general_redo")
+	DrawGD.current_project.undo_redo.add_undo_method(DrawGD, "general_undo")
+	DrawGD.current_project.undo_redo.add_do_property(DrawGD.current_project, "animation_tags", new_animation_tags)
+	DrawGD.current_project.undo_redo.add_undo_property(DrawGD.current_project, "animation_tags", DrawGD.current_project.animation_tags)
+	DrawGD.current_project.undo_redo.commit_action()
 	_on_FrameTagDialog_about_to_show()
 
 
 func _on_TagOptions_custom_action(action : String) -> void:
 	if action == "delete_tag":
-		var new_animation_tags := Global.current_project.animation_tags.duplicate()
+		var new_animation_tags := DrawGD.current_project.animation_tags.duplicate()
 		new_animation_tags.remove(current_tag_id)
 		# Handle Undo/Redo
-		Global.current_project.undos += 1
-		Global.current_project.undo_redo.create_action("Delete Frame Tag")
-		Global.current_project.undo_redo.add_do_method(Global, "general_redo")
-		Global.current_project.undo_redo.add_undo_method(Global, "general_undo")
-		Global.current_project.undo_redo.add_do_property(Global.current_project, "animation_tags", new_animation_tags)
-		Global.current_project.undo_redo.add_undo_property(Global.current_project, "animation_tags", Global.current_project.animation_tags)
-		Global.current_project.undo_redo.commit_action()
+		DrawGD.current_project.undos += 1
+		DrawGD.current_project.undo_redo.create_action("Delete Frame Tag")
+		DrawGD.current_project.undo_redo.add_do_method(DrawGD, "general_redo")
+		DrawGD.current_project.undo_redo.add_undo_method(DrawGD, "general_undo")
+		DrawGD.current_project.undo_redo.add_do_property(DrawGD.current_project, "animation_tags", new_animation_tags)
+		DrawGD.current_project.undo_redo.add_undo_property(DrawGD.current_project, "animation_tags", DrawGD.current_project.animation_tags)
+		DrawGD.current_project.undo_redo.commit_action()
 
 		options_dialog.hide()
 		_on_FrameTagDialog_about_to_show()
@@ -140,4 +140,4 @@ func _on_TagOptions_popup_hide() -> void:
 
 
 func _on_PlayOnlyTags_toggled(button_pressed : bool) -> void:
-	Global.play_only_tags = button_pressed
+	DrawGD.play_only_tags = button_pressed

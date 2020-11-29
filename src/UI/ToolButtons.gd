@@ -16,11 +16,11 @@ onready var tools := [
 func _ready() -> void:
 	for t in tools:
 		t[0].connect("pressed", self, "_on_Tool_pressed", [t[0]])
-	Global.update_hint_tooltips()
+	DrawGD.update_hint_tooltips()
 
 
 func _input(event : InputEvent) -> void:
-	if not Global.has_focus:
+	if not DrawGD.has_focus:
 		return
 	for action in ["undo", "redo", "redo_secondary"]:
 		if event.is_action_pressed(action):

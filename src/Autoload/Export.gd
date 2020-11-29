@@ -55,14 +55,14 @@ func external_export() -> void:
 			process_spritesheet()
 		ExportTab.ANIMATION:
 			process_animation()
-	export_processed_images(true, Global.export_dialog)
+	export_processed_images(true, DrawGD.export_dialog)
 
 
 func process_frame() -> void:
 	processed_images.clear()
-	var frame = Global.current_project.frames[frame_number - 1]
+	var frame = DrawGD.current_project.frames[frame_number - 1]
 	var image := Image.new()
-	image.create(Global.current_project.size.x, Global.current_project.size.y, false, Image.FORMAT_RGBA8)
+	image.create(DrawGD.current_project.size.x, DrawGD.current_project.size.y, false, Image.FORMAT_RGBA8)
 	blend_layers(image, frame)
 	processed_images.append(image)
 
@@ -72,11 +72,11 @@ func process_spritesheet() -> void:
 	# Range of frames determined by tags
 	var frames := []
 	if frame_current_tag > 0:
-		var frame_start = Global.current_project.animation_tags[frame_current_tag - 1].from
-		var frame_end = Global.current_project.animation_tags[frame_current_tag - 1].to
-		frames = Global.current_project.frames.slice(frame_start-1, frame_end-1, 1, true)
+		var frame_start = DrawGD.current_project.animation_tags[frame_current_tag - 1].from
+		var frame_end = DrawGD.current_project.animation_tags[frame_current_tag - 1].to
+		frames = DrawGD.current_project.frames.slice(frame_start-1, frame_end-1, 1, true)
 	else:
-		frames = Global.current_project.frames
+		frames = DrawGD.current_project.frames
 
 	# Then store the size of frames for other functions
 	number_of_frames = frames.size()
@@ -85,8 +85,8 @@ func process_spritesheet() -> void:
 	var spritesheet_columns = lines_count if orientation == Orientation.ROWS else frames_divided_by_spritesheet_lines()
 	var spritesheet_rows = lines_count if orientation == Orientation.COLUMNS else frames_divided_by_spritesheet_lines()
 
-	var width = Global.current_project.size.x * spritesheet_columns
-	var height = Global.current_project.size.y * spritesheet_rows
+	var width = DrawGD.current_project.size.x * spritesheet_columns
+	var height = DrawGD.current_project.size.y * spritesheet_rows
 
 	var whole_image := Image.new()
 	whole_image.create(width, height, false, Image.FORMAT_RGBA8)
@@ -97,22 +97,22 @@ func process_spritesheet() -> void:
 	for frame in frames:
 		if orientation == Orientation.ROWS:
 			if vv < spritesheet_columns:
-				origin.x = Global.current_project.size.x * vv
+				origin.x = DrawGD.current_project.size.x * vv
 				vv += 1
 			else:
 				hh += 1
 				origin.x = 0
 				vv = 1
-				origin.y = Global.current_project.size.y * hh
+				origin.y = DrawGD.current_project.size.y * hh
 		else:
 			if hh < spritesheet_rows:
-				origin.y = Global.current_project.size.y * hh
+				origin.y = DrawGD.current_project.size.y * hh
 				hh += 1
 			else:
 				vv += 1
 				origin.y = 0
 				hh = 1
-				origin.x = Global.current_project.size.x * vv
+				origin.x = DrawGD.current_project.size.x * vv
 		blend_layers(whole_image, frame, origin)
 
 	processed_images.append(whole_image)
@@ -120,9 +120,9 @@ func process_spritesheet() -> void:
 
 func process_animation() -> void:
 	processed_images.clear()
-	for frame in Global.current_project.frames:
+	for frame in DrawGD.current_project.frames:
 		var image := Image.new()
-		image.create(Global.current_project.size.x, Global.current_project.size.y, false, Image.FORMAT_RGBA8)
+		image.create(DrawGD.current_project.size.x, DrawGD.current_project.size.y, false, Image.FORMAT_RGBA8)
 		blend_layers(image, frame)
 		processed_images.append(image)
 
@@ -176,11 +176,11 @@ func export_processed_images(ignore_overwrites: bool, export_dialog: AcceptDialo
 
 	# Store settings for quick export and when the dialog is opened again
 	was_exported = true
-	Global.file_menu.get_popup().set_item_text(5, tr("Export") + " %s" % (file_name + file_format_string(file_format)))
+	DrawGD.file_menu.get_popup().set_item_text(5, tr("Export") + " %s" % (file_name + file_format_string(file_format)))
 
 	# Only show when not exporting gif - gif export finishes in thread
 	if not (current_tab == ExportTab.ANIMATION and animation_type == AnimationType.ANIMATED):
-		Global.notification_label("File(s) exported")
+		DrawGD.notification_label("File(s) exported")
 	return true
 
 func increase_export_progress(export_dialog: Node) -> void:
@@ -233,7 +233,7 @@ func create_export_path(multifile: bool, frame: int = 0) -> String:
 
 func get_proccessed_image_animation_tag_and_start_id(processed_image_id : int) -> Array:
 	var result_animation_tag_and_start_id = null
-	for animation_tag in Global.current_project.animation_tags:
+	for animation_tag in DrawGD.current_project.animation_tags:
 		# Check if processed image is in frame tag and assign frame tag and start id if yes
 		# Then stop
 		if (processed_image_id + 1) >= animation_tag.from and (processed_image_id + 1) <= animation_tag.to:
@@ -247,7 +247,7 @@ func blend_layers(image : Image, frame : Frame, origin : Vector2 = Vector2(0, 0)
 	image.lock()
 	var layer_i := 0
 	for cel in frame.cels:
-		if Global.current_project.layers[layer_i].visible:
+		if DrawGD.current_project.layers[layer_i].visible:
 			var cel_image := Image.new()
 			cel_image.copy_from(cel.image)
 			cel_image.lock()
@@ -257,7 +257,7 @@ func blend_layers(image : Image, frame : Frame, origin : Vector2 = Vector2(0, 0)
 						var pixel_color := cel_image.get_pixel(xx, yy)
 						var alpha : float = pixel_color.a * cel.opacity
 						cel_image.set_pixel(xx, yy, Color(pixel_color.r, pixel_color.g, pixel_color.b, alpha))
-			image.blend_rect(cel_image, Rect2(Global.canvas.location, Global.current_project.size), origin)
+			image.blend_rect(cel_image, Rect2(DrawGD.canvas.location, DrawGD.current_project.size), origin)
 			cel_image.unlock()
 		layer_i += 1
 	image.unlock()

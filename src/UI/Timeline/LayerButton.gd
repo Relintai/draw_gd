@@ -10,30 +10,30 @@ var line_edit : LineEdit
 
 
 func _ready() -> void:
-	visibility_button = Global.find_node_by_name(self, "VisibilityButton")
-	lock_button = Global.find_node_by_name(self, "LockButton")
-	linked_button = Global.find_node_by_name(self, "LinkButton")
-	label = Global.find_node_by_name(self, "Label")
-	line_edit = Global.find_node_by_name(self, "LineEdit")
+	visibility_button = DrawGD.find_node_by_name(self, "VisibilityButton")
+	lock_button = DrawGD.find_node_by_name(self, "LockButton")
+	linked_button = DrawGD.find_node_by_name(self, "LinkButton")
+	label = DrawGD.find_node_by_name(self, "Label")
+	line_edit = DrawGD.find_node_by_name(self, "LineEdit")
 
-	if Global.current_project.layers[i].visible:
-		Global.change_button_texturerect(visibility_button.get_child(0), "layer_visible.png")
+	if DrawGD.current_project.layers[i].visible:
+		DrawGD.change_button_texturerect(visibility_button.get_child(0), "layer_visible.png")
 		visibility_button.get_child(0).rect_size = Vector2(24, 14)
 		visibility_button.get_child(0).rect_position = Vector2(4, 9)
 	else:
-		Global.change_button_texturerect(visibility_button.get_child(0), "layer_invisible.png")
+		DrawGD.change_button_texturerect(visibility_button.get_child(0), "layer_invisible.png")
 		visibility_button.get_child(0).rect_size = Vector2(24, 8)
 		visibility_button.get_child(0).rect_position = Vector2(4, 12)
 
-	if Global.current_project.layers[i].locked:
-		Global.change_button_texturerect(lock_button.get_child(0), "lock.png")
+	if DrawGD.current_project.layers[i].locked:
+		DrawGD.change_button_texturerect(lock_button.get_child(0), "lock.png")
 	else:
-		Global.change_button_texturerect(lock_button.get_child(0), "unlock.png")
+		DrawGD.change_button_texturerect(lock_button.get_child(0), "unlock.png")
 
-	if Global.current_project.layers[i].new_cels_linked: # If new layers will be linked
-		Global.change_button_texturerect(linked_button.get_child(0), "linked_layer.png")
+	if DrawGD.current_project.layers[i].new_cels_linked: # If new layers will be linked
+		DrawGD.change_button_texturerect(linked_button.get_child(0), "linked_layer.png")
 	else:
-		Global.change_button_texturerect(linked_button.get_child(0), "unlinked_layer.png")
+		DrawGD.change_button_texturerect(linked_button.get_child(0), "unlinked_layer.png")
 
 
 func _input(event : InputEvent) -> void:
@@ -58,22 +58,22 @@ func save_layer_name(new_name : String) -> void:
 	line_edit.visible = false
 	line_edit.editable = false
 	label.text = new_name
-	Global.layers_changed_skip = true
-	Global.current_project.layers[i].name = new_name
+	DrawGD.layers_changed_skip = true
+	DrawGD.current_project.layers[i].name = new_name
 
 
 func _on_VisibilityButton_pressed() -> void:
-	Global.current_project.layers[i].visible = !Global.current_project.layers[i].visible
-	Global.canvas.update()
+	DrawGD.current_project.layers[i].visible = !DrawGD.current_project.layers[i].visible
+	DrawGD.canvas.update()
 
 
 func _on_LockButton_pressed() -> void:
-	Global.current_project.layers[i].locked = !Global.current_project.layers[i].locked
+	DrawGD.current_project.layers[i].locked = !DrawGD.current_project.layers[i].locked
 
 
 func _on_LinkButton_pressed() -> void:
-	Global.current_project.layers[i].new_cels_linked = !Global.current_project.layers[i].new_cels_linked
-	if Global.current_project.layers[i].new_cels_linked && !Global.current_project.layers[i].linked_cels:
+	DrawGD.current_project.layers[i].new_cels_linked = !DrawGD.current_project.layers[i].new_cels_linked
+	if DrawGD.current_project.layers[i].new_cels_linked && !DrawGD.current_project.layers[i].linked_cels:
 		# If button is pressed and there are no linked cels in the layer
-		Global.current_project.layers[i].linked_cels.append(Global.current_project.frames[Global.current_project.current_frame])
-		Global.current_project.layers[i].frame_container.get_child(Global.current_project.current_frame)._ready()
+		DrawGD.current_project.layers[i].linked_cels.append(DrawGD.current_project.frames[DrawGD.current_project.current_frame])
+		DrawGD.current_project.layers[i].frame_container.get_child(DrawGD.current_project.current_frame)._ready()

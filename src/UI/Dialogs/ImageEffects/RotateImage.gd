@@ -22,7 +22,7 @@ func _about_to_show() -> void:
 	angle_hslider.value = 0
 
 
-func commit_action(_cel : Image, _pixels : Array, _project : Project = Global.current_project) -> void:
+func commit_action(_cel : Image, _pixels : Array, _project : Project = DrawGD.current_project) -> void:
 	match type_option_button.text:
 		"Rotxel":
 			DrawingAlgos.rotxel(_cel,angle_hslider.value*PI/180)

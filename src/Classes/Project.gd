@@ -43,7 +43,7 @@ func _init(_frames := [], _name := tr("untitled"), _size := Vector2(64, 64)) -> 
 
 	undo_redo = UndoRedo.new()
 
-	Global.tabs.add_tab(name)
+	DrawGD.tabs.add_tab(name)
 	OpenSave.current_save_paths.append("")
 	OpenSave.backup_save_paths.append("")
 
@@ -56,7 +56,7 @@ func _init(_frames := [], _name := tr("untitled"), _size := Vector2(64, 64)) -> 
 		x_symmetry_axis.project = self
 		x_symmetry_axis.add_point(Vector2(-19999, y_symmetry_point))
 		x_symmetry_axis.add_point(Vector2(19999, y_symmetry_point))
-		Global.canvas.add_child(x_symmetry_axis)
+		DrawGD.canvas.add_child(x_symmetry_axis)
 
 	if !y_symmetry_axis:
 		y_symmetry_axis = SymmetryGuide.new()
@@ -64,7 +64,7 @@ func _init(_frames := [], _name := tr("untitled"), _size := Vector2(64, 64)) -> 
 		y_symmetry_axis.project = self
 		y_symmetry_axis.add_point(Vector2(x_symmetry_point, -19999))
 		y_symmetry_axis.add_point(Vector2(x_symmetry_point, 19999))
-		Global.canvas.add_child(y_symmetry_axis)
+		DrawGD.canvas.add_child(y_symmetry_axis)
 
 	if OS.get_name() == "HTML5":
 		directory_path = "user://"
@@ -85,18 +85,18 @@ func clear_selection() -> void:
 
 func _set_selected_rect(value : Rect2) -> void:
 	selected_rect = value
-	Global.selection_rectangle.set_rect(value)
+	DrawGD.selection_rectangle.set_rect(value)
 
 
 func change_project() -> void:
 	# Remove old nodes
-	for container in Global.layers_container.get_children():
+	for container in DrawGD.layers_container.get_children():
 		container.queue_free()
 
 	remove_cel_buttons()
 
-	for frame_id in Global.frame_ids.get_children():
-		Global.frame_ids.remove_child(frame_id)
+	for frame_id in DrawGD.frame_ids.get_children():
+		DrawGD.frame_ids.remove_child(frame_id)
 		frame_id.queue_free()
 
 	# Create new ones
@@ -107,11 +107,11 @@ func change_project() -> void:
 		if layers[i].name == tr("Layer") + " 0":
 			layers[i].name = tr("Layer") + " %s" % i
 
-		Global.layers_container.add_child(layer_container)
+		DrawGD.layers_container.add_child(layer_container)
 		layer_container.label.text = layers[i].name
 		layer_container.line_edit.text = layers[i].name
 
-		Global.frames_container.add_child(layers[i].frame_container)
+		DrawGD.frames_container.add_child(layers[i].frame_container)
 		for j in range(frames.size()): # Create Cel buttons
 			var cel_button = load("res://src/UI/Timeline/CelButton.tscn").instance()
 			cel_button.frame = j
@@ -128,35 +128,35 @@ func change_project() -> void:
 		label.align = Label.ALIGN_CENTER
 		label.text = str(j + 1)
 		if j == current_frame:
-			label.add_color_override("font_color", Global.control.theme.get_color("Selected Color", "Label"))
-		Global.frame_ids.add_child(label)
+			label.add_color_override("font_color", DrawGD.control.theme.get_color("Selected Color", "Label"))
+		DrawGD.frame_ids.add_child(label)
 
-	var layer_button = Global.layers_container.get_child(Global.layers_container.get_child_count() - 1 - current_layer)
+	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
 	layer_button.pressed = true
 
-	Global.current_frame_mark_label.text = "%s/%s" % [str(current_frame + 1), frames.size()]
+	DrawGD.current_frame_mark_label.text = "%s/%s" % [str(current_frame + 1), frames.size()]
 
-	Global.disable_button(Global.remove_frame_button, frames.size() == 1)
-	Global.disable_button(Global.move_left_frame_button, frames.size() == 1 or current_frame == 0)
-	Global.disable_button(Global.move_right_frame_button, frames.size() == 1 or current_frame == frames.size() - 1)
+	DrawGD.disable_button(DrawGD.remove_frame_button, frames.size() == 1)
+	DrawGD.disable_button(DrawGD.move_left_frame_button, frames.size() == 1 or current_frame == 0)
+	DrawGD.disable_button(DrawGD.move_right_frame_button, frames.size() == 1 or current_frame == frames.size() - 1)
 	toggle_layer_buttons_layers()
 	toggle_layer_buttons_current_layer()
 
 	self.animation_tags = animation_tags
 
 	# Change the selection rectangle
-	Global.selection_rectangle.set_rect(selected_rect)
+	DrawGD.selection_rectangle.set_rect(selected_rect)
 
 	# Change the guides
-	for guide in Global.canvas.get_children():
+	for guide in DrawGD.canvas.get_children():
 		if guide is Guide:
 			if guide in guides:
-				guide.visible = Global.show_guides
+				guide.visible = DrawGD.show_guides
 				if guide is SymmetryGuide:
 					if guide.type == Guide.Types.HORIZONTAL:
-						guide.visible = Global.show_x_symmetry_axis and Global.show_guides
+						guide.visible = DrawGD.show_x_symmetry_axis and DrawGD.show_guides
 					else:
-						guide.visible = Global.show_y_symmetry_axis and Global.show_guides
+						guide.visible = DrawGD.show_y_symmetry_axis and DrawGD.show_guides
 			else:
 				guide.visible = false
 
@@ -165,42 +165,42 @@ func change_project() -> void:
 	for brush in brushes:
 		Brushes.add_project_brush(brush)
 
-	var cameras = [Global.camera, Global.camera2, Global.camera_preview]
+	var cameras = [DrawGD.camera, DrawGD.camera2, DrawGD.camera_preview]
 	var i := 0
 	for camera in cameras:
 		camera.zoom = cameras_zoom[i]
 		camera.offset = cameras_offset[i]
 		i += 1
-	Global.zoom_level_label.text = str(round(100 / Global.camera.zoom.x)) + " %"
-	Global.canvas.update()
-	Global.canvas.grid.isometric_polylines.clear()
-	Global.canvas.grid.update()
-	Global.transparent_checker._ready()
-	Global.horizontal_ruler.update()
-	Global.vertical_ruler.update()
-	Global.preview_zoom_slider.value = -Global.camera_preview.zoom.x
-	Global.cursor_position_label.text = "[%s×%s]" % [size.x, size.y]
+	DrawGD.zoom_level_label.text = str(round(100 / DrawGD.camera.zoom.x)) + " %"
+	DrawGD.canvas.update()
+	DrawGD.canvas.grid.isometric_polylines.clear()
+	DrawGD.canvas.grid.update()
+	DrawGD.transparent_checker._ready()
+	DrawGD.horizontal_ruler.update()
+	DrawGD.vertical_ruler.update()
+	DrawGD.preview_zoom_slider.value = -DrawGD.camera_preview.zoom.x
+	DrawGD.cursor_position_label.text = "[%s×%s]" % [size.x, size.y]
 
-	Global.window_title = "%s - Pixelorama %s" % [name, Global.current_version]
+	DrawGD.window_title = "%s - Pixelorama %s" % [name, DrawGD.current_version]
 	if has_changed:
-		Global.window_title = Global.window_title + "(*)"
+		DrawGD.window_title = DrawGD.window_title + "(*)"
 
-	var save_path = OpenSave.current_save_paths[Global.current_project_index]
+	var save_path = OpenSave.current_save_paths[DrawGD.current_project_index]
 	if save_path != "":
-		Global.open_sprites_dialog.current_path = save_path
-		Global.save_sprites_dialog.current_path = save_path
-		Global.file_menu.get_popup().set_item_text(3, tr("Save") + " %s" % save_path.get_file())
+		DrawGD.open_sprites_dialog.current_path = save_path
+		DrawGD.save_sprites_dialog.current_path = save_path
+		DrawGD.file_menu.get_popup().set_item_text(3, tr("Save") + " %s" % save_path.get_file())
 	else:
-		Global.file_menu.get_popup().set_item_text(3, tr("Save"))
+		DrawGD.file_menu.get_popup().set_item_text(3, tr("Save"))
 
 	Export.directory_path = directory_path
 	Export.file_name = file_name
 	Export.file_format = file_format
 
 	if directory_path.empty():
-		Global.file_menu.get_popup().set_item_text(5, tr("Export"))
+		DrawGD.file_menu.get_popup().set_item_text(5, tr("Export"))
 	else:
-		Global.file_menu.get_popup().set_item_text(5, tr("Export") + " %s" % (file_name + Export.file_format_string(file_format)))
+		DrawGD.file_menu.get_popup().set_item_text(5, tr("Export") + " %s" % (file_name + Export.file_format_string(file_format)))
 
 
 func serialize() -> Dictionary:
@@ -258,11 +258,11 @@ func serialize() -> Dictionary:
 		})
 
 	var project_data := {
-		"pixelorama_version" : Global.current_version,
+		"pixelorama_version" : DrawGD.current_version,
 		"name" : name,
 		"size_x" : size.x,
 		"size_y" : size.y,
-		"save_path" : OpenSave.current_save_paths[Global.projects.find(self)],
+		"save_path" : OpenSave.current_save_paths[DrawGD.projects.find(self)],
 		"layers" : layer_data,
 		"tags" : tag_data,
 		"guides" : guide_data,
@@ -285,7 +285,7 @@ func deserialize(dict : Dictionary) -> void:
 		size.y = dict.size_y
 		select_all_pixels()
 	if dict.has("save_path"):
-		OpenSave.current_save_paths[Global.projects.find(self)] = dict.save_path
+		OpenSave.current_save_paths[DrawGD.projects.find(self)] = dict.save_path
 	if dict.has("frames"):
 		for frame in dict.frames:
 			var cels := []
@@ -318,7 +318,7 @@ func deserialize(dict : Dictionary) -> void:
 				guide.add_point(Vector2(g.pos, -99999))
 				guide.add_point(Vector2(g.pos, 99999))
 			guide.has_focus = false
-			Global.canvas.add_child(guide)
+			DrawGD.canvas.add_child(guide)
 			guides.append(guide)
 	if dict.has("symmetry_points"):
 		x_symmetry_point = dict.symmetry_points[0]
@@ -337,12 +337,12 @@ func deserialize(dict : Dictionary) -> void:
 
 func name_changed(value : String) -> void:
 	name = value
-	Global.tabs.set_tab_title(Global.tabs.current_tab, name)
+	DrawGD.tabs.set_tab_title(DrawGD.tabs.current_tab, name)
 
 
 func size_changed(value : Vector2) -> void:
 	size = value
-	if Global.selection_rectangle._selected_rect.has_no_area():
+	if DrawGD.selection_rectangle._selected_rect.has_no_area():
 		select_all_pixels()
 
 
@@ -350,19 +350,19 @@ func frames_changed(value : Array) -> void:
 	frames = value
 	remove_cel_buttons()
 
-	for frame_id in Global.frame_ids.get_children():
-		Global.frame_ids.remove_child(frame_id)
+	for frame_id in DrawGD.frame_ids.get_children():
+		DrawGD.frame_ids.remove_child(frame_id)
 		frame_id.queue_free()
 
 	for i in range(layers.size() - 1, -1, -1):
-		Global.frames_container.add_child(layers[i].frame_container)
+		DrawGD.frames_container.add_child(layers[i].frame_container)
 
 	for j in range(frames.size()):
 		var label := Label.new()
 		label.rect_min_size.x = 36
 		label.align = Label.ALIGN_CENTER
 		label.text = str(j + 1)
-		Global.frame_ids.add_child(label)
+		DrawGD.frame_ids.add_child(label)
 
 		for i in range(layers.size() - 1, -1, -1):
 			var cel_button = load("res://src/UI/Timeline/CelButton.tscn").instance()
@@ -377,11 +377,11 @@ func frames_changed(value : Array) -> void:
 
 func layers_changed(value : Array) -> void:
 	layers = value
-	if Global.layers_changed_skip:
-		Global.layers_changed_skip = false
+	if DrawGD.layers_changed_skip:
+		DrawGD.layers_changed_skip = false
 		return
 
-	for container in Global.layers_container.get_children():
+	for container in DrawGD.layers_container.get_children():
 		container.queue_free()
 
 	remove_cel_buttons()
@@ -392,11 +392,11 @@ func layers_changed(value : Array) -> void:
 		if layers[i].name == tr("Layer") + " 0":
 			layers[i].name = tr("Layer") + " %s" % i
 
-		Global.layers_container.add_child(layer_container)
+		DrawGD.layers_container.add_child(layer_container)
 		layer_container.label.text = layers[i].name
 		layer_container.line_edit.text = layers[i].name
 
-		Global.frames_container.add_child(layers[i].frame_container)
+		DrawGD.frames_container.add_child(layers[i].frame_container)
 		for j in range(frames.size()):
 			var cel_button = load("res://src/UI/Timeline/CelButton.tscn").instance()
 			cel_button.frame = j
@@ -405,29 +405,29 @@ func layers_changed(value : Array) -> void:
 
 			layers[i].frame_container.add_child(cel_button)
 
-	var layer_button = Global.layers_container.get_child(Global.layers_container.get_child_count() - 1 - current_layer)
+	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
 	layer_button.pressed = true
 	self.current_frame = current_frame # Call frame_changed to update UI
 	toggle_layer_buttons_layers()
 
 
 func remove_cel_buttons() -> void:
-	for container in Global.frames_container.get_children():
+	for container in DrawGD.frames_container.get_children():
 		for button in container.get_children():
 			container.remove_child(button)
 			button.queue_free()
-		Global.frames_container.remove_child(container)
+		DrawGD.frames_container.remove_child(container)
 
 
 func frame_changed(value : int) -> void:
 	current_frame = value
-	Global.current_frame_mark_label.text = "%s/%s" % [str(current_frame + 1), frames.size()]
+	DrawGD.current_frame_mark_label.text = "%s/%s" % [str(current_frame + 1), frames.size()]
 
 	for i in frames.size():
 		var text_color := Color.white
-		if Global.theme_type == Global.Theme_Types.CARAMEL || Global.theme_type == Global.Theme_Types.LIGHT:
+		if DrawGD.theme_type == DrawGD.Theme_Types.CARAMEL || DrawGD.theme_type == DrawGD.Theme_Types.LIGHT:
 			text_color = Color.black
-		Global.frame_ids.get_child(i).add_color_override("font_color", text_color)
+		DrawGD.frame_ids.get_child(i).add_color_override("font_color", text_color)
 		for layer in layers: # De-select all the other frames
 			if i < layer.frame_container.get_child_count():
 				layer.frame_container.get_child(i).pressed = false
@@ -436,30 +436,30 @@ func frame_changed(value : int) -> void:
 	if layers and current_frame < layers[current_layer].frame_container.get_child_count():
 		layers[current_layer].frame_container.get_child(current_frame).pressed = true
 
-	Global.disable_button(Global.remove_frame_button, frames.size() == 1)
-	Global.disable_button(Global.move_left_frame_button, frames.size() == 1 or current_frame == 0)
-	Global.disable_button(Global.move_right_frame_button, frames.size() == 1 or current_frame == frames.size() - 1)
+	DrawGD.disable_button(DrawGD.remove_frame_button, frames.size() == 1)
+	DrawGD.disable_button(DrawGD.move_left_frame_button, frames.size() == 1 or current_frame == 0)
+	DrawGD.disable_button(DrawGD.move_right_frame_button, frames.size() == 1 or current_frame == frames.size() - 1)
 
-	Global.canvas.update()
-	Global.transparent_checker._ready() # To update the rect size
+	DrawGD.canvas.update()
+	DrawGD.transparent_checker._ready() # To update the rect size
 
 
 func layer_changed(value : int) -> void:
 	current_layer = value
 	if current_frame < frames.size():
-		Global.layer_opacity_slider.value = frames[current_frame].cels[current_layer].opacity * 100
-		Global.layer_opacity_spinbox.value = frames[current_frame].cels[current_layer].opacity * 100
+		DrawGD.layer_opacity_slider.value = frames[current_frame].cels[current_layer].opacity * 100
+		DrawGD.layer_opacity_spinbox.value = frames[current_frame].cels[current_layer].opacity * 100
 
-	for container in Global.layers_container.get_children():
+	for container in DrawGD.layers_container.get_children():
 		container.pressed = false
 
-	if current_layer < Global.layers_container.get_child_count():
-		var layer_button = Global.layers_container.get_child(Global.layers_container.get_child_count() - 1 - current_layer)
+	if current_layer < DrawGD.layers_container.get_child_count():
+		var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
 		layer_button.pressed = true
 
 	toggle_layer_buttons_current_layer()
 
-	yield(Global.get_tree().create_timer(0.01), "timeout")
+	yield(DrawGD.get_tree().create_timer(0.01), "timeout")
 	self.current_frame = current_frame # Call frame_changed to update UI
 
 
@@ -467,48 +467,48 @@ func toggle_layer_buttons_layers() -> void:
 	if !layers:
 		return
 	if layers[current_layer].locked:
-		Global.disable_button(Global.remove_layer_button, true)
+		DrawGD.disable_button(DrawGD.remove_layer_button, true)
 
 	if layers.size() == 1:
-		Global.disable_button(Global.remove_layer_button, true)
-		Global.disable_button(Global.move_up_layer_button, true)
-		Global.disable_button(Global.move_down_layer_button, true)
-		Global.disable_button(Global.merge_down_layer_button, true)
+		DrawGD.disable_button(DrawGD.remove_layer_button, true)
+		DrawGD.disable_button(DrawGD.move_up_layer_button, true)
+		DrawGD.disable_button(DrawGD.move_down_layer_button, true)
+		DrawGD.disable_button(DrawGD.merge_down_layer_button, true)
 	elif !layers[current_layer].locked:
-		Global.disable_button(Global.remove_layer_button, false)
+		DrawGD.disable_button(DrawGD.remove_layer_button, false)
 
 
 func toggle_layer_buttons_current_layer() -> void:
 	if current_layer < layers.size() - 1:
-		Global.disable_button(Global.move_up_layer_button, false)
+		DrawGD.disable_button(DrawGD.move_up_layer_button, false)
 	else:
-		Global.disable_button(Global.move_up_layer_button, true)
+		DrawGD.disable_button(DrawGD.move_up_layer_button, true)
 
 	if current_layer > 0:
-		Global.disable_button(Global.move_down_layer_button, false)
-		Global.disable_button(Global.merge_down_layer_button, false)
+		DrawGD.disable_button(DrawGD.move_down_layer_button, false)
+		DrawGD.disable_button(DrawGD.merge_down_layer_button, false)
 	else:
-		Global.disable_button(Global.move_down_layer_button, true)
-		Global.disable_button(Global.merge_down_layer_button, true)
+		DrawGD.disable_button(DrawGD.move_down_layer_button, true)
+		DrawGD.disable_button(DrawGD.merge_down_layer_button, true)
 
 	if current_layer < layers.size():
 		if layers[current_layer].locked:
-			Global.disable_button(Global.remove_layer_button, true)
+			DrawGD.disable_button(DrawGD.remove_layer_button, true)
 		else:
 			if layers.size() > 1:
-				Global.disable_button(Global.remove_layer_button, false)
+				DrawGD.disable_button(DrawGD.remove_layer_button, false)
 
 
 func animation_tags_changed(value : Array) -> void:
 	animation_tags = value
-	for child in Global.tag_container.get_children():
+	for child in DrawGD.tag_container.get_children():
 		child.queue_free()
 
 	for tag in animation_tags:
 		var tag_c : Container = load("res://src/UI/Timeline/AnimationTag.tscn").instance()
-		Global.tag_container.add_child(tag_c)
-		var tag_position : int = Global.tag_container.get_child_count() - 1
-		Global.tag_container.move_child(tag_c, tag_position)
+		DrawGD.tag_container.add_child(tag_c)
+		var tag_position : int = DrawGD.tag_container.get_child_count() - 1
+		DrawGD.tag_container.move_child(tag_c, tag_position)
 		tag_c.get_node("Label").text = tag.name
 		tag_c.get_node("Label").modulate = tag.color
 		tag_c.get_node("Line2D").default_color = tag.color
@@ -527,18 +527,18 @@ func set_timeline_first_and_last_frames() -> void:
 	# This is useful in case tags get modified DURING the animation is playing
 	# otherwise, this code is useless in this context, since these values are being set
 	# when the play buttons get pressed anyway
-	Global.animation_timeline.first_frame = 0
-	Global.animation_timeline.last_frame = frames.size() - 1
-	if Global.play_only_tags:
+	DrawGD.animation_timeline.first_frame = 0
+	DrawGD.animation_timeline.last_frame = frames.size() - 1
+	if DrawGD.play_only_tags:
 		for tag in animation_tags:
 			if current_frame + 1 >= tag.from && current_frame + 1 <= tag.to:
-				Global.animation_timeline.first_frame = tag.from - 1
-				Global.animation_timeline.last_frame = min(frames.size() - 1, tag.to - 1)
+				DrawGD.animation_timeline.first_frame = tag.from - 1
+				DrawGD.animation_timeline.last_frame = min(frames.size() - 1, tag.to - 1)
 
 
 func has_changed_changed(value : bool) -> void:
 	has_changed = value
 	if value:
-		Global.tabs.set_tab_title(Global.tabs.current_tab, name + "(*)")
+		DrawGD.tabs.set_tab_title(DrawGD.tabs.current_tab, name + "(*)")
 	else:
-		Global.tabs.set_tab_title(Global.tabs.current_tab, name)
+		DrawGD.tabs.set_tab_title(DrawGD.tabs.current_tab, name)

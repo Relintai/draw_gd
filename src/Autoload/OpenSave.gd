@@ -25,15 +25,15 @@ func handle_loading_files(files : PoolStringArray) -> void:
 		if file_ext == "pxo": # Pixelorama project file
 			open_pxo_file(file)
 		elif file_ext == "json" or file_ext == "gpl" or file_ext == "pal": # Palettes
-			Global.palette_container.on_palette_import_file_selected(file)
+			DrawGD.palette_container.on_palette_import_file_selected(file)
 		else: # Image files
 			var image := Image.new()
 			var err := image.load(file)
 			if err != OK: # An error occured
 				var file_name : String = file.get_file()
-				Global.error_dialog.set_text(tr("Can't load file '%s'.\nError code: %s") % [file_name, str(err)])
-				Global.error_dialog.popup_centered()
-				Global.dialog_open(true)
+				DrawGD.error_dialog.set_text(tr("Can't load file '%s'.\nError code: %s") % [file_name, str(err)])
+				DrawGD.error_dialog.popup_centered()
+				DrawGD.dialog_open(true)
 				continue
 			handle_loading_image(file, image)
 
@@ -42,9 +42,9 @@ func handle_loading_image(file : String, image : Image) -> void:
 	var preview_dialog : ConfirmationDialog = preload("res://src/UI/Dialogs/PreviewDialog.tscn").instance()
 	preview_dialog.path = file
 	preview_dialog.image = image
-	Global.control.add_child(preview_dialog)
+	DrawGD.control.add_child(preview_dialog)
 	preview_dialog.popup_centered()
-	Global.dialog_open(true)
+	DrawGD.dialog_open(true)
 
 
 func open_pxo_file(path : String, untitled_backup : bool = false) -> void:
@@ -54,14 +54,14 @@ func open_pxo_file(path : String, untitled_backup : bool = false) -> void:
 		err = file.open(path, File.READ) # If the file is not compressed open it raw (pre-v0.7)
 
 	if err != OK:
-		Global.notification_label(tr("File failed to open. Error code %s") % err)
+		DrawGD.notification_label(tr("File failed to open. Error code %s") % err)
 		file.close()
 		return
 
-	var empty_project : bool = Global.current_project.frames.size() == 1 and Global.current_project.layers.size() == 1 and Global.current_project.frames[0].cels[0].image.is_invisible() and Global.current_project.animation_tags.size() == 0
+	var empty_project : bool = DrawGD.current_project.frames.size() == 1 and DrawGD.current_project.layers.size() == 1 and DrawGD.current_project.frames[0].cels[0].image.is_invisible() and DrawGD.current_project.animation_tags.size() == 0
 	var new_project : Project
 	if empty_project:
-		new_project = Global.current_project
+		new_project = DrawGD.current_project
 		new_project.frames = []
 		new_project.layers = []
 		new_project.animation_tags.clear()
@@ -98,26 +98,26 @@ func open_pxo_file(path : String, untitled_backup : bool = false) -> void:
 
 	file.close()
 	if !empty_project:
-		Global.projects.append(new_project)
-		Global.tabs.current_tab = Global.tabs.get_tab_count() - 1
+		DrawGD.projects.append(new_project)
+		DrawGD.tabs.current_tab = DrawGD.tabs.get_tab_count() - 1
 	else:
 		new_project.frames = new_project.frames # Just to call frames_changed
 		new_project.layers = new_project.layers # Just to call layers_changed
-	Global.canvas.camera_zoom()
+	DrawGD.canvas.camera_zoom()
 
 	if not untitled_backup:
 		# Untitled backup should not change window title and save path
-		current_save_paths[Global.current_project_index] = path
-		Global.window_title = path.get_file() + " - Pixelorama " + Global.current_version
-		Global.save_sprites_dialog.current_path = path
+		current_save_paths[DrawGD.current_project_index] = path
+		DrawGD.window_title = path.get_file() + " - Pixelorama " + DrawGD.current_version
+		DrawGD.save_sprites_dialog.current_path = path
 		# Set last opened project path and save
-		Global.config_cache.set_value("preferences", "last_project_path", path)
-		Global.config_cache.save("user://cache.ini")
+		DrawGD.config_cache.set_value("preferences", "last_project_path", path)
+		DrawGD.config_cache.save("user://cache.ini")
 		Export.file_name = path.get_file().trim_suffix(".pxo")
 		Export.directory_path = path.get_base_dir()
 		Export.was_exported = false
-		Global.file_menu.get_popup().set_item_text(3, tr("Save") + " %s" % path.get_file())
-		Global.file_menu.get_popup().set_item_text(5, tr("Export"))
+		DrawGD.file_menu.get_popup().set_item_text(3, tr("Save") + " %s" % path.get_file())
+		DrawGD.file_menu.get_popup().set_item_text(5, tr("Export"))
 
 
 # For pxo files older than v0.8
@@ -141,7 +141,7 @@ func open_old_pxo_file(file : File, new_project : Project, first_line : String) 
 		_file_status_version = file_ver_splitted[1]
 
 	if file_major_version == 0 and file_minor_version < 5:
-		Global.notification_label("File is from an older version of Pixelorama, as such it might not work properly")
+		DrawGD.notification_label("File is from an older version of Pixelorama, as such it might not work properly")
 
 	var new_guides := true
 	if file_major_version == 0:
@@ -207,7 +207,7 @@ func open_old_pxo_file(file : File, new_project : Project, first_line : String) 
 					guide.add_point(Vector2(file.get_16(), -99999))
 					guide.add_point(Vector2(file.get_16(), 99999))
 				guide.has_focus = false
-				Global.canvas.add_child(guide)
+				DrawGD.canvas.add_child(guide)
 				new_project.guides.append(guide)
 				guide_line = file.get_line()
 
@@ -228,7 +228,7 @@ func open_old_pxo_file(file : File, new_project : Project, first_line : String) 
 				guide.add_point(Vector2(file.get_16(), -99999))
 				guide.add_point(Vector2(file.get_16(), 99999))
 			guide.has_focus = false
-			Global.canvas.add_child(guide)
+			DrawGD.canvas.add_child(guide)
 			new_project.guides.append(guide)
 			guide_line = file.get_line()
 
@@ -265,7 +265,7 @@ func open_old_pxo_file(file : File, new_project : Project, first_line : String) 
 			tag_line = file.get_line()
 
 
-func save_pxo_file(path : String, autosave : bool, use_zstd_compression := true, project : Project = Global.current_project) -> void:
+func save_pxo_file(path : String, autosave : bool, use_zstd_compression := true, project : Project = DrawGD.current_project) -> void:
 	var file : File = File.new()
 	var err
 	if use_zstd_compression:
@@ -276,7 +276,7 @@ func save_pxo_file(path : String, autosave : bool, use_zstd_compression := true,
 	if err == OK:
 		if !autosave:
 			project.name = path.get_file()
-			current_save_paths[Global.current_project_index] = path
+			current_save_paths[DrawGD.current_project_index] = path
 
 		var to_save = JSON.print(project.serialize())
 		file.store_line(to_save)
@@ -300,32 +300,32 @@ func save_pxo_file(path : String, autosave : bool, use_zstd_compression := true,
 			dir.remove(path)
 
 		if autosave:
-			Global.notification_label("File autosaved")
+			DrawGD.notification_label("File autosaved")
 		else:
 			# First remove backup then set current save path
 			if project.has_changed:
 				project.has_changed = false
-			remove_backup(Global.current_project_index)
-			Global.notification_label("File saved")
-			Global.window_title = path.get_file() + " - Pixelorama " + Global.current_version
+			remove_backup(DrawGD.current_project_index)
+			DrawGD.notification_label("File saved")
+			DrawGD.window_title = path.get_file() + " - Pixelorama " + DrawGD.current_version
 
 			# Set last opened project path and save
-			Global.config_cache.set_value("preferences", "last_project_path", path)
-			Global.config_cache.save("user://cache.ini")
+			DrawGD.config_cache.set_value("preferences", "last_project_path", path)
+			DrawGD.config_cache.save("user://cache.ini")
 			Export.file_name = path.get_file().trim_suffix(".pxo")
 			Export.directory_path = path.get_base_dir()
 			Export.was_exported = false
-			Global.file_menu.get_popup().set_item_text(3, tr("Save") + " %s" % path.get_file())
+			DrawGD.file_menu.get_popup().set_item_text(3, tr("Save") + " %s" % path.get_file())
 
 	else:
-		Global.notification_label(tr("File failed to save. Error code %s") % err)
+		DrawGD.notification_label(tr("File failed to save. Error code %s") % err)
 		file.close()
 
 
 func open_image_as_new_tab(path : String, image : Image) -> void:
 	var project = Project.new([], path.get_file(), image.get_size())
 	project.layers.append(Layer.new())
-	Global.projects.append(project)
+	DrawGD.projects.append(project)
 
 	var frame := Frame.new()
 	image.convert(Image.FORMAT_RGBA8)
@@ -339,7 +339,7 @@ func open_image_as_new_tab(path : String, image : Image) -> void:
 func open_image_as_spritesheet(path : String, image : Image, horizontal : int, vertical : int) -> void:
 	var project = Project.new([], path.get_file())
 	project.layers.append(Layer.new())
-	Global.projects.append(project)
+	DrawGD.projects.append(project)
 	horizontal = min(horizontal, image.get_size().x)
 	vertical = min(vertical, image.get_size().y)
 	var frame_width := image.get_size().x / horizontal
@@ -367,7 +367,7 @@ func open_image_as_spritesheet(path : String, image : Image, horizontal : int, v
 
 
 func open_image_as_new_frame(image : Image, layer_index := 0) -> void:
-	var project = Global.current_project
+	var project = DrawGD.current_project
 	image.crop(project.size.x, project.size.y)
 	var new_frames : Array = project.frames.duplicate()
 
@@ -387,8 +387,8 @@ func open_image_as_new_frame(image : Image, layer_index := 0) -> void:
 
 	project.undos += 1
 	project.undo_redo.create_action("Add Frame")
-	project.undo_redo.add_do_method(Global, "redo")
-	project.undo_redo.add_undo_method(Global, "undo")
+	project.undo_redo.add_do_method(DrawGD, "redo")
+	project.undo_redo.add_undo_method(DrawGD, "undo")
 
 	project.undo_redo.add_do_property(project, "frames", new_frames)
 	project.undo_redo.add_do_property(project, "current_frame", new_frames.size() - 1)
@@ -401,13 +401,13 @@ func open_image_as_new_frame(image : Image, layer_index := 0) -> void:
 
 
 func open_image_as_new_layer(image : Image, file_name : String, frame_index := 0) -> void:
-	var project = Global.current_project
+	var project = DrawGD.current_project
 	image.crop(project.size.x, project.size.y)
-	var new_layers : Array = Global.current_project.layers.duplicate()
+	var new_layers : Array = DrawGD.current_project.layers.duplicate()
 	var layer := Layer.new(file_name)
 
-	Global.current_project.undos += 1
-	Global.current_project.undo_redo.create_action("Add Layer")
+	DrawGD.current_project.undos += 1
+	DrawGD.current_project.undo_redo.create_action("Add Layer")
 	for i in project.frames.size():
 		var new_cels : Array = project.frames[i].cels.duplicate(true)
 		if i == frame_index:
@@ -433,18 +433,18 @@ func open_image_as_new_layer(image : Image, file_name : String, frame_index := 0
 	project.undo_redo.add_undo_property(project, "layers", project.layers)
 	project.undo_redo.add_undo_property(project, "current_frame", project.current_frame)
 
-	project.undo_redo.add_undo_method(Global, "undo")
-	project.undo_redo.add_do_method(Global, "redo")
+	project.undo_redo.add_undo_method(DrawGD, "undo")
+	project.undo_redo.add_do_method(DrawGD, "redo")
 	project.undo_redo.commit_action()
 
 
 func set_new_tab(project : Project, path : String) -> void:
-	Global.tabs.current_tab = Global.tabs.get_tab_count() - 1
-	Global.canvas.camera_zoom()
+	DrawGD.tabs.current_tab = DrawGD.tabs.get_tab_count() - 1
+	DrawGD.canvas.camera_zoom()
 
-	Global.window_title = path.get_file() + " (" + tr("imported") + ") - Pixelorama " + Global.current_version
+	DrawGD.window_title = path.get_file() + " (" + tr("imported") + ") - Pixelorama " + DrawGD.current_version
 	if project.has_changed:
-		Global.window_title = Global.window_title + "(*)"
+		DrawGD.window_title = DrawGD.window_title + "(*)"
 	var file_name := path.get_basename().get_file()
 	var directory_path := path.get_basename().replace(file_name, "")
 	Export.directory_path = directory_path
@@ -453,8 +453,8 @@ func set_new_tab(project : Project, path : String) -> void:
 
 func update_autosave() -> void:
 	autosave_timer.stop()
-	autosave_timer.wait_time = Global.autosave_interval * 60 # Interval parameter is in minutes, wait_time is seconds
-	if Global.enable_autosave:
+	autosave_timer.wait_time = DrawGD.autosave_interval * 60 # Interval parameter is in minutes, wait_time is seconds
+	if DrawGD.enable_autosave:
 		autosave_timer.start()
 
 
@@ -465,7 +465,7 @@ func _on_Autosave_timeout() -> void:
 			backup_save_paths[i] = "user://backup-" + String(OS.get_unix_time()) + "-%s" % i
 
 		store_backup_path(i)
-		save_pxo_file(backup_save_paths[i], true, true, Global.projects[i])
+		save_pxo_file(backup_save_paths[i], true, true, DrawGD.projects[i])
 
 
 # Backup paths are stored in two ways:
@@ -474,14 +474,14 @@ func _on_Autosave_timeout() -> void:
 func store_backup_path(i : int) -> void:
 	if current_save_paths[i] != "":
 		# Remove "untitled" backup if it existed on this project instance
-		if Global.config_cache.has_section_key("backups", backup_save_paths[i]):
-			Global.config_cache.erase_section_key("backups", backup_save_paths[i])
+		if DrawGD.config_cache.has_section_key("backups", backup_save_paths[i]):
+			DrawGD.config_cache.erase_section_key("backups", backup_save_paths[i])
 
-		Global.config_cache.set_value("backups", current_save_paths[i], backup_save_paths[i])
+		DrawGD.config_cache.set_value("backups", current_save_paths[i], backup_save_paths[i])
 	else:
-		Global.config_cache.set_value("backups", backup_save_paths[i], backup_save_paths[i])
+		DrawGD.config_cache.set_value("backups", backup_save_paths[i], backup_save_paths[i])
 
-	Global.config_cache.save("user://cache.ini")
+	DrawGD.config_cache.save("user://cache.ini")
 
 
 func remove_backup(i : int) -> void:
@@ -497,11 +497,11 @@ func remove_backup(i : int) -> void:
 
 func remove_backup_by_path(project_path : String, backup_path : String) -> void:
 	Directory.new().remove(backup_path)
-	if Global.config_cache.has_section_key("backups", project_path):
-		Global.config_cache.erase_section_key("backups", project_path)
-	elif Global.config_cache.has_section_key("backups", backup_path):
-		Global.config_cache.erase_section_key("backups", backup_path)
-	Global.config_cache.save("user://cache.ini")
+	if DrawGD.config_cache.has_section_key("backups", project_path):
+		DrawGD.config_cache.erase_section_key("backups", project_path)
+	elif DrawGD.config_cache.has_section_key("backups", backup_path):
+		DrawGD.config_cache.erase_section_key("backups", backup_path)
+	DrawGD.config_cache.save("user://cache.ini")
 
 
 func reload_backup_file(project_paths : Array, backup_paths : Array) -> void:
@@ -510,9 +510,9 @@ func reload_backup_file(project_paths : Array, backup_paths : Array) -> void:
 	var dir := Directory.new()
 	for backup in backup_paths:
 		if !dir.file_exists(backup):
-			if Global.config_cache.has_section_key("backups", backup):
-				Global.config_cache.erase_section_key("backups", backup)
-				Global.config_cache.save("user://cache.ini")
+			if DrawGD.config_cache.has_section_key("backups", backup):
+				DrawGD.config_cache.erase_section_key("backups", backup)
+				DrawGD.config_cache.save("user://cache.ini")
 			project_paths.remove(backup_paths.find(backup))
 			deleted_backup_paths.append(backup)
 
@@ -527,7 +527,7 @@ func reload_backup_file(project_paths : Array, backup_paths : Array) -> void:
 		# If project path is the same as backup save path -> the backup was untitled
 		if project_paths[i] != backup_paths[i]: # If the user has saved
 			current_save_paths[i] = project_paths[i]
-			Global.window_title = project_paths[i].get_file() + " - Pixelorama(*) " + Global.current_version
-			Global.current_project.has_changed = true
+			DrawGD.window_title = project_paths[i].get_file() + " - Pixelorama(*) " + DrawGD.current_version
+			DrawGD.current_project.has_changed = true
 
-	Global.notification_label("Backup reloaded")
+	DrawGD.notification_label("Backup reloaded")

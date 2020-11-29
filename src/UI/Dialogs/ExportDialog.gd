@@ -70,8 +70,8 @@ func show_tab() -> void:
 			file_file_format.selected = Export.FileFormat.PNG
 			frame_timer.stop()
 			if not Export.was_exported:
-				Export.frame_number = Global.current_project.current_frame + 1
-			frame_options_frame_number.max_value = Global.current_project.frames.size() + 1
+				Export.frame_number = DrawGD.current_project.current_frame + 1
+			frame_options_frame_number.max_value = DrawGD.current_project.frames.size() + 1
 			var prev_frame_number = frame_options_frame_number.value
 			frame_options_frame_number.value = Export.frame_number
 			if prev_frame_number == Export.frame_number:
@@ -189,7 +189,7 @@ func set_file_format_selector() -> void:
 		Export.AnimationType.ANIMATED:
 			Export.file_format = Export.FileFormat.GIF
 			file_file_format.selected = Export.FileFormat.GIF
-			frame_timer.wait_time = Global.animation_timer.wait_time
+			frame_timer.wait_time = DrawGD.animation_timer.wait_time
 			animation_options_animation_options.show()
 
 
@@ -199,7 +199,7 @@ func create_frame_tag_list() -> void:
 	spritesheet_options_frames.add_item("All Frames", 0) # Re-add removed 'All Frames' item
 
 	# Repopulate list with current tag list
-	for item in Global.current_project.animation_tags:
+	for item in DrawGD.current_project.animation_tags:
 		spritesheet_options_frames.add_item(item.name)
 
 
@@ -242,7 +242,7 @@ func _on_ExportDialog_about_to_show() -> void:
 	show_tab()
 
 	for child in popups.get_children(): # Set the theme for the popups
-		child.theme = Global.control.theme
+		child.theme = DrawGD.control.theme
 
 	Export.file_exists_alert = tr("File %s already exists. Overwrite?") # Update translation
 
@@ -319,23 +319,23 @@ func _on_PathButton_pressed() -> void:
 
 
 func _on_PathLineEdit_text_changed(new_text : String) -> void:
-	Global.current_project.directory_path = new_text
+	DrawGD.current_project.directory_path = new_text
 	Export.directory_path = new_text
 
 
 func _on_FileLineEdit_text_changed(new_text : String) -> void:
-	Global.current_project.file_name = new_text
+	DrawGD.current_project.file_name = new_text
 	Export.file_name = new_text
 
 
 func _on_FileDialog_dir_selected(dir : String) -> void:
 	path_line_edit.text = dir
-	Global.current_project.directory_path = dir
+	DrawGD.current_project.directory_path = dir
 	Export.directory_path = dir
 
 
 func _on_FileFormat_item_selected(id : int) -> void:
-	Global.current_project.file_format = id
+	DrawGD.current_project.file_format = id
 	Export.file_format = id
 
 

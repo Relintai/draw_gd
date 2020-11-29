@@ -23,13 +23,13 @@ var _line_polylines := []
 
 func _ready() -> void:
 	Tools.connect("color_changed", self, "_on_Color_changed")
-	Global.brushes_popup.connect("brush_removed", self, "_on_Brush_removed")
+	DrawGD.brushes_popup.connect("brush_removed", self, "_on_Brush_removed")
 
 
 func _on_BrushType_pressed() -> void:
-	if not Global.brushes_popup.is_connected("brush_selected", self, "_on_Brush_selected"):
-		Global.brushes_popup.connect("brush_selected", self, "_on_Brush_selected", [], CONNECT_ONESHOT)
-	Global.brushes_popup.popup(Rect2($Brush/Type.rect_global_position, Vector2(226, 72)))
+	if not DrawGD.brushes_popup.is_connected("brush_selected", self, "_on_Brush_selected"):
+		DrawGD.brushes_popup.connect("brush_selected", self, "_on_Brush_selected", [], CONNECT_ONESHOT)
+	DrawGD.brushes_popup.popup(Rect2($Brush/Type.rect_global_position, Vector2(226, 72)))
 
 
 func _on_Brush_selected(brush : Brushes.Brush) -> void:
@@ -73,7 +73,7 @@ func get_config() -> Dictionary:
 func set_config(config : Dictionary) -> void:
 	var type = config.get("brush_type", _brush.type)
 	var index = config.get("brush_index", _brush.index)
-	_brush = Global.brushes_popup.get_brush(type, index)
+	_brush = DrawGD.brushes_popup.get_brush(type, index)
 	_brush_size = config.get("brush_size", _brush_size)
 	_brush_interpolate = config.get("brush_interpolate", _brush_interpolate)
 
@@ -143,7 +143,7 @@ func update_line_polylines(start : Vector2, end : Vector2) -> void:
 
 
 func restore_image() -> void:
-	var project : Project = Global.current_project
+	var project : Project = DrawGD.current_project
 	var image = project.frames[project.current_frame].cels[project.current_layer].image
 	image.unlock()
 	image.data = _undo_data[image]
@@ -156,10 +156,10 @@ func prepare_undo() -> void:
 
 func commit_undo(action : String) -> void:
 	var redo_data = _get_undo_data()
-	var project : Project = Global.current_project
+	var project : Project = DrawGD.current_project
 	var frame := -1
 	var layer := -1
-	if Global.animation_timer.is_stopped():
+	if DrawGD.animation_timer.is_stopped():
 		frame = project.current_frame
 		layer = project.current_layer
 
@@ -169,18 +169,18 @@ func commit_undo(action : String) -> void:
 		project.undo_redo.add_do_property(image, "data", redo_data[image])
 	for image in _undo_data:
 		project.undo_redo.add_undo_property(image, "data", _undo_data[image])
-	project.undo_redo.add_do_method(Global, "redo", frame, layer)
-	project.undo_redo.add_undo_method(Global, "undo", frame, layer)
+	project.undo_redo.add_do_method(DrawGD, "redo", frame, layer)
+	project.undo_redo.add_undo_method(DrawGD, "undo", frame, layer)
 	project.undo_redo.commit_action()
 
 	_undo_data.clear()
 
 
 func draw_tool(position : Vector2) -> void:
-	if Global.current_project.layers[Global.current_project.current_layer].locked:
+	if DrawGD.current_project.layers[DrawGD.current_project.current_layer].locked:
 		return
 	var strength := _strength
-	if Global.pressure_sensitivity_mode == Global.Pressure_Sensitivity.ALPHA:
+	if DrawGD.pressure_sensitivity_mode == DrawGD.Pressure_Sensitivity.ALPHA:
 		strength *= Tools.pen_pressure
 
 	_drawer.pixel_perfect = tool_slot.pixel_perfect if _brush_size == 1 else false
@@ -257,8 +257,8 @@ func draw_tool_circle(position : Vector2, fill := false) -> void:
 
 
 func draw_tool_brush(position : Vector2) -> void:
-	if Global.tile_mode and _get_tile_mode_rect().has_point(position):
-		position = position.posmodv(Global.current_project.size)
+	if DrawGD.tile_mode and _get_tile_mode_rect().has_point(position):
+		position = position.posmodv(DrawGD.current_project.size)
 
 	var size := _brush_image.get_size()
 	var dst := position - (size / 2).floor()
@@ -270,7 +270,7 @@ func draw_tool_brush(position : Vector2) -> void:
 	var src_rect := Rect2(dst_rect.position - dst, dst_rect.size)
 	dst = dst_rect.position
 
-	var project : Project = Global.current_project
+	var project : Project = DrawGD.current_project
 	_draw_brush_image(_brush_image, src_rect, dst)
 
 	# Handle Mirroring
@@ -302,15 +302,15 @@ func draw_tool_brush(position : Vector2) -> void:
 
 func draw_indicator() -> void:
 	draw_indicator_at(_cursor, Vector2.ZERO, Color.blue)
-	if Global.tile_mode and _get_tile_mode_rect().has_point(_cursor):
+	if DrawGD.tile_mode and _get_tile_mode_rect().has_point(_cursor):
 		var tile := _line_start if _draw_line else _cursor
-		if not tile in Global.current_project.selected_pixels:
-			var offset := tile - tile.posmodv(Global.current_project.size)
+		if not tile in DrawGD.current_project.selected_pixels:
+			var offset := tile - tile.posmodv(DrawGD.current_project.size)
 			draw_indicator_at(_cursor, offset, Color.green)
 
 
 func draw_indicator_at(position : Vector2, offset : Vector2, color : Color) -> void:
-	var canvas = Global.canvas.indicators
+	var canvas = DrawGD.canvas.indicators
 	if _brush.type in [Brushes.FILE, Brushes.RANDOM_FILE, Brushes.CUSTOM] and not _draw_line:
 		position -= (_brush_image.get_size() / 2).floor()
 		position -= offset
@@ -330,8 +330,8 @@ func draw_indicator_at(position : Vector2, offset : Vector2, color : Color) -> v
 
 
 func _set_pixel(position : Vector2) -> void:
-	var project : Project = Global.current_project
-	if Global.tile_mode and _get_tile_mode_rect().has_point(position):
+	var project : Project = DrawGD.current_project
+	if DrawGD.tile_mode and _get_tile_mode_rect().has_point(position):
 		position = position.posmodv(project.size)
 
 	var entire_image_selected : bool = project.selected_pixels.size() == project.size.x * project.size.y
@@ -508,9 +508,9 @@ func _line_angle_constraint(start : Vector2, end : Vector2) -> Dictionary:
 
 func _get_undo_data() -> Dictionary:
 	var data = {}
-	var project : Project = Global.current_project
+	var project : Project = DrawGD.current_project
 	var frames := project.frames
-	if Global.animation_timer.is_stopped():
+	if DrawGD.animation_timer.is_stopped():
 		frames = [project.frames[project.current_frame]]
 	for frame in frames:
 		var image : Image = frame.cels[project.current_layer].image

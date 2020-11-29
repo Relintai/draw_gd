@@ -10,4 +10,4 @@ func _on_ScaleImage_confirmed() -> void:
 
 
 func _on_ScaleImage_popup_hide() -> void:
-	Global.dialog_open(false)
+	DrawGD.dialog_open(false)

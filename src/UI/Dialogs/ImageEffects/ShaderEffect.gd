@@ -11,7 +11,7 @@ onready var shader_params : BoxContainer = $VBoxContainer/ShaderParams
 
 
 func _on_ShaderEffect_about_to_show() -> void:
-	current_cel = Global.current_project.frames[Global.current_project.current_frame].cels[Global.current_project.current_layer].image
+	current_cel = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels[DrawGD.current_project.current_layer].image
 
 	var preview_image := Image.new()
 	preview_image.copy_from(current_cel)
@@ -25,7 +25,7 @@ func _on_ShaderEffect_confirmed() -> void:
 		return
 	current_cel.unlock()
 	var viewport_texture := Image.new()
-	var size : Vector2 = Global.current_project.size
+	var size : Vector2 = DrawGD.current_project.size
 	var vp = VisualServer.viewport_create()
 	var canvas = VisualServer.canvas_create()
 	VisualServer.viewport_attach_canvas(vp, canvas)
@@ -60,14 +60,14 @@ func _on_ShaderEffect_confirmed() -> void:
 	VisualServer.free_rid(mat_rid)
 	print(viewport_texture.data)
 	viewport_texture.convert(Image.FORMAT_RGBA8)
-	Global.canvas.handle_undo("Draw")
+	DrawGD.canvas.handle_undo("Draw")
 	current_cel.copy_from(viewport_texture)
-	Global.canvas.handle_redo("Draw")
+	DrawGD.canvas.handle_redo("Draw")
 	current_cel.lock()
 
 
 func _on_ShaderEffect_popup_hide() -> void:
-	Global.dialog_open(false)
+	DrawGD.dialog_open(false)
 
 
 func _on_ChooseShader_pressed() -> void:

@@ -22,11 +22,11 @@ func _ready() -> void:
 func open(palette : String) -> void:
 	current_palette = palette
 	palette_name_edit.text = current_palette
-	if Global.palettes.has(palette):
-		working_palette = Global.palettes[palette].duplicate()
+	if DrawGD.palettes.has(palette):
+		working_palette = DrawGD.palettes[palette].duplicate()
 		_display_palette()
 		self.popup_centered()
-		Global.dialog_open(true)
+		DrawGD.dialog_open(true)
 
 	left_color_button.modulate = Tools.get_assigned_color(BUTTON_LEFT)
 	right_color_button.modulate = Tools.get_assigned_color(BUTTON_RIGHT)
@@ -121,15 +121,15 @@ func re_index_swatches() -> void:
 
 # Rename a palette, copying to user directory if necessary.
 func rename_palette_file_with_priority_dirs(old_fname: String, new_fname: String) -> void:
-	var user_write_directory: String = Global.directory_module.get_palette_write_path()
+	var user_write_directory: String = DrawGD.directory_module.get_palette_write_path()
 	var usrwrite_dir := Directory.new()
 	usrwrite_dir.open(user_write_directory)
 	if usrwrite_dir.file_exists(old_fname):
 		usrwrite_dir.rename(old_fname, new_fname)
 	else:
 		# Scan through the main system directories
-		var priority_dirs : Array = Global.directory_module.get_palette_search_path_in_order()
-		var best_clone_location = Global.palette_container.get_best_palette_file_location(
+		var priority_dirs : Array = DrawGD.directory_module.get_palette_search_path_in_order()
+		var best_clone_location = DrawGD.palette_container.get_best_palette_file_location(
 			priority_dirs,
 			old_fname
 		)
@@ -139,7 +139,7 @@ func rename_palette_file_with_priority_dirs(old_fname: String, new_fname: String
 
 func _on_EditPaletteSaveButton_pressed() -> void:
 	if palette_name_edit.text != current_palette:
-		Global.palettes.erase(current_palette)
+		DrawGD.palettes.erase(current_palette)
 		rename_palette_file_with_priority_dirs(
 			current_palette + ".json",
 			palette_name_edit.text + ".json"
@@ -147,14 +147,14 @@ func _on_EditPaletteSaveButton_pressed() -> void:
 		current_palette = palette_name_edit.text
 		working_palette.name = current_palette
 
-		var optionbutton_index = Global.palette_option_button.selected
-		Global.palette_option_button.set_item_text(optionbutton_index, current_palette)
-		Global.palette_option_button.set_item_metadata(optionbutton_index, current_palette)
-		Global.palette_option_button.text = current_palette
+		var optionbutton_index = DrawGD.palette_option_button.selected
+		DrawGD.palette_option_button.set_item_text(optionbutton_index, current_palette)
+		DrawGD.palette_option_button.set_item_metadata(optionbutton_index, current_palette)
+		DrawGD.palette_option_button.text = current_palette
 
-	Global.palettes[current_palette] = working_palette
-	Global.palette_container.on_palette_select(current_palette)
-	Global.palette_container.save_palette(current_palette, working_palette.name + ".json")
+	DrawGD.palettes[current_palette] = working_palette
+	DrawGD.palette_container.on_palette_select(current_palette)
+	DrawGD.palette_container.save_palette(current_palette, working_palette.name + ".json")
 	self.hide()
 
 
@@ -190,4 +190,4 @@ func _on_RightColor_pressed() -> void:
 
 
 func _on_EditPalettePopup_popup_hide() -> void:
-	Global.dialog_open(false)
+	DrawGD.dialog_open(false)

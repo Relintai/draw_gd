@@ -63,10 +63,10 @@ func _init() -> void:
 			xdg_data_dirs = []
 			for unapp_subdir in raw_xdg_data_dirs:
 				xdg_data_dirs.append(unapp_subdir.plus_file(xdg_config_subdir_name))
-		xdg_data_dirs.append(Global.root_directory.plus_file(config_subdir_name))
+		xdg_data_dirs.append(DrawGD.root_directory.plus_file(config_subdir_name))
 
 	else:
-		raw_xdg_data_home = Global.root_directory
+		raw_xdg_data_home = DrawGD.root_directory
 		xdg_data_home = raw_xdg_data_home.plus_file(config_subdir_name)
 		raw_xdg_data_dirs = []
 		xdg_data_dirs = []

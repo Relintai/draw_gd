@@ -22,7 +22,7 @@ enum Templates {
 	SNES_NTSC = 9,
 	SNES_PAL = 10
 }
-# Template actual value, without Default because we get it from Global
+# Template actual value, without Default because we get it from DrawGD
 var TResolutions = {
 	Templates.T16: Vector2(16,16),
 	Templates.T32: Vector2(32,32),
@@ -53,9 +53,9 @@ var TStrings ={
 
 
 func _ready() -> void:
-	width_value.value = Global.default_image_width
-	height_value.value = Global.default_image_height
-	fill_color_node.color = Global.default_fill_color
+	width_value.value = DrawGD.default_image_width
+	height_value.value = DrawGD.default_image_height
+	fill_color_node.color = DrawGD.default_fill_color
 	fill_color_node.get_picker().presets_visible = false
 
 	ratio_box.connect("pressed", self, "_on_RatioCheckBox_toggled", [ratio_box.pressed])
@@ -77,14 +77,14 @@ func _on_CreateNewImage_confirmed() -> void:
 	var width : int = width_value.value
 	var height : int = height_value.value
 	var fill_color : Color = fill_color_node.color
-	Global.canvas.fill_color = fill_color
+	DrawGD.canvas.fill_color = fill_color
 
-	var frame : Frame = Global.canvas.new_empty_frame(false, true, Vector2(width, height))
+	var frame : Frame = DrawGD.canvas.new_empty_frame(false, true, Vector2(width, height))
 	var new_project := Project.new([frame], tr("untitled"), Vector2(width, height).floor())
 	new_project.layers.append(Layer.new())
-	Global.projects.append(new_project)
-	Global.tabs.current_tab = Global.tabs.get_tab_count() - 1
-	Global.canvas.camera_zoom()
+	DrawGD.projects.append(new_project)
+	DrawGD.tabs.current_tab = DrawGD.tabs.get_tab_count() - 1
+	DrawGD.canvas.camera_zoom()
 
 
 var aspect_ratio: float
@@ -109,8 +109,8 @@ func _on_TemplatesOptions_item_selected(id: int) -> void:
 	if id != Templates.TDefault:
 		size_value = TResolutions[id]
 	else:
-		width_value.value = Global.default_image_width
-		height_value.value = Global.default_image_height
+		width_value.value = DrawGD.default_image_width
+		height_value.value = DrawGD.default_image_height
 
 	width_value.value = size_value.x
 	height_value.value = size_value.y

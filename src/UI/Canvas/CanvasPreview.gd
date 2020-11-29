@@ -5,11 +5,11 @@ var frame : int = 0
 onready var animation_timer : Timer = $AnimationTimer
 
 func _draw() -> void:
-	var current_project : Project = Global.current_project
+	var current_project : Project = DrawGD.current_project
 	if frame >= current_project.frames.size():
 		frame = current_project.current_frame
 
-	$AnimationTimer.wait_time = Global.animation_timer.wait_time
+	$AnimationTimer.wait_time = DrawGD.animation_timer.wait_time
 
 	if animation_timer.is_stopped():
 		frame = current_project.current_frame
@@ -23,7 +23,7 @@ func _draw() -> void:
 
 
 func _on_AnimationTimer_timeout() -> void:
-	var current_project : Project = Global.current_project
+	var current_project : Project = DrawGD.current_project
 
 	if frame < current_project.frames.size() - 1:
 		frame += 1

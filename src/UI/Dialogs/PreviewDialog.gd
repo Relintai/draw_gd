@@ -33,11 +33,11 @@ func _on_PreviewDialog_about_to_show() -> void:
 
 func _on_PreviewDialog_popup_hide() -> void:
 	queue_free()
-	# Call Global.dialog_open() only if it's the only preview dialog opened
-	for child in Global.control.get_children():
+	# Call DrawGD.dialog_open() only if it's the only preview dialog opened
+	for child in DrawGD.control.get_children():
 		if child != self and "PreviewDialog" in child.name:
 			return
-	Global.dialog_open(false)
+	DrawGD.dialog_open(false)
 
 
 func _on_PreviewDialog_confirmed() -> void:
@@ -56,7 +56,7 @@ func _on_PreviewDialog_confirmed() -> void:
 		OpenSave.open_image_as_new_layer(image, path.get_basename().get_file(), frame_index)
 
 	elif current_import_option == ImageImportOptions.PALETTE:
-		Global.palette_container.import_image_palette(path, image)
+		DrawGD.palette_container.import_image_palette(path, image)
 
 	elif current_import_option == ImageImportOptions.BRUSH:
 		add_brush()
@@ -66,12 +66,12 @@ func _on_PreviewDialog_confirmed() -> void:
 		file_name_ext = file_name_replace(file_name_ext, "Patterns")
 		var file_name : String = file_name_ext.get_basename()
 		image.convert(Image.FORMAT_RGBA8)
-		Global.patterns_popup.add(image, file_name)
+		DrawGD.patterns_popup.add(image, file_name)
 
 		# Copy the image file into the "pixelorama/Patterns" directory
 		var location := "Patterns".plus_file(file_name_ext)
 		var dir = Directory.new()
-		dir.copy(path, Global.directory_module.xdg_data_home.plus_file(location))
+		dir.copy(path, DrawGD.directory_module.xdg_data_home.plus_file(location))
 
 
 func _on_ImportOption_item_selected(id : int) -> void:
@@ -92,11 +92,11 @@ func _on_ImportOption_item_selected(id : int) -> void:
 
 	elif id == ImageImportOptions.NEW_FRAME:
 		new_frame_options.visible = true
-		new_frame_options.get_node("AtLayerSpinbox").max_value = Global.current_project.layers.size() - 1
+		new_frame_options.get_node("AtLayerSpinbox").max_value = DrawGD.current_project.layers.size() - 1
 
 	elif id == ImageImportOptions.NEW_LAYER:
 		new_layer_options.visible = true
-		new_layer_options.get_node("AtFrameSpinbox").max_value = Global.current_project.frames.size()
+		new_layer_options.get_node("AtFrameSpinbox").max_value = DrawGD.current_project.frames.size()
 
 	elif id == ImageImportOptions.BRUSH:
 		new_brush_options.visible = true
@@ -175,11 +175,11 @@ func add_brush() -> void:
 		# Copy the image file into the "pixelorama/Brushes" directory
 		var location := "Brushes".plus_file(file_name_ext)
 		var dir = Directory.new()
-		dir.copy(path, Global.directory_module.xdg_data_home.plus_file(location))
+		dir.copy(path, DrawGD.directory_module.xdg_data_home.plus_file(location))
 
 	elif brush_type == BrushTypes.PROJECT:
 		var file_name : String =  path.get_file().get_basename()
-		Global.current_project.brushes.append(image)
+		DrawGD.current_project.brushes.append(image)
 		Brushes.add_project_brush(image, file_name)
 
 	elif brush_type == BrushTypes.RANDOM:
@@ -187,11 +187,11 @@ func add_brush() -> void:
 		if !brush_name.is_valid_filename():
 			return
 		var dir := Directory.new()
-		dir.open(Global.directory_module.xdg_data_home.plus_file("Brushes"))
+		dir.open(DrawGD.directory_module.xdg_data_home.plus_file("Brushes"))
 		if !dir.dir_exists(brush_name):
 			dir.make_dir(brush_name)
 
-		dir.open(Global.directory_module.xdg_data_home.plus_file("Brushes").plus_file(brush_name))
+		dir.open(DrawGD.directory_module.xdg_data_home.plus_file("Brushes").plus_file(brush_name))
 		var random_brushes := []
 		dir.list_dir_begin()
 		var curr_file := dir.get_next()
@@ -205,7 +205,7 @@ func add_brush() -> void:
 		var index : int = random_brushes.size() + 1
 		var file_name = "%" + brush_name + str(index) + "." + file_ext
 		var location := "Brushes".plus_file(brush_name).plus_file(file_name)
-		dir.copy(path, Global.directory_module.xdg_data_home.plus_file(location))
+		dir.copy(path, DrawGD.directory_module.xdg_data_home.plus_file(location))
 
 
 # Checks if the file already exists
@@ -216,7 +216,7 @@ func file_name_replace(name : String, folder : String) -> String:
 	var file_ext = name.get_extension()
 	var temp_name := name
 	var dir := Directory.new()
-	dir.open(Global.directory_module.xdg_data_home.plus_file(folder))
+	dir.open(DrawGD.directory_module.xdg_data_home.plus_file(folder))
 	while dir.file_exists(temp_name):
 		i += 1
 		temp_name = name.get_basename() + " (%s)" % i

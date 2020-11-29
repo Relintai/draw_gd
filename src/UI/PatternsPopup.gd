@@ -29,16 +29,16 @@ static func add(image : Image, hint := "") -> void:
 	var button = create_button(image)
 	button.pattern.image = image
 	button.hint_tooltip = hint
-	var container = Global.patterns_popup.get_node("ScrollContainer/PatternContainer")
+	var container = DrawGD.patterns_popup.get_node("ScrollContainer/PatternContainer")
 	container.add_child(button)
 	button.pattern.index = button.get_index()
 
-	if Global.patterns_popup.default_pattern == null:
-		Global.patterns_popup.default_pattern = button.pattern
+	if DrawGD.patterns_popup.default_pattern == null:
+		DrawGD.patterns_popup.default_pattern = button.pattern
 
 
 func get_pattern(index : int) -> Pattern:
-	var container = Global.patterns_popup.get_node("ScrollContainer/PatternContainer")
+	var container = DrawGD.patterns_popup.get_node("ScrollContainer/PatternContainer")
 	var pattern = default_pattern
 	if index < container.get_child_count():
 		pattern = container.get_child(index).pattern
