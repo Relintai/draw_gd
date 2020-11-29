@@ -71,10 +71,7 @@ func _on_ShaderEffect_popup_hide() -> void:
 
 
 func _on_ChooseShader_pressed() -> void:
-	if OS.get_name() == "HTML5":
-		Html5FileExchange.load_shader()
-	else:
-		$FileDialog.popup_centered(Vector2(300, 340))
+	$FileDialog.popup_centered(Vector2(300, 340))
 
 
 func _on_FileDialog_file_selected(path : String) -> void:

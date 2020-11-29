@@ -170,12 +170,9 @@ func export_processed_images(ignore_overwrites: bool, export_dialog: AcceptDialo
 		pass
 	else:
 		for i in range(processed_images.size()):
-			if OS.get_name() == "HTML5":
-				Html5FileExchange.save_image(processed_images[i], export_paths[i].get_file())
-			else:
-				var err = processed_images[i].save_png(export_paths[i])
-				if err != OK:
-					OS.alert("Can't save file. Error code: %s" % err)
+			var err = processed_images[i].save_png(export_paths[i])
+			if err != OK:
+				OS.alert("Can't save file. Error code: %s" % err)
 
 	# Store settings for quick export and when the dialog is opened again
 	was_exported = true

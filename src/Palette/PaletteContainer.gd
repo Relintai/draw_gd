@@ -46,11 +46,8 @@ func on_new_empty_palette() -> void:
 
 
 func on_import_palette() -> void:
-	if OS.get_name() == "HTML5":
-		Html5FileExchange.load_palette()
-	else:
-		Global.palette_import_file_dialog.popup_centered()
-		Global.dialog_open(true)
+	Global.palette_import_file_dialog.popup_centered()
+	Global.dialog_open(true)
 
 
 func on_palette_import_file_selected(path : String) -> void:
