@@ -121,7 +121,7 @@ driver="Dummy"
 
 [autoload]
 
-DrawGD="*res://src/Autoload/Global.gd"
+DrawGD="*res://src/Autoload/DrawGD.gd"
 
 [debug]
 
