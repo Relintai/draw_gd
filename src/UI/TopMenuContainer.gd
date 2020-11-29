@@ -1,5 +1,6 @@
 extends Panel
 
+var DrawingAlgos = preload("res://src/Autoload/DrawingAlgos.gd")
 
 var file_menu : PopupMenu
 var view_menu : PopupMenu

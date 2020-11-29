@@ -1,5 +1,6 @@
 extends ImageEffect
 
+var DrawingAlgos = preload("res://src/Autoload/DrawingAlgos.gd")
 
 onready var type_option_button : OptionButton = $VBoxContainer/HBoxContainer2/TypeOptionButton
 onready var angle_hslider : HSlider = $VBoxContainer/AngleOptions/AngleHSlider

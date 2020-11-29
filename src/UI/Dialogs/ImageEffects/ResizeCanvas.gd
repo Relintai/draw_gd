@@ -1,5 +1,6 @@
 extends ConfirmationDialog
 
+var DrawingAlgos = preload("res://src/Autoload/DrawingAlgos.gd")
 
 var width := 64
 var height := 64

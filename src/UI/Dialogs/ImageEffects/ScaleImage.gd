@@ -1,5 +1,6 @@
 extends ConfirmationDialog
 
+var DrawingAlgos = preload("res://src/Autoload/DrawingAlgos.gd")
 
 func _on_ScaleImage_confirmed() -> void:
 	var width : int = $VBoxContainer/OptionsContainer/WidthValue.value

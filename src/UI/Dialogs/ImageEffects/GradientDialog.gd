@@ -1,5 +1,6 @@
 extends ImageEffect
 
+var DrawingAlgos = preload("res://src/Autoload/DrawingAlgos.gd")
 
 onready var color1 : ColorPickerButton = $VBoxContainer/OptionsContainer/ColorsContainer/ColorPickerButton
 onready var color2 : ColorPickerButton = $VBoxContainer/OptionsContainer/ColorsContainer/ColorPickerButton2

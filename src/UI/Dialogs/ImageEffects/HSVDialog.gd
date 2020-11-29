@@ -1,5 +1,6 @@
 extends ImageEffect
 
+var DrawingAlgos = preload("res://src/Autoload/DrawingAlgos.gd")
 
 onready var hue_slider = $VBoxContainer/HBoxContainer/Sliders/Hue
 onready var sat_slider = $VBoxContainer/HBoxContainer/Sliders/Saturation

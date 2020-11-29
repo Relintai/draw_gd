@@ -1,5 +1,6 @@
 extends ImageEffect
 
+var DrawingAlgos = preload("res://src/Autoload/DrawingAlgos.gd")
 
 var red := true
 var green := true

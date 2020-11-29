@@ -1,4 +1,4 @@
-extends Node
+extends Reference
 
 
 enum GradientDirection {TOP, BOTTOM, LEFT, RIGHT}
