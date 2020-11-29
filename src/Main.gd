@@ -42,7 +42,7 @@ func _ready() -> void:
 	# If the user wants to run Pixelorama with arguments in terminal mode
 	# or open files with Pixelorama directly, then handle that
 	if OS.get_cmdline_args():
-		OpenSave.handle_loading_files(OS.get_cmdline_args())
+		DrawGD.opensave.handle_loading_files(OS.get_cmdline_args())
 	get_tree().connect("files_dropped", self, "_on_files_dropped")
 
 
@@ -99,7 +99,7 @@ func handle_backup() -> void:
 			for p_path in project_paths:
 				backup_paths.append(DrawGD.config_cache.get_value("backups", p_path))
 			# Temporatily stop autosave until user confirms backup
-			OpenSave.autosave_timer.stop()
+			DrawGD.opensave.autosave_timer.stop()
 			backup_confirmation.dialog_text = tr(backup_confirmation.dialog_text) % project_paths
 			backup_confirmation.connect("confirmed", self, "_on_BackupConfirmation_confirmed", [project_paths, backup_paths])
 			backup_confirmation.get_cancel().connect("pressed", self, "_on_BackupConfirmation_delete", [project_paths, backup_paths])
@@ -120,7 +120,7 @@ func _notification(what : int) -> void:
 
 
 func _on_files_dropped(_files : PoolStringArray, _screen : int) -> void:
-	OpenSave.handle_loading_files(_files)
+	DrawGD.opensave.handle_loading_files(_files)
 
 
 func load_last_project() -> void:
@@ -132,7 +132,7 @@ func load_last_project() -> void:
 		var file_path = DrawGD.config_cache.get_value("preferences", "last_project_path")
 		var file_check := File.new()
 		if file_check.file_exists(file_path): # If yes then load the file
-			OpenSave.open_pxo_file(file_path)
+			DrawGD.opensave.open_pxo_file(file_path)
 		else:
 			# If file doesn't exist on disk then warn user about this
 			DrawGD.error_dialog.set_text("Cannot find last project file.")
@@ -141,12 +141,12 @@ func load_last_project() -> void:
 
 
 func _on_OpenSprite_file_selected(path : String) -> void:
-	OpenSave.handle_loading_files([path])
+	DrawGD.opensave.handle_loading_files([path])
 
 
 func _on_SaveSprite_file_selected(path : String) -> void:
 	var zstd = DrawGD.save_sprites_dialog.get_vbox().get_node("ZSTDCompression").pressed
-	OpenSave.save_pxo_file(path, false, zstd)
+	DrawGD.opensave.save_pxo_file(path, false, zstd)
 
 	if is_quitting_on_save:
 		_on_QuitDialog_confirmed()
@@ -156,7 +156,7 @@ func _on_SaveSpriteHTML5_confirmed() -> void:
 	var file_name = DrawGD.save_sprites_html5_dialog.get_node("FileNameContainer/FileNameLineEdit").text
 	file_name += ".pxo"
 	var path = "user://".plus_file(file_name)
-	OpenSave.save_pxo_file(path, false, false)
+	DrawGD.opensave.save_pxo_file(path, false, false)
 
 
 func _on_OpenSprite_popup_hide() -> void:
@@ -194,19 +194,19 @@ func _on_QuitDialog_confirmed() -> void:
 
 
 func _on_BackupConfirmation_confirmed(project_paths : Array, backup_paths : Array) -> void:
-	OpenSave.reload_backup_file(project_paths, backup_paths)
-	OpenSave.autosave_timer.start()
-	Export.file_name = OpenSave.current_save_paths[0].get_file().trim_suffix(".pxo")
-	Export.directory_path = OpenSave.current_save_paths[0].get_base_dir()
+	DrawGD.opensave.reload_backup_file(project_paths, backup_paths)
+	DrawGD.opensave.autosave_timer.start()
+	Export.file_name = DrawGD.opensave.current_save_paths[0].get_file().trim_suffix(".pxo")
+	Export.directory_path = DrawGD.opensave.current_save_paths[0].get_base_dir()
 	Export.was_exported = false
-	DrawGD.file_menu.get_popup().set_item_text(3, tr("Save") + " %s" % OpenSave.current_save_paths[0].get_file())
+	DrawGD.file_menu.get_popup().set_item_text(3, tr("Save") + " %s" % DrawGD.opensave.current_save_paths[0].get_file())
 	DrawGD.file_menu.get_popup().set_item_text(5, tr("Export"))
 
 
 func _on_BackupConfirmation_delete(project_paths : Array, backup_paths : Array) -> void:
 	for i in range(project_paths.size()):
-		OpenSave.remove_backup_by_path(project_paths[i], backup_paths[i])
-	OpenSave.autosave_timer.start()
+		DrawGD.opensave.remove_backup_by_path(project_paths[i], backup_paths[i])
+	DrawGD.opensave.autosave_timer.start()
 	# Reopen last project
 	if DrawGD.open_last_project:
 		load_last_project()

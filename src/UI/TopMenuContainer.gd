@@ -155,7 +155,7 @@ func on_open_last_project_file_menu_option_pressed() -> void:
 
 func save_project_file() -> void:
 	DrawGD.control.is_quitting_on_save = false
-	var path = OpenSave.current_save_paths[DrawGD.current_project_index]
+	var path = DrawGD.opensave.current_save_paths[DrawGD.current_project_index]
 	if path == "":
 		if OS.get_name() == "HTML5":
 			DrawGD.save_sprites_html5_dialog.popup_centered()

@@ -113,7 +113,7 @@ func _on_Preference_item_selected(id : int, prop : String, default_value, restor
 
 func preference_update(prop : String) -> void:
 	if prop in ["autosave_interval", "enable_autosave"]:
-		OpenSave.update_autosave()
+		DrawGD.opensave.update_autosave()
 		autosave_interval.editable = DrawGD.enable_autosave
 		if autosave_interval.editable:
 			autosave_interval.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND

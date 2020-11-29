@@ -24,20 +24,20 @@ func _on_Tabs_reposition_active_tab_request(idx_to : int) -> void:
 	DrawGD.projects.insert(idx_to, temp)
 
 	# Change save paths
-	var temp_save_path = OpenSave.current_save_paths[DrawGD.current_project_index]
-	OpenSave.current_save_paths[DrawGD.current_project_index] = OpenSave.current_save_paths[idx_to]
-	OpenSave.current_save_paths[idx_to] = temp_save_path
-	var temp_backup_path = OpenSave.backup_save_paths[DrawGD.current_project_index]
-	OpenSave.backup_save_paths[DrawGD.current_project_index] = OpenSave.backup_save_paths[idx_to]
-	OpenSave.backup_save_paths[idx_to] = temp_backup_path
+	var temp_save_path = DrawGD.opensave.current_save_paths[DrawGD.current_project_index]
+	DrawGD.opensave.current_save_paths[DrawGD.current_project_index] = DrawGD.opensave.current_save_paths[idx_to]
+	DrawGD.opensave.current_save_paths[idx_to] = temp_save_path
+	var temp_backup_path = DrawGD.opensave.backup_save_paths[DrawGD.current_project_index]
+	DrawGD.opensave.backup_save_paths[DrawGD.current_project_index] = DrawGD.opensave.backup_save_paths[idx_to]
+	DrawGD.opensave.backup_save_paths[idx_to] = temp_backup_path
 
 
 func delete_tab(tab : int) -> void:
 	remove_tab(tab)
 	DrawGD.projects[tab].undo_redo.free()
-	OpenSave.remove_backup(tab)
-	OpenSave.current_save_paths.remove(tab)
-	OpenSave.backup_save_paths.remove(tab)
+	DrawGD.opensave.remove_backup(tab)
+	DrawGD.opensave.current_save_paths.remove(tab)
+	DrawGD.opensave.backup_save_paths.remove(tab)
 	DrawGD.projects.remove(tab)
 	if tab > 0:
 		DrawGD.current_project_index -= 1

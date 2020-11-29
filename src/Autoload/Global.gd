@@ -169,6 +169,8 @@ onready var current_version : String = ProjectSettings.get_setting("application/
 var tools_script = preload("res://src/Autoload/Tools.gd")
 var tools = null
 
+var opensave_script = preload("res://src/Autoload/OpenSave.gd")
+var opensave = null
 
 func _ready() -> void:
 	randomize()
@@ -179,6 +181,9 @@ func _ready() -> void:
 	
 	tools = tools_script.new()
 	add_child(tools)
+	
+	opensave = opensave_script.new()
+	add_child(opensave)
 
 	# The fact that root_dir is set earlier than this is important
 	# XDGDataDirs depends on it nyaa
@@ -507,5 +512,5 @@ func _exit_tree() -> void:
 	var i := 0
 	for project in projects:
 		project.undo_redo.free()
-		OpenSave.remove_backup(i)
+		DrawGD.opensave.remove_backup(i)
 		i += 1

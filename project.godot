@@ -122,7 +122,6 @@ driver="Dummy"
 [autoload]
 
 DrawGD="*res://src/Autoload/Global.gd"
-OpenSave="*res://src/Autoload/OpenSave.gd"
 
 [debug]
 

@@ -44,8 +44,8 @@ func _init(_frames := [], _name := tr("untitled"), _size := Vector2(64, 64)) -> 
 	undo_redo = UndoRedo.new()
 
 	DrawGD.tabs.add_tab(name)
-	OpenSave.current_save_paths.append("")
-	OpenSave.backup_save_paths.append("")
+	DrawGD.opensave.current_save_paths.append("")
+	DrawGD.opensave.backup_save_paths.append("")
 
 	x_symmetry_point = size.x / 2
 	y_symmetry_point = size.y / 2
@@ -185,7 +185,7 @@ func change_project() -> void:
 	if has_changed:
 		DrawGD.window_title = DrawGD.window_title + "(*)"
 
-	var save_path = OpenSave.current_save_paths[DrawGD.current_project_index]
+	var save_path = DrawGD.opensave.current_save_paths[DrawGD.current_project_index]
 	if save_path != "":
 		DrawGD.open_sprites_dialog.current_path = save_path
 		DrawGD.save_sprites_dialog.current_path = save_path
@@ -262,7 +262,7 @@ func serialize() -> Dictionary:
 		"name" : name,
 		"size_x" : size.x,
 		"size_y" : size.y,
-		"save_path" : OpenSave.current_save_paths[DrawGD.projects.find(self)],
+		"save_path" : DrawGD.opensave.current_save_paths[DrawGD.projects.find(self)],
 		"layers" : layer_data,
 		"tags" : tag_data,
 		"guides" : guide_data,
@@ -285,7 +285,7 @@ func deserialize(dict : Dictionary) -> void:
 		size.y = dict.size_y
 		select_all_pixels()
 	if dict.has("save_path"):
-		OpenSave.current_save_paths[DrawGD.projects.find(self)] = dict.save_path
+		DrawGD.opensave.current_save_paths[DrawGD.projects.find(self)] = dict.save_path
 	if dict.has("frames"):
 		for frame in dict.frames:
 			var cels := []

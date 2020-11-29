@@ -42,18 +42,18 @@ func _on_PreviewDialog_popup_hide() -> void:
 
 func _on_PreviewDialog_confirmed() -> void:
 	if current_import_option == ImageImportOptions.NEW_TAB:
-		OpenSave.open_image_as_new_tab(path, image)
+		DrawGD.opensave.open_image_as_new_tab(path, image)
 
 	elif current_import_option == ImageImportOptions.SPRITESHEET:
-		OpenSave.open_image_as_spritesheet(path, image, spritesheet_horizontal, spritesheet_vertical)
+		DrawGD.opensave.open_image_as_spritesheet(path, image, spritesheet_horizontal, spritesheet_vertical)
 
 	elif current_import_option == ImageImportOptions.NEW_FRAME:
 		var layer_index : int = new_frame_options.get_node("AtLayerSpinbox").value
-		OpenSave.open_image_as_new_frame(image, layer_index)
+		DrawGD.opensave.open_image_as_new_frame(image, layer_index)
 
 	elif current_import_option == ImageImportOptions.NEW_LAYER:
 		var frame_index : int = new_layer_options.get_node("AtFrameSpinbox").value - 1
-		OpenSave.open_image_as_new_layer(image, path.get_basename().get_file(), frame_index)
+		DrawGD.opensave.open_image_as_new_layer(image, path.get_basename().get_file(), frame_index)
 
 	elif current_import_option == ImageImportOptions.PALETTE:
 		DrawGD.palette_container.import_image_palette(path, image)
