@@ -135,7 +135,7 @@ window/size/height=720
 
 [editor_plugins]
 
-enabled=PoolStringArray( "draw_gd" )
+enabled=PoolStringArray( "draw_gd", "godot-plugin-refresher" )
 
 [importer_defaults]
 
