@@ -89,7 +89,6 @@ func _enter_tree():
 	assign_color(value, BUTTON_RIGHT)
 
 	update_tool_buttons()
-	update_tool_cursors()
 
 
 func set_tool(name : String, button : int) -> void:
@@ -115,7 +114,6 @@ func assign_tool(name : String, button : int) -> void:
 
 	set_tool(name, button)
 	update_tool_buttons()
-	update_tool_cursors()
 	DrawGD.config_cache.set_value(slot.kname, "tool", name)
 
 
@@ -155,13 +153,6 @@ func update_tool_buttons() -> void:
 			filename += "_r"
 		filename += ".png"
 		DrawGD.change_button_texturerect(texture, filename)
-
-
-func update_tool_cursors() -> void:
-	var image = "res://addons/draw_gd/assets/graphics/cursor_icons/%s_cursor.png" % _slots[BUTTON_LEFT].tool_node.name.to_lower()
-	DrawGD.left_cursor_tool_texture.create_from_image(load(image), 0)
-	image = "res://addons/draw_gd/assets/graphics/cursor_icons/%s_cursor.png" % _slots[BUTTON_RIGHT].tool_node.name.to_lower()
-	DrawGD.right_cursor_tool_texture.create_from_image(load(image), 0)
 
 
 func draw_indicator() -> void:

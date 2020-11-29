@@ -32,8 +32,6 @@ var layers_changed_skip := false
 var can_draw := false
 var has_focus := false
 var cursor_image = preload("res://addons/draw_gd/assets/graphics/cursor_icons/cursor.png")
-var left_cursor_tool_texture := ImageTexture.new()
-var right_cursor_tool_texture := ImageTexture.new()
 
 var image_clipboard : Image
 var play_only_tags := true
@@ -82,8 +80,6 @@ var palettes := {}
 # Nodes
 var control : Node
 var top_menu_container : Panel
-var left_cursor : Sprite
-var right_cursor : Sprite
 var canvas : Canvas
 var tabs : Tabs
 var main_viewport : ViewportContainer
@@ -185,8 +181,6 @@ func refresh_nodes():
 #	control = find_node_by_name(root, "DrawGDControl")
 	control = get_node("DrawGDControl")
 	top_menu_container = find_node_by_name(control, "TopMenuContainer")
-	left_cursor = find_node_by_name(control, "LeftCursor")
-	right_cursor = find_node_by_name(control, "RightCursor")
 	canvas = find_node_by_name(control, "Canvas")
 
 	tabs = find_node_by_name(control, "Tabs")

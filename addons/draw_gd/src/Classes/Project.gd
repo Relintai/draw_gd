@@ -141,8 +141,6 @@ func change_project() -> void:
 	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
 	layer_button.pressed = true
 
-	DrawGD.current_frame_mark_label.text = "%s/%s" % [str(current_frame + 1), frames.size()]
-
 	toggle_layer_buttons_layers()
 	toggle_layer_buttons_current_layer()
 

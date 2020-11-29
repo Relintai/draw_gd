@@ -67,19 +67,6 @@ func _input(event : InputEvent) -> void:
 
 	var current_project : Project = DrawGD.current_project
 
-	if DrawGD.has_focus:
-		if !cursor_image_has_changed:
-			cursor_image_has_changed = true
-			if DrawGD.show_left_tool_icon:
-				DrawGD.left_cursor.visible = true
-			if DrawGD.show_right_tool_icon:
-				DrawGD.right_cursor.visible = true
-	else:
-		if cursor_image_has_changed:
-			cursor_image_has_changed = false
-			DrawGD.left_cursor.visible = false
-			DrawGD.right_cursor.visible = false
-
 	DrawGD.tools.handle_draw(current_pixel.floor(), event)
 
 	if sprite_changed_this_frame:
