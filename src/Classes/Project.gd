@@ -1,6 +1,7 @@
 class_name Project extends Reference
 # A class for project properties.
 
+var Export = preload("res://src/Autoload/Export.gd")
 
 var name := "" setget name_changed
 var size : Vector2 setget size_changed

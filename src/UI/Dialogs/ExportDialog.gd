@@ -1,5 +1,8 @@
 extends AcceptDialog
 
+var ExportScript = preload("res://src/Autoload/Export.gd")
+var Export = ExportScript.new()
+
 # called when user resumes export after filename collision
 signal resume_export_function()
 

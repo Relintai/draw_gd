@@ -1,6 +1,8 @@
 extends Control
 
-var Import = preload("res://src/Autoload/Import.gd")
+var Export = preload("res://src/Autoload/Export.gd")
+var ImportScript = preload("res://src/Autoload/Import.gd")
+var Import = ImportScript.new()
 
 var opensprite_file_selected := false
 var redone := false

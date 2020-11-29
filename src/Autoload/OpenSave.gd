@@ -1,5 +1,6 @@
 extends Node
 
+var Export = preload("res://src/Autoload/Export.gd")
 
 var current_save_paths := [] # Array of strings
 # Stores a filename of a backup file in user:// until user saves manually

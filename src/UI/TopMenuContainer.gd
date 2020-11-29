@@ -1,10 +1,13 @@
 extends Panel
 
+var Export = preload("res://src/Autoload/Export.gd")
 var DrawingAlgos = preload("res://src/Autoload/DrawingAlgos.gd")
 
 var file_menu : PopupMenu
 var view_menu : PopupMenu
 var zen_mode := false
+
+var was_exported = false
 
 
 func _ready() -> void:
@@ -173,7 +176,7 @@ func save_project_file_as() -> void:
 
 
 func export_file() -> void:
-	if Export.was_exported == false:
+	if was_exported == false:
 		Global.export_dialog.popup_centered()
 		Global.dialog_open(true)
 	else:

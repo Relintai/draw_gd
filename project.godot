@@ -124,7 +124,6 @@ driver="Dummy"
 Global="*res://src/Autoload/Global.gd"
 OpenSave="*res://src/Autoload/OpenSave.gd"
 Tools="*res://src/Autoload/Tools.gd"
-Export="*res://src/Autoload/Export.gd"
 
 [debug]
 

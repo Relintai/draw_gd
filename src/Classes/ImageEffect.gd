@@ -2,6 +2,7 @@ class_name ImageEffect extends AcceptDialog
 # Parent class for all image effects
 # Methods that have "pass" are meant to be replaced by the inherited Scripts
 
+var Export = preload("res://src/Autoload/Export.gd")
 
 enum {CEL, FRAME, ALL_FRAMES, ALL_PROJECTS}
 
