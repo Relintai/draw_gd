@@ -13,7 +13,7 @@
 [ext_resource path="res://src/Preferences/PreferencesDialog.tscn" type="PackedScene" id=32]
 [ext_resource path="res://src/UI/Dialogs/ExportDialog.tscn" type="PackedScene" id=39]
 
-[node name="Control" type="Control"]
+[node name="DrawGD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
