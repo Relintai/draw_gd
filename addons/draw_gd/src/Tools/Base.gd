@@ -7,8 +7,16 @@ var cursor_text := ""
 
 var _cursor := Vector2.INF
 
+var DrawGD : Node
 
-func _ready():
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	kname = name.replace(" ", "_").to_lower()
 	$Label.text = tool_slot.name
 

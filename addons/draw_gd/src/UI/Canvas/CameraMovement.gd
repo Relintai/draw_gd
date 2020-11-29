@@ -12,7 +12,14 @@ var drag := false
 
 var DrawGD : Node = null
 
-func _ready() -> void:
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+
 	viewport_container = get_parent().get_parent()
 	transparent_checker = get_parent().get_node("TransparentChecker")
 	tween = Tween.new()

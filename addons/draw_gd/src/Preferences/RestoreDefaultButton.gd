@@ -10,7 +10,14 @@ var node : Node
 var DrawGD : Node = null
 
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	# Handle themes
 	if DrawGD.theme_type == DrawGD.Theme_Types.LIGHT:
 		texture_normal = load("res://addons/draw_gd/assets/graphics/light_themes/misc/icon_reload.png")

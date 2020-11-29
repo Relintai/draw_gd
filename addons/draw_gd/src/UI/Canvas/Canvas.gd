@@ -18,7 +18,14 @@ var DrawGD : Node = null
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+	
 	var frame : Frame = new_empty_frame(true)
 	DrawGD.current_project.frames.append(frame)
 	yield(get_tree().create_timer(0.2), "timeout")

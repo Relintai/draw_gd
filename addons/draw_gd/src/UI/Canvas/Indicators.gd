@@ -3,6 +3,14 @@ extends Node2D
 
 var DrawGD : Node = null
 
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+
 func _input(event : InputEvent) -> void:
 	if DrawGD.has_focus and event is InputEventMouseMotion:
 		update()

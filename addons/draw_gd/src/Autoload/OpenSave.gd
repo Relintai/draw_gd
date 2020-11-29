@@ -11,7 +11,14 @@ onready var autosave_timer : Timer
 
 var DrawGD : Node = null
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	autosave_timer = Timer.new()
 	autosave_timer.one_shot = false
 	autosave_timer.process_mode = Timer.TIMER_PROCESS_IDLE
@@ -69,7 +76,7 @@ func open_pxo_file(path : String, untitled_backup : bool = false) -> void:
 		new_project.animation_tags.clear()
 		new_project.name = path.get_file()
 	else:
-		new_project = Project.new([], path.get_file())
+		new_project = Project.new(DrawGD, [], path.get_file())
 
 	var first_line := file.get_line()
 	var dict := JSON.parse(first_line)
@@ -325,7 +332,7 @@ func save_pxo_file(path : String, autosave : bool, use_zstd_compression := true,
 
 
 func open_image_as_new_tab(path : String, image : Image) -> void:
-	var project = Project.new([], path.get_file(), image.get_size())
+	var project = Project.new(DrawGD, [], path.get_file(), image.get_size())
 	project.layers.append(Layer.new())
 	DrawGD.projects.append(project)
 
@@ -339,7 +346,7 @@ func open_image_as_new_tab(path : String, image : Image) -> void:
 
 
 func open_image_as_spritesheet(path : String, image : Image, horizontal : int, vertical : int) -> void:
-	var project = Project.new([], path.get_file())
+	var project = Project.new(DrawGD, [], path.get_file())
 	project.layers.append(Layer.new())
 	DrawGD.projects.append(project)
 	horizontal = min(horizontal, image.get_size().x)

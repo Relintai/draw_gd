@@ -1,11 +1,11 @@
 tool
 extends ConfirmationDialog
 
-onready var templates_options = $VBoxContainer/OptionsContainer/TemplatesOptions
-onready var ratio_box = $VBoxContainer/OptionsContainer/RatioCheckBox
-onready var width_value = $VBoxContainer/OptionsContainer/WidthValue
-onready var height_value = $VBoxContainer/OptionsContainer/HeightValue
-onready var fill_color_node = $VBoxContainer/OptionsContainer/FillColor
+var templates_options = null
+var ratio_box = null
+var width_value = null
+var height_value = null
+var fill_color_node = null
 
 onready var size_value = Vector2()
 
@@ -55,7 +55,23 @@ var TStrings ={
 	}
 
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
+	if !n:
+		return
+		
+	templates_options = get_node("VBoxContainer/OptionsContainer/TemplatesOptions")
+	ratio_box = get_node("VBoxContainer/OptionsContainer/RatioCheckBox")
+	width_value = get_node("VBoxContainer/OptionsContainer/WidthValue")
+	height_value = get_node("VBoxContainer/OptionsContainer/HeightValue")
+	fill_color_node = get_node("VBoxContainer/OptionsContainer/FillColor")
+		
 	width_value.value = DrawGD.default_image_width
 	height_value.value = DrawGD.default_image_height
 	fill_color_node.color = DrawGD.default_fill_color
@@ -83,7 +99,7 @@ func _on_CreateNewImage_confirmed() -> void:
 	DrawGD.canvas.fill_color = fill_color
 
 	var frame : Frame = DrawGD.canvas.new_empty_frame(false, true, Vector2(width, height))
-	var new_project := Project.new([frame], tr("untitled"), Vector2(width, height).floor())
+	var new_project := Project.new(DrawGD, [frame], tr("untitled"), Vector2(width, height).floor())
 	new_project.layers.append(Layer.new())
 	DrawGD.projects.append(new_project)
 	DrawGD.tabs.current_tab = DrawGD.tabs.get_tab_count() - 1

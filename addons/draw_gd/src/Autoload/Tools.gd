@@ -17,7 +17,8 @@ class Slot:
 	var DrawGD : Node = null
 
 
-	func _init(slot_name : String) -> void:
+	func _init(pDrawGD, slot_name : String) -> void:
+		DrawGD = pDrawGD
 		name = slot_name
 		kname = name.replace(" ", "_").to_lower()
 		load_config()
@@ -63,10 +64,17 @@ var alt := false
 
 var DrawGD : Node = null
 
-func _ready():
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	yield(get_tree(), "idle_frame")
-	_slots[BUTTON_LEFT] = Slot.new("Left tool")
-	_slots[BUTTON_RIGHT] = Slot.new("Right tool")
+	_slots[BUTTON_LEFT] = Slot.new(DrawGD, "Left tool")
+	_slots[BUTTON_RIGHT] = Slot.new(DrawGD, "Right tool")
 	_panels[BUTTON_LEFT] = DrawGD.find_node_by_name(DrawGD.control, "LeftPanelContainer")
 	_panels[BUTTON_RIGHT] = DrawGD.find_node_by_name(DrawGD.control, "RightPanelContainer")
 	_tool_buttons = DrawGD.find_node_by_name(DrawGD.control, "ToolButtons")

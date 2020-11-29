@@ -2,13 +2,24 @@ tool
 extends VBoxContainer
 
 
-onready var left_picker := $ColorButtonsVertical/ColorPickersCenter/ColorPickersHorizontal/LeftColorPickerButton
-onready var right_picker := $ColorButtonsVertical/ColorPickersCenter/ColorPickersHorizontal/RightColorPickerButton
+var left_picker : ColorPickerButton = null
+var right_picker : ColorPickerButton = null
 
 var DrawGD : Node = null
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+	
 	DrawGD.tools.connect("color_changed", self, "update_color")
+	
+	left_picker = get_node("ColorButtonsVertical/ColorPickersCenter/ColorPickersHorizontal/LeftColorPickerButton")
+	right_picker = get_node("ColorButtonsVertical/ColorPickersCenter/ColorPickersHorizontal/RightColorPickerButton")
+	
 	left_picker.get_picker().presets_visible = false
 	right_picker.get_picker().presets_visible = false
 

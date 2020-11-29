@@ -7,6 +7,14 @@ onready var animation_timer : Timer = $AnimationTimer
 
 var DrawGD : Node = null
 
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 func _draw() -> void:
 	var current_project : Project = DrawGD.current_project
 	if frame >= current_project.frames.size():

@@ -347,7 +347,7 @@ func _set_pixel(position : Vector2) -> void:
 	var i := int(position.x + position.y * image.get_size().x)
 	if _mask[i] < DrawGD.tools.pen_pressure:
 		_mask[i] = DrawGD.tools.pen_pressure
-		_drawer.set_pixel(image, position, tool_slot.color)
+		_drawer.set_pixel(image, position, tool_slot.color, project)
 
 
 func _draw_brush_image(_image : Image, _src_rect: Rect2, _dst: Vector2) -> void:

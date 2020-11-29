@@ -38,7 +38,7 @@ var file_name := "untitled"
 var file_format : int = Export.FileFormat.PNG
 
 
-func _init(_frames := [], _name := tr("untitled"), _size := Vector2(64, 64)) -> void:
+func _init(pDrawGD, _frames := [], _name := tr("untitled"), _size := Vector2(64, 64)) -> void:
 	frames = _frames
 	name = _name
 	size = _size
@@ -46,6 +46,7 @@ func _init(_frames := [], _name := tr("untitled"), _size := Vector2(64, 64)) -> 
 
 	undo_redo = UndoRedo.new()
 
+	DrawGD = pDrawGD
 	DrawGD.tabs.add_tab(name)
 	DrawGD.opensave.current_save_paths.append("")
 	DrawGD.opensave.backup_save_paths.append("")
@@ -392,6 +393,9 @@ func layers_changed(value : Array) -> void:
 	for i in range(layers.size() - 1, -1, -1):
 		var layer_container = load("res://addons/draw_gd/src/UI/Timeline/LayerButton.tscn").instance()
 		layer_container.i = i
+		layer_container.DrawGD = DrawGD
+		layer_container.init()
+		
 		if layers[i].name == tr("Layer") + " 0":
 			layers[i].name = tr("Layer") + " %s" % i
 

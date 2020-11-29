@@ -4,7 +4,14 @@ class_name SymmetryGuide extends Guide
 var _texture = preload("res://addons/draw_gd/assets/graphics/dotted_line.png")
 
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	has_focus = false
 	visible = false
 	texture = _texture

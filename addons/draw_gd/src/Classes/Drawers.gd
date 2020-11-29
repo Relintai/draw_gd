@@ -66,9 +66,7 @@ func set_pixel_perfect(value: bool) -> void:
 	else:
 		drawers = [simple_drawer, simple_drawer, simple_drawer, simple_drawer]
 
-
-func set_pixel(image: Image, position: Vector2, color: Color) -> void:
-	var project : Project = DrawGD.current_project
+func set_pixel(image: Image, position: Vector2, color: Color, project : Project) -> void:
 	drawers[0].set_pixel(image, position, color, color_op)
 
 	# Handle Mirroring

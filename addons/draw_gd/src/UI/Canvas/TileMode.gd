@@ -6,6 +6,14 @@ var location := Vector2.ZERO
 
 var DrawGD : Node = null
 
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+
 func _draw() -> void:
 	var current_cels : Array = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels
 	var size : Vector2 = DrawGD.current_project.size

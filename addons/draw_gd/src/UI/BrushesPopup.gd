@@ -21,7 +21,14 @@ var circle_image = preload("res://addons/draw_gd/assets/graphics/circle_9x9.png"
 var circle_filled_image = preload("res://addons/draw_gd/assets/graphics/circle_filled_9x9.png")
 
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	var container = DrawGD.brushes_popup.get_node("TabContainer/File/FileBrushContainer")
 	var button = create_button(pixel_image)
 	button.brush.type = PIXEL

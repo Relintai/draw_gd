@@ -16,7 +16,14 @@ var Import = preload("res://addons/draw_gd/src/Autoload/Import.gd")
 
 var DrawGD : Node = null
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+	
 	_load_palettes()
 
 	# Select default palette "Default"

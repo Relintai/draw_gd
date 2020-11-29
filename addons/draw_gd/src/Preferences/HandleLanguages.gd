@@ -29,14 +29,13 @@ onready var cjk_font = preload("res://addons/draw_gd/assets/fonts/CJK/NotoSansCJ
 
 var DrawGD : Node = null
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	var n : Node = get_parent()
 	while n:
-		if n.has_method("DrawGD"):
-			print("ddddddddddddddddd")
-			DrawGD = n.DrawGD
-			
-		n = n.get_parent() 
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
 	
 	loaded_locales = TranslationServer.get_loaded_locales()
 

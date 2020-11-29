@@ -7,6 +7,14 @@ var isometric_polylines := [] # An array of PoolVector2Arrays
 
 var DrawGD : Node = null
 
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+
 func _draw() -> void:
 	if DrawGD.draw_grid:
 		draw_grid(DrawGD.grid_type)

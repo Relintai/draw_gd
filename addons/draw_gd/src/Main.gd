@@ -9,18 +9,19 @@ var opensprite_file_selected := false
 var redone := false
 var is_quitting_on_save := false
 
-onready var DrawGD : Node = get_node("..")
+var DrawGD : Node = null
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+func _enter_tree() -> void:
+	DrawGD = get_node("..")
 	#get_tree().set_auto_accept_quit(false)
 	setup_application_window_size()
 
 	DrawGD.window_title = tr("untitled") + " - Pixelorama " + DrawGD.current_version
 
 	DrawGD.current_project.layers[0].name = tr("Layer") + " 0"
-	DrawGD.layers_container.get_child(0).label.text = DrawGD.current_project.layers[0].name
-	DrawGD.layers_container.get_child(0).line_edit.text = DrawGD.current_project.layers[0].name
+	#DrawGD.layers_container.get_child(0).label.text = DrawGD.current_project.layers[0].name
+	#DrawGD.layers_container.get_child(0).line_edit.text = DrawGD.current_project.layers[0].name
 
 	Import.import_brushes(DrawGD.directory_module.get_brushes_search_path_in_order())
 	Import.import_patterns(DrawGD.directory_module.get_patterns_search_path_in_order())
@@ -49,14 +50,14 @@ func _ready() -> void:
 
 
 func _input(event : InputEvent) -> void:
-	DrawGD.left_cursor.position = get_global_mouse_position() + Vector2(-32, 32)
-	DrawGD.left_cursor.texture = DrawGD.left_cursor_tool_texture
-	DrawGD.right_cursor.position = get_global_mouse_position() + Vector2(32, 32)
-	DrawGD.right_cursor.texture = DrawGD.right_cursor_tool_texture
+#	DrawGD.left_cursor.position = get_global_mouse_position() + Vector2(-32, 32)
+#	DrawGD.left_cursor.texture = DrawGD.left_cursor_tool_texture
+#	DrawGD.right_cursor.position = get_global_mouse_position() + Vector2(32, 32)
+#	DrawGD.right_cursor.texture = DrawGD.right_cursor_tool_texture
 
-	if event is InputEventKey and (event.scancode == KEY_ENTER or event.scancode == KEY_KP_ENTER):
-		if get_focus_owner() is LineEdit:
-			get_focus_owner().release_focus()
+#	if event is InputEventKey and (event.scancode == KEY_ENTER or event.scancode == KEY_KP_ENTER):
+#		if get_focus_owner() is LineEdit:
+#			get_focus_owner().release_focus()
 
 	#TODO TEMP
 	return 

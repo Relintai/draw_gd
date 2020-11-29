@@ -10,13 +10,24 @@ var new_input_event : InputEventKey
 
 var DrawGD : Node = null
 
-onready var shortcut_selector_popup = DrawGD.preferences_dialog.get_node("Popups/ShortcutSelector")
-onready var theme_font_color : Color = DrawGD.preferences_dialog.get_node("Popups/ShortcutSelector/EnteredShortcut").get_color("font_color")
+var shortcut_selector_popup = null
+var theme_font_color : Color = Color()
 
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	# Disable input until the shortcut selector is displayed
 	set_process_input(false)
+	
+	shortcut_selector_popup = DrawGD.preferences_dialog.get_node("Popups/ShortcutSelector")
+	theme_font_color = DrawGD.preferences_dialog.get_node("Popups/ShortcutSelector/EnteredShortcut").get_color("font_color")
+
 
 	# Get default preset for shortcuts from project input map
 	# Buttons in shortcuts selector should be called the same as actions
@@ -25,9 +36,9 @@ func _ready() -> void:
 			var input_events = InputMap.get_action_list(shortcut_grid_item.name)
 			if input_events.size() > 1:
 				printerr("Every shortcut action should have just one input event assigned in input map")
-			shortcut_grid_item.text = (input_events[0] as InputEventKey).as_text()
+			#shortcut_grid_item.text = (input_events[0] as InputEventKey).as_text()
 			shortcut_grid_item.connect("pressed", self, "_on_Shortcut_button_pressed", [shortcut_grid_item])
-			default_shortcuts_preset[shortcut_grid_item.name] = input_events[0]
+			#default_shortcuts_preset[shortcut_grid_item.name] = input_events[0]
 
 	# Load custom shortcuts from the config file
 	custom_shortcuts_preset = default_shortcuts_preset.duplicate()
@@ -42,6 +53,9 @@ func _ready() -> void:
 
 
 func _input(event : InputEvent) -> void:
+	#TODO
+	return
+	
 	if event is InputEventKey:
 		if event.pressed:
 			if event.scancode == KEY_ESCAPE:

@@ -1,9 +1,17 @@
 tool
 extends BaseButton
 
+var DrawGD : Node = null
 
 var brush := Brushes.Brush.new()
 
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
 
 func _on_BrushButton_pressed() -> void:
 	# Delete the brush on middle mouse press
