@@ -12,7 +12,7 @@ var size : Vector2 setget size_changed
 var undo_redo : UndoRedo
 var undos := 0 # The number of times we added undo properties
 var has_changed := false setget has_changed_changed
-var frames := [] setget frames_changed # Array of Frames (that contain Cels)
+var frames := [] 
 var layers := [] setget layers_changed # Array of Layers
 var current_frame := 0 setget frame_changed
 var current_layer := 0 setget layer_changed
@@ -320,33 +320,6 @@ func size_changed(value : Vector2) -> void:
 	size = value
 	if DrawGD.selection_rectangle._selected_rect.has_no_area():
 		select_all_pixels()
-
-
-func frames_changed(value : Array) -> void:
-	frames = value
-
-	for frame_id in DrawGD.frame_ids.get_children():
-		DrawGD.frame_ids.remove_child(frame_id)
-		frame_id.queue_free()
-
-	for i in range(layers.size() - 1, -1, -1):
-		DrawGD.frames_container.add_child(layers[i].frame_container)
-
-	for j in range(frames.size()):
-		var label := Label.new()
-		label.rect_min_size.x = 36
-		label.align = Label.ALIGN_CENTER
-		label.text = str(j + 1)
-		DrawGD.frame_ids.add_child(label)
-
-		for i in range(layers.size() - 1, -1, -1):
-			var cel_button = load("res://addons/draw_gd/src/UI/Timeline/CelButton.tscn").instance()
-			cel_button.frame = j
-			cel_button.layer = i
-			cel_button.get_child(0).texture = frames[j].cels[i].image_texture
-
-			layers[i].frame_container.add_child(cel_button)
-
 
 func layers_changed(value : Array) -> void:
 	layers = value

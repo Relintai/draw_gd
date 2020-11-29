@@ -104,7 +104,6 @@ var zoom_level_label : Label
 var new_image_dialog : ConfirmationDialog
 var open_sprites_dialog : FileDialog
 var save_sprites_dialog : FileDialog
-var save_sprites_html5_dialog : ConfirmationDialog
 var export_dialog : AcceptDialog
 var preferences_dialog : AcceptDialog
 var unsaved_changes_dialog : ConfirmationDialog
@@ -204,7 +203,6 @@ func refresh_nodes():
 	new_image_dialog = find_node_by_name(control, "CreateNewImage")
 	open_sprites_dialog = find_node_by_name(control, "OpenSprite")
 	save_sprites_dialog = find_node_by_name(control, "SaveSprite")
-	save_sprites_html5_dialog = find_node_by_name(control, "SaveSpriteHTML5")
 	export_dialog = find_node_by_name(control, "ExportDialog")
 	preferences_dialog = find_node_by_name(control, "PreferencesDialog")
 	unsaved_changes_dialog = find_node_by_name(control, "UnsavedCanvasDialog")

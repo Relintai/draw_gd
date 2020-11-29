@@ -8,7 +8,7 @@ var lock_button : BaseButton
 var linked_button : BaseButton
 var label : Label
 var line_edit : LineEdit
-var cel_button : Node
+var cel_button : Button
 
 var DrawGD : Node = null
 
@@ -90,3 +90,8 @@ func _on_LinkButton_pressed() -> void:
 		# If button is pressed and there are no linked cels in the layer
 		DrawGD.current_project.layers[i].linked_cels.append(DrawGD.current_project.frames[DrawGD.current_project.current_frame])
 		#DrawGD.current_project.layers[i].frame_container.get_child(DrawGD.current_project.current_frame)._ready()
+
+
+func _on_CelButton_pressed():
+	#DrawGD.current_project.current_frame = frame
+	DrawGD.current_project.current_layer = i
