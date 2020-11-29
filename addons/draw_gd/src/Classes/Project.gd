@@ -408,7 +408,7 @@ func layers_changed(value : Array) -> void:
 			var cel_button = load("res://addons/draw_gd/src/UI/Timeline/CelButton.tscn").instance()
 			cel_button.frame = j
 			cel_button.layer = i
-			cel_button.get_child(0).texture = frames[j].cels[i].image_texture
+			cel_button.texture = frames[j].cels[i].image_texture
 
 			layers[i].frame_container.add_child(cel_button)
 

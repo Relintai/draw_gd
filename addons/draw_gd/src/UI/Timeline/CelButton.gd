@@ -4,6 +4,8 @@ extends Button
 var frame := 0
 var layer := 0
 
+var texture : TextureRect = null
+
 var DrawGD : Node = null
 
 var popup_menu : PopupMenu = null
@@ -17,6 +19,7 @@ func _enter_tree() -> void:
 		n = n.get_parent()
 
 	popup_menu = get_node("PopupMenu")
+	texture = get_node("MC/CelTexture")
 
 	hint_tooltip = tr("Frame: %s, Layer: %s") % [frame + 1, layer]
 	if DrawGD.current_project.frames[frame] in DrawGD.current_project.layers[layer].linked_cels:
@@ -27,10 +30,6 @@ func _enter_tree() -> void:
 		get_node("LinkedIndicator").visible = false
 		popup_menu.set_item_text(4, "Link Cel")
 		popup_menu.set_item_metadata(4, "Link Cel")
-
-	# Reset the checkers size because it assumes you want the same size as the canvas
-	var checker = $CelTexture/TransparentChecker
-	checker.rect_size = checker.get_parent().rect_size
 
 
 func _on_CelButton_pressed() -> void:
