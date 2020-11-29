@@ -16,6 +16,7 @@ onready var x_spinbox : SpinBox = $VBoxContainer/OptionsContainer/XSpinBox
 onready var y_spinbox : SpinBox = $VBoxContainer/OptionsContainer/YSpinBox
 onready var preview_rect : TextureRect = $VBoxContainer/Preview
 
+var DrawGD : Node = null
 
 func _on_ResizeCanvas_about_to_show() -> void:
 	if first_time:

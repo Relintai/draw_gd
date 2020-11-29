@@ -14,6 +14,7 @@ onready var remove_palette_warning = $"../../../../RemovePaletteWarning"
 
 var Import = preload("res://addons/draw_gd/src/Autoload/Import.gd")
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	_load_palettes()

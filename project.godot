@@ -119,10 +119,6 @@ config/Version="v0.8.1-stable"
 
 driver="Dummy"
 
-[autoload]
-
-DrawGD="*res://addons/draw_gd/src/Autoload/DrawGD.gd"
-
 [debug]
 
 gdscript/warnings/narrowing_conversion=false

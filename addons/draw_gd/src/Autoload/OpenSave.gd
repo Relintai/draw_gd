@@ -9,6 +9,7 @@ var backup_save_paths := [] # Array of strings
 
 onready var autosave_timer : Timer
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	autosave_timer = Timer.new()

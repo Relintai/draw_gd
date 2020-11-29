@@ -9,6 +9,8 @@ onready var fill_color_node = $VBoxContainer/OptionsContainer/FillColor
 
 onready var size_value = Vector2()
 
+var DrawGD : Node = null
+
 # Template Id identifier
 enum Templates {
 	TDefault = 0,

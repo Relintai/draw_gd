@@ -11,6 +11,7 @@ var _move_pixel := false
 var _clipboard := Image.new()
 var _undo_data := {}
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	_clear_image.create(1, 1, false, Image.FORMAT_RGBA8)
@@ -69,7 +70,7 @@ func move_start(move_pixel : bool) -> void:
 		return
 
 	_undo_data = _get_undo_data(true)
-	var project := DrawGD.current_project
+	var project = DrawGD.current_project
 	var image : Image = project.frames[project.current_frame].cels[project.current_layer].image
 
 	var rect = Rect2(Vector2.ZERO, project.size)
@@ -91,7 +92,7 @@ func move_end() -> void:
 	var undo_data = _undo_data if _move_pixel else _get_undo_data(false)
 
 	if _move_pixel:
-		var project := DrawGD.current_project
+		var project = DrawGD.current_project
 		var image : Image = project.frames[project.current_frame].cels[project.current_layer].image
 		var size := _clipped_rect.size
 		var rect = Rect2(Vector2.ZERO, size)
@@ -108,7 +109,7 @@ func copy() -> void:
 	if _selected_rect.has_no_area():
 		return
 
-	var project := DrawGD.current_project
+	var project = DrawGD.current_project
 	var image : Image = project.frames[project.current_frame].cels[project.current_layer].image
 	_clipboard = image.get_rect(_selected_rect)
 	if _clipboard.is_invisible():
@@ -122,7 +123,7 @@ func cut() -> void: # This is basically the same as copy + delete
 		return
 
 	var undo_data = _get_undo_data(true)
-	var project := DrawGD.current_project
+	var project = DrawGD.current_project
 	var image : Image = project.frames[project.current_frame].cels[project.current_layer].image
 	var size := _selected_rect.size
 	var rect = Rect2(Vector2.ZERO, size)
@@ -143,7 +144,7 @@ func paste() -> void:
 		return
 
 	var undo_data = _get_undo_data(true)
-	var project := DrawGD.current_project
+	var project = DrawGD.current_project
 	var image : Image = project.frames[project.current_frame].cels[project.current_layer].image
 	var size := _selected_rect.size
 	var rect = Rect2(Vector2.ZERO, size)
@@ -154,7 +155,7 @@ func paste() -> void:
 
 func delete() -> void:
 	var undo_data = _get_undo_data(true)
-	var project := DrawGD.current_project
+	var project = DrawGD.current_project
 	var image : Image = project.frames[project.current_frame].cels[project.current_layer].image
 	var size := _selected_rect.size
 	var rect = Rect2(Vector2.ZERO, size)
@@ -166,7 +167,7 @@ func delete() -> void:
 
 func commit_undo(action : String, undo_data : Dictionary) -> void:
 	var redo_data = _get_undo_data("image_data" in undo_data)
-	var project := DrawGD.current_project
+	var project = DrawGD.current_project
 
 	project.undos += 1
 	project.undo_redo.create_action(action)
@@ -183,7 +184,7 @@ func commit_undo(action : String, undo_data : Dictionary) -> void:
 
 func _get_undo_data(undo_image : bool) -> Dictionary:
 	var data = {}
-	var project := DrawGD.current_project
+	var project = DrawGD.current_project
 	data["selected_rect"] = DrawGD.current_project.selected_rect
 	if undo_image:
 		var image : Image = project.frames[project.current_frame].cels[project.current_layer].image

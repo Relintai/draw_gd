@@ -1,6 +1,7 @@
 tool
 extends Node
 
+var DrawGD : Node = null
 
 enum ExportTab { FRAME = 0, SPRITESHEET = 1, ANIMATION = 2 }
 var current_tab : int = ExportTab.FRAME

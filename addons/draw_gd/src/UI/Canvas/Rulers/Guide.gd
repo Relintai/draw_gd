@@ -3,17 +3,20 @@ class_name Guide extends Line2D
 
 enum Types {HORIZONTAL, VERTICAL}
 
+var DrawGD : Node = null
+
 var font := preload("res://addons/draw_gd/assets/fonts/Roboto-Regular.tres")
 var has_focus := true
 var mouse_pos := Vector2.ZERO
 var type = Types.HORIZONTAL
-var project = DrawGD.current_project
+var project = null
 
 
 func _ready() -> void:
 	width = DrawGD.camera.zoom.x
 	default_color = DrawGD.guide_color
 	project.guides.append(self)
+	project = DrawGD.current_project
 
 
 func _input(_event : InputEvent):

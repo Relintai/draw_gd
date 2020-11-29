@@ -17,6 +17,7 @@ var preview : TextureRect
 var selection_checkbox : CheckBox
 var affect_option_button : OptionButton
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	set_nodes()

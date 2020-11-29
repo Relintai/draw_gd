@@ -13,6 +13,8 @@ class Slot:
 	var pixel_perfect := false
 	var horizontal_mirror := false
 	var vertical_mirror := false
+	
+	var DrawGD : Node = null
 
 
 	func _init(slot_name : String) -> void:
@@ -59,6 +61,7 @@ var control := false
 var shift := false
 var alt := false
 
+var DrawGD : Node = null
 
 func _ready():
 	yield(get_tree(), "idle_frame")

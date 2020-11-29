@@ -1,6 +1,8 @@
 tool
 extends ConfirmationDialog
 
+var DrawGD : Node = null
+
 var DrawingAlgos = preload("res://addons/draw_gd/src/Autoload/DrawingAlgos.gd")
 
 func _on_ScaleImage_confirmed() -> void:

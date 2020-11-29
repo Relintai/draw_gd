@@ -6,6 +6,7 @@ onready var canvas_preview = $HBoxContainer/PreviewViewportContainer/Viewport/Ca
 onready var camera : Camera2D = $HBoxContainer/PreviewViewportContainer/Viewport/CameraPreview
 onready var play_button : Button = $HBoxContainer/VBoxContainer/PlayButton
 
+var DrawGD : Node = null
 
 func _on_PreviewZoomSlider_value_changed(value : float) -> void:
 	camera.zoom = -Vector2(value, value)

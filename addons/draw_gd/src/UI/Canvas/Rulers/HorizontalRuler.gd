@@ -10,6 +10,7 @@ var minor_subdivision := 4
 var first : Vector2
 var last : Vector2
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	DrawGD.main_viewport.connect("item_rect_changed", self, "update")

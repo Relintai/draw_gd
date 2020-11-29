@@ -7,6 +7,8 @@ var value_type : String
 var default_value
 var node : Node
 
+var DrawGD : Node = null
+
 
 func _ready() -> void:
 	# Handle themes

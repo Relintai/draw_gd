@@ -5,6 +5,7 @@ extends Node2D
 var location := Vector2.ZERO
 var isometric_polylines := [] # An array of PoolVector2Arrays
 
+var DrawGD : Node = null
 
 func _draw() -> void:
 	if DrawGD.draw_grid:

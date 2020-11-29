@@ -1,6 +1,8 @@
 tool
 extends AcceptDialog
 
+var DrawGD : Node = null
+
 # Preferences table: [Prop name in DrawGD, relative node path, value type, default value]
 var preferences = [
 	["open_last_project", "Startup/StartupContainer/OpenLastProject", "pressed", DrawGD.open_last_project],

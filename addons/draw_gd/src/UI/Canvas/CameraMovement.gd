@@ -10,6 +10,7 @@ var transparent_checker : ColorRect
 var mouse_pos := Vector2.ZERO
 var drag := false
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	viewport_container = get_parent().get_parent()

@@ -1,6 +1,7 @@
 tool
 extends Reference
 
+var DrawGD : Node = null
 
 enum GradientDirection {TOP, BOTTOM, LEFT, RIGHT}
 

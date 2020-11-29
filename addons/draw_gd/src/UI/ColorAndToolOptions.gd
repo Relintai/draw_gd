@@ -5,6 +5,7 @@ extends VBoxContainer
 onready var left_picker := $ColorButtonsVertical/ColorPickersCenter/ColorPickersHorizontal/LeftColorPickerButton
 onready var right_picker := $ColorButtonsVertical/ColorPickersCenter/ColorPickersHorizontal/RightColorPickerButton
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	DrawGD.tools.connect("color_changed", self, "update_color")

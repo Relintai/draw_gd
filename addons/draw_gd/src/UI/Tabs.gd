@@ -1,6 +1,7 @@
 tool
 extends Tabs
 
+var DrawGD : Node = null
 
 func _on_Tabs_tab_changed(tab : int) -> void:
 	DrawGD.current_project_index = tab

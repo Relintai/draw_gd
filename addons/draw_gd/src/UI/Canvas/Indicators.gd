@@ -1,6 +1,7 @@
 tool
 extends Node2D
 
+var DrawGD : Node = null
 
 func _input(event : InputEvent) -> void:
 	if DrawGD.has_focus and event is InputEventMouseMotion:

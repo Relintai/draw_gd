@@ -14,6 +14,8 @@ signal brush_selected(brush)
 signal brush_removed(brush)
 enum {PIXEL, CIRCLE, FILLED_CIRCLE, FILE, RANDOM_FILE, CUSTOM}
 
+var DrawGD : Node = null
+
 var pixel_image = preload("res://addons/draw_gd/assets/graphics/pixel_image.png")
 var circle_image = preload("res://addons/draw_gd/assets/graphics/circle_9x9.png")
 var circle_filled_image = preload("res://addons/draw_gd/assets/graphics/circle_filled_9x9.png")
@@ -62,6 +64,8 @@ static func create_button(image : Image) -> Node:
 
 
 static func add_file_brush(images : Array, hint := "") -> void:
+	var DrawGD : Node = null
+	
 	var button = create_button(images[0])
 	button.brush.type = FILE if images.size() == 1 else RANDOM_FILE
 	button.brush.image = images[0]
@@ -73,6 +77,8 @@ static func add_file_brush(images : Array, hint := "") -> void:
 
 
 static func add_project_brush(image : Image, hint := "") -> void:
+	var DrawGD : Node = null
+	
 	var button = create_button(image)
 	button.brush.type = CUSTOM
 	button.brush.image = image
@@ -83,6 +89,8 @@ static func add_project_brush(image : Image, hint := "") -> void:
 
 
 static func clear_project_brush() -> void:
+	var DrawGD : Node = null
+	
 	var container = DrawGD.brushes_popup.get_node("TabContainer/Project/ProjectBrushContainer")
 	for child in container.get_children():
 		child.queue_free()

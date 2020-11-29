@@ -10,6 +10,7 @@ onready var main_vbox_cont : VBoxContainer = $VBoxContainer/ScrollContainer/VBox
 onready var add_tag_button : Button = $VBoxContainer/ScrollContainer/VBoxTagContainer/AddTag
 onready var options_dialog = $TagOptions
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	$"TagOptions/GridContainer/ColorPickerButton".get_picker().presets_visible = false
@@ -93,7 +94,7 @@ func _on_TagOptions_confirmed() -> void:
 	if tag_from > tag_to:
 		tag_from = tag_to
 
-	var new_animation_tags := DrawGD.current_project.animation_tags.duplicate()
+	var new_animation_tags = DrawGD.current_project.animation_tags.duplicate()
 	# Loop through the tags to create new classes for them, so that they won't be the same
 	# as DrawGD.current_project.animation_tags's classes. Needed for undo/redo to work properly.
 	for i in new_animation_tags.size():
@@ -120,7 +121,7 @@ func _on_TagOptions_confirmed() -> void:
 
 func _on_TagOptions_custom_action(action : String) -> void:
 	if action == "delete_tag":
-		var new_animation_tags := DrawGD.current_project.animation_tags.duplicate()
+		var new_animation_tags = DrawGD.current_project.animation_tags.duplicate()
 		new_animation_tags.remove(current_tag_id)
 		# Handle Undo/Redo
 		DrawGD.current_project.undos += 1

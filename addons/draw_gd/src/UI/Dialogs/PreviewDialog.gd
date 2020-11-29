@@ -21,6 +21,7 @@ onready var new_layer_options = $VBoxContainer/HBoxContainer/NewLayerOptions
 onready var new_brush_options = $VBoxContainer/HBoxContainer/NewBrushOptions
 onready var new_brush_name = $VBoxContainer/HBoxContainer/NewBrushOptions/BrushName
 
+var DrawGD : Node = null
 
 func _on_PreviewDialog_about_to_show() -> void:
 	var img_texture := ImageTexture.new()

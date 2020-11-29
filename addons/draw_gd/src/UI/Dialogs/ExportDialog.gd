@@ -44,6 +44,7 @@ onready var path_line_edit = $VBoxContainer/Path/PathLineEdit
 onready var file_line_edit = $VBoxContainer/File/FileLineEdit
 onready var file_file_format = $VBoxContainer/File/FileFormat
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	tabs.add_tab("Frame")

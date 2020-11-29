@@ -15,6 +15,7 @@ onready var left_color_button = $VBoxContainer/HBoxContainer/VBoxContainer/Cente
 onready var right_color_button = $VBoxContainer/HBoxContainer/VBoxContainer/CenterContainer/HBoxContainer/RightColor/NinePatchRect
 onready var dummyBtn = $DummyBtn
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	$VBoxContainer/HBoxContainer/EditPaletteColorPicker.presets_visible = false

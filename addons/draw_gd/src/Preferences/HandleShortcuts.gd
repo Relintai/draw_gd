@@ -8,6 +8,8 @@ var shortcut_already_assigned = false
 var old_input_event : InputEventKey
 var new_input_event : InputEventKey
 
+var DrawGD : Node = null
+
 onready var shortcut_selector_popup = DrawGD.preferences_dialog.get_node("Popups/ShortcutSelector")
 onready var theme_font_color : Color = DrawGD.preferences_dialog.get_node("Popups/ShortcutSelector/EnteredShortcut").get_color("font_color")
 

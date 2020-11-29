@@ -190,53 +190,54 @@ func _ready() -> void:
 	# XDGDataDirs depends on it nyaa
 	directory_module = XDGDataPaths.new()
 	image_clipboard = Image.new()
-	Input.set_custom_mouse_cursor(DrawGD.cursor_image, Input.CURSOR_CROSS, Vector2(15, 15))
+	Input.set_custom_mouse_cursor(cursor_image, Input.CURSOR_CROSS, Vector2(15, 15))
 
 	refresh_nodes()
 
 
 func refresh_nodes():
-	var root = get_tree().get_root()
-	control = find_node_by_name(root, "DrawGDControl")
+	#var root = get_tree().get_root()
+#	control = find_node_by_name(root, "DrawGDControl")
+	control = get_parent()
 	top_menu_container = find_node_by_name(control, "TopMenuContainer")
-	left_cursor = find_node_by_name(root, "LeftCursor")
-	right_cursor = find_node_by_name(root, "RightCursor")
-	canvas = find_node_by_name(root, "Canvas")
+	left_cursor = find_node_by_name(control, "LeftCursor")
+	right_cursor = find_node_by_name(control, "RightCursor")
+	canvas = find_node_by_name(control, "Canvas")
 
-	tabs = find_node_by_name(root, "Tabs")
-	main_viewport = find_node_by_name(root, "ViewportContainer")
-	second_viewport = find_node_by_name(root, "ViewportContainer2")
-	small_preview_viewport = find_node_by_name(root, "PreviewViewportContainer")
+	tabs = find_node_by_name(control, "Tabs")
+	main_viewport = find_node_by_name(control, "ViewportContainer")
+	second_viewport = find_node_by_name(control, "ViewportContainer2")
+	small_preview_viewport = find_node_by_name(control, "PreviewViewportContainer")
 	camera = find_node_by_name(main_viewport, "Camera2D")
-	camera2 = find_node_by_name(root, "Camera2D2")
-	camera_preview = find_node_by_name(root, "CameraPreview")
-	selection_rectangle = find_node_by_name(root, "SelectionRectangle")
-	horizontal_ruler = find_node_by_name(root, "HorizontalRuler")
-	vertical_ruler = find_node_by_name(root, "VerticalRuler")
-	transparent_checker = find_node_by_name(root, "TransparentChecker")
+	camera2 = find_node_by_name(control, "Camera2D2")
+	camera_preview = find_node_by_name(control, "CameraPreview")
+	selection_rectangle = find_node_by_name(control, "SelectionRectangle")
+	horizontal_ruler = find_node_by_name(control, "HorizontalRuler")
+	vertical_ruler = find_node_by_name(control, "VerticalRuler")
+	transparent_checker = find_node_by_name(control, "TransparentChecker")
 
-	file_menu = find_node_by_name(root, "FileMenu")
-	edit_menu = find_node_by_name(root, "EditMenu")
-	view_menu = find_node_by_name(root, "ViewMenu")
-	image_menu = find_node_by_name(root, "ImageMenu")
-	help_menu = find_node_by_name(root, "HelpMenu")
-	cursor_position_label = find_node_by_name(root, "CursorPosition")
-	zoom_level_label = find_node_by_name(root, "ZoomLevel")
+	file_menu = find_node_by_name(control, "FileMenu")
+	edit_menu = find_node_by_name(control, "EditMenu")
+	view_menu = find_node_by_name(control, "ViewMenu")
+	image_menu = find_node_by_name(control, "ImageMenu")
+	help_menu = find_node_by_name(control, "HelpMenu")
+	cursor_position_label = find_node_by_name(control, "CursorPosition")
+	zoom_level_label = find_node_by_name(control, "ZoomLevel")
 
-	new_image_dialog = find_node_by_name(root, "CreateNewImage")
-	open_sprites_dialog = find_node_by_name(root, "OpenSprite")
-	save_sprites_dialog = find_node_by_name(root, "SaveSprite")
-	save_sprites_html5_dialog = find_node_by_name(root, "SaveSpriteHTML5")
-	export_dialog = find_node_by_name(root, "ExportDialog")
-	preferences_dialog = find_node_by_name(root, "PreferencesDialog")
-	unsaved_changes_dialog = find_node_by_name(root, "UnsavedCanvasDialog")
+	new_image_dialog = find_node_by_name(control, "CreateNewImage")
+	open_sprites_dialog = find_node_by_name(control, "OpenSprite")
+	save_sprites_dialog = find_node_by_name(control, "SaveSprite")
+	save_sprites_html5_dialog = find_node_by_name(control, "SaveSpriteHTML5")
+	export_dialog = find_node_by_name(control, "ExportDialog")
+	preferences_dialog = find_node_by_name(control, "PreferencesDialog")
+	unsaved_changes_dialog = find_node_by_name(control, "UnsavedCanvasDialog")
 
-	color_switch_button = find_node_by_name(root, "ColorSwitch")
+	color_switch_button = find_node_by_name(control, "ColorSwitch")
 
-	brushes_popup = find_node_by_name(root, "BrushesPopup")
-	patterns_popup = find_node_by_name(root, "PatternsPopup")
+	brushes_popup = find_node_by_name(control, "BrushesPopup")
+	patterns_popup = find_node_by_name(control, "PatternsPopup")
 
-	animation_timeline = find_node_by_name(root, "AnimationTimeline")
+	animation_timeline = find_node_by_name(control, "AnimationTimeline")
 
 	layers_container = find_node_by_name(animation_timeline, "LayersContainer")
 	frames_container = find_node_by_name(animation_timeline, "FramesContainer")
@@ -262,20 +263,20 @@ func refresh_nodes():
 	layer_opacity_slider = find_node_by_name(animation_timeline, "OpacitySlider")
 	layer_opacity_spinbox = find_node_by_name(animation_timeline, "OpacitySpinBox")
 
-	preview_zoom_slider = find_node_by_name(root, "PreviewZoomSlider")
+	preview_zoom_slider = find_node_by_name(control, "PreviewZoomSlider")
 
-	add_palette_button = find_node_by_name(root, "AddPalette")
-	edit_palette_button = find_node_by_name(root, "EditPalette")
-	palette_option_button = find_node_by_name(root, "PaletteOptionButton")
-	palette_container = find_node_by_name(root, "PaletteContainer")
-	edit_palette_popup = find_node_by_name(root, "EditPalettePopup")
-	new_palette_dialog = find_node_by_name(root, "NewPaletteDialog")
+	add_palette_button = find_node_by_name(control, "AddPalette")
+	edit_palette_button = find_node_by_name(control, "EditPalette")
+	palette_option_button = find_node_by_name(control, "PaletteOptionButton")
+	palette_container = find_node_by_name(control, "PaletteContainer")
+	edit_palette_popup = find_node_by_name(control, "EditPalettePopup")
+	new_palette_dialog = find_node_by_name(control, "NewPaletteDialog")
 	new_palette_name_line_edit = find_node_by_name(new_palette_dialog, "NewPaletteNameLineEdit")
-	palette_import_file_dialog = find_node_by_name(root, "PaletteImportFileDialog")
+	palette_import_file_dialog = find_node_by_name(control, "PaletteImportFileDialog")
 
-	error_dialog = find_node_by_name(root, "ErrorDialog")
-	quit_dialog = find_node_by_name(root, "QuitDialog")
-	quit_and_save_dialog = find_node_by_name(root, "QuitAndSaveDialog")
+	error_dialog = find_node_by_name(control, "ErrorDialog")
+	quit_dialog = find_node_by_name(control, "QuitDialog")
+	quit_and_save_dialog = find_node_by_name(control, "QuitAndSaveDialog")
 
 	projects.append(Project.new())
 	projects[0].layers.append(Layer.new())
@@ -330,9 +331,9 @@ func undo(_frame_index := -1, _layer_index := -1, project : Project = current_pr
 
 		if action_name == "Scale":
 			canvas.camera_zoom()
-			DrawGD.canvas.grid.isometric_polylines.clear()
-			DrawGD.canvas.grid.update()
-			DrawGD.cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
+			canvas.grid.isometric_polylines.clear()
+			canvas.grid.update()
+			cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
 
 	elif "Frame" in action_name:
 		# This actually means that frames.size is one, but it hasn't been updated yet
@@ -361,9 +362,9 @@ func redo(_frame_index := -1, _layer_index := -1, project : Project = current_pr
 
 		if action_name == "Scale":
 			canvas.camera_zoom()
-			DrawGD.canvas.grid.isometric_polylines.clear()
-			DrawGD.canvas.grid.update()
-			DrawGD.cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
+			canvas.grid.isometric_polylines.clear()
+			canvas.grid.update()
+			cursor_position_label.text = "[%s×%s]" % [project.size.x, project.size.y]
 
 	elif "Frame" in action_name:
 		if project.frames.size() == 1: # Stop animating
@@ -517,5 +518,5 @@ func _exit_tree() -> void:
 	var i := 0
 	for project in projects:
 		project.undo_redo.free()
-		DrawGD.opensave.remove_backup(i)
+		opensave.remove_backup(i)
 		i += 1

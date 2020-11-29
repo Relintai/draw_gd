@@ -1,6 +1,7 @@
 tool
 extends Reference
 
+var DrawGD : Node = null
 
 # Get hold of the brushes, including random brushes (subdirectories and % files
 # in them, non % files get loaded independently.) nyaaa

@@ -14,6 +14,8 @@ onready var grid = $Grid
 onready var tile_mode = $TileMode
 onready var indicators = $Indicators
 
+var DrawGD : Node = null
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

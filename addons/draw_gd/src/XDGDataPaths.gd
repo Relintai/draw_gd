@@ -1,6 +1,8 @@
 tool
 extends Reference
 
+var DrawGD : Node = null
+
 # These are *with* the config subdirectory name
 var xdg_data_home : String
 var xdg_data_dirs : Array

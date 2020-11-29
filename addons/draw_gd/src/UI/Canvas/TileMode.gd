@@ -4,6 +4,7 @@ extends Node2D
 
 var location := Vector2.ZERO
 
+var DrawGD : Node = null
 
 func _draw() -> void:
 	var current_cels : Array = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels

@@ -4,6 +4,8 @@ class_name Project extends Reference
 
 var Export = preload("res://addons/draw_gd/src/Autoload/Export.gd")
 
+var DrawGD : Node = null
+
 var name := "" setget name_changed
 var size : Vector2 setget size_changed
 var undo_redo : UndoRedo

@@ -11,6 +11,7 @@ signal pattern_selected(pattern)
 
 var default_pattern : Pattern = null
 
+var DrawGD : Node = null
 
 func select_pattern(pattern : Pattern) -> void:
 	emit_signal("pattern_selected", pattern)
@@ -27,6 +28,8 @@ static func create_button(image : Image) -> Node:
 
 
 static func add(image : Image, hint := "") -> void:
+	var DrawGD : Node = null
+	
 	var button = create_button(image)
 	button.pattern.image = image
 	button.hint_tooltip = hint

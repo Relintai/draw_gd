@@ -1,6 +1,7 @@
 tool
 extends ConfirmationDialog
 
+var DrawGD : Node = null
 
 var current_cel : Image
 var shader : Shader

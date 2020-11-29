@@ -9,6 +9,7 @@ var linked_button : BaseButton
 var label : Label
 var line_edit : LineEdit
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	visibility_button = DrawGD.find_node_by_name(self, "VisibilityButton")

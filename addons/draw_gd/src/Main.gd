@@ -9,6 +9,7 @@ var opensprite_file_selected := false
 var redone := false
 var is_quitting_on_save := false
 
+onready var DrawGD : Node = $DrawGDSingleton
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -1,6 +1,7 @@
 tool
 extends ColorRect
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	rect_size = DrawGD.current_project.size

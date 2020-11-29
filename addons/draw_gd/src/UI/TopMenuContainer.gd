@@ -10,12 +10,17 @@ var zen_mode := false
 
 var was_exported = false
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	setup_file_menu()
 	setup_edit_menu()
 	setup_view_menu()
 	setup_image_menu()
+	
+#	DrawGds = get_tree().root.find_node("DrawGDSingleton")
+	
+#	print(DrawGds)
 
 func setup_file_menu() -> void:
 	

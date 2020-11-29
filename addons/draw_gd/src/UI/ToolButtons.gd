@@ -13,6 +13,8 @@ onready var tools := [
 	[$LightenDarken, "lightdark"],
 ]
 
+var DrawGD : Node = null
+
 
 func _ready() -> void:
 	for t in tools:

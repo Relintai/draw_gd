@@ -10,6 +10,7 @@ var last_frame := 0
 var timeline_scroll : ScrollContainer
 var tag_scroll_container : ScrollContainer
 
+var DrawGD : Node = null
 
 func _ready() -> void:
 	timeline_scroll = DrawGD.find_node_by_name(self, "TimelineScroll")
@@ -65,11 +66,14 @@ func _on_DeleteFrame_pressed(frame := -1) -> void:
 	var frame_to_delete : Frame = DrawGD.current_project.frames[frame]
 	var new_frames : Array = DrawGD.current_project.frames.duplicate()
 	new_frames.erase(frame_to_delete)
-	var current_frame := DrawGD.current_project.current_frame
+	
+	var DrawGD : Node = null
+	
+	var current_frame = DrawGD.current_project.current_frame
 	if current_frame > 0 && current_frame == new_frames.size(): # If it's the last frame
 		current_frame -= 1
 
-	var new_animation_tags := DrawGD.current_project.animation_tags.duplicate()
+	var new_animation_tags = DrawGD.current_project.animation_tags.duplicate()
 	# Loop through the tags to create new classes for them, so that they won't be the same
 	# as DrawGD.current_project.animation_tags's classes. Needed for undo/redo to work properly.
 	for i in new_animation_tags.size():
@@ -125,7 +129,7 @@ func _on_CopyFrame_pressed(frame := -1) -> void:
 
 	var new_frame := Frame.new()
 
-	var new_frames := DrawGD.current_project.frames.duplicate()
+	var new_frames = DrawGD.current_project.frames.duplicate()
 	new_frames.insert(frame + 1, new_frame)
 
 	for cel in DrawGD.current_project.frames[frame].cels: # Copy every cel
@@ -134,7 +138,7 @@ func _on_CopyFrame_pressed(frame := -1) -> void:
 		sprite.lock()
 		new_frame.cels.append(Cel.new(sprite, cel.opacity))
 
-	var new_animation_tags := DrawGD.current_project.animation_tags.duplicate()
+	var new_animation_tags = DrawGD.current_project.animation_tags.duplicate()
 	# Loop through the tags to create new classes for them, so that they won't be the same
 	# as DrawGD.current_project.animation_tags's classes. Needed for undo/redo to work properly.
 	for i in new_animation_tags.size():

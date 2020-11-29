@@ -5,6 +5,8 @@ extends Node2D
 var frame : int = 0
 onready var animation_timer : Timer = $AnimationTimer
 
+var DrawGD : Node = null
+
 func _draw() -> void:
 	var current_project : Project = DrawGD.current_project
 	if frame >= current_project.frames.size():

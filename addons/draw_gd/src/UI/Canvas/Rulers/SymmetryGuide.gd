@@ -1,7 +1,6 @@
 tool
 class_name SymmetryGuide extends Guide
 
-
 var _texture = preload("res://addons/draw_gd/assets/graphics/dotted_line.png")
 
 

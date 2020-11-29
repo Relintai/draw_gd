@@ -27,8 +27,17 @@ const languages_dict := {
 var loaded_locales : Array
 onready var cjk_font = preload("res://addons/draw_gd/assets/fonts/CJK/NotoSansCJKtc-Regular.tres")
 
+var DrawGD : Node = null
 
 func _ready() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.has_method("DrawGD"):
+			print("ddddddddddddddddd")
+			DrawGD = n.DrawGD
+			
+		n = n.get_parent() 
+	
 	loaded_locales = TranslationServer.get_loaded_locales()
 
 	# Make sure locales are always sorted, in the same order
