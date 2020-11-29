@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/circle_9x9.png-79b99d5bd133089e4ecfe6287fa083d9.image"
+
+[deps]
+
+source_file="res://addons/draw_gd/assets/graphics/circle_9x9.png"
+dest_files=[ "res://.import/circle_9x9.png-79b99d5bd133089e4ecfe6287fa083d9.image" ]
+
+[params]
+

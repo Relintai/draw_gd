@@ -24,7 +24,7 @@ const languages_dict := {
 }
 
 var loaded_locales : Array
-onready var cjk_font = preload("res://assets/fonts/CJK/NotoSansCJKtc-Regular.tres")
+onready var cjk_font = preload("res://addons/draw_gd/assets/fonts/CJK/NotoSansCJKtc-Regular.tres")
 
 
 func _ready() -> void:
@@ -74,9 +74,9 @@ func _on_Language_pressed(index : int) -> void:
 		TranslationServer.set_locale(loaded_locales[index - 1])
 
 	if is_cjk(TranslationServer.get_locale()):
-		DrawGD.control.theme.default_font = preload("res://assets/fonts/CJK/NotoSansCJKtc-Regular.tres")
+		DrawGD.control.theme.default_font = preload("res://addons/draw_gd/assets/fonts/CJK/NotoSansCJKtc-Regular.tres")
 	else:
-		DrawGD.control.theme.default_font = preload("res://assets/fonts/Roboto-Regular.tres")
+		DrawGD.control.theme.default_font = preload("res://addons/draw_gd/assets/fonts/Roboto-Regular.tres")
 
 	DrawGD.config_cache.set_value("preferences", "locale", TranslationServer.get_locale())
 	DrawGD.config_cache.save("user://cache.ini")

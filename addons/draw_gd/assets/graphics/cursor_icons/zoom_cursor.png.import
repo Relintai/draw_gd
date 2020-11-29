@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/zoom_cursor.png-b3932fc50ad4469b98581fdf826cfab1.image"
+
+[deps]
+
+source_file="res://addons/draw_gd/assets/graphics/cursor_icons/zoom_cursor.png"
+dest_files=[ "res://.import/zoom_cursor.png-b3932fc50ad4469b98581fdf826cfab1.image" ]
+
+[params]
+

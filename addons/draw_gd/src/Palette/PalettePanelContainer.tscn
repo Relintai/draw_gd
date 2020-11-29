@@ -1,12 +1,13 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/draw_gd/src/Palette/PaletteContainer.gd" type="Script" id=1]
-[ext_resource path="res://assets/graphics/dark_themes/palette/edit_palette.png" type="Texture" id=2]
-[ext_resource path="res://assets/graphics/dark_themes/palette/add_palette.png" type="Texture" id=3]
-[ext_resource path="res://assets/graphics/dark_themes/palette/remove_palette.png" type="Texture" id=4]
+[ext_resource path="res://addons/draw_gd/assets/graphics/dark_themes/palette/edit_palette.png" type="Texture" id=2]
+[ext_resource path="res://addons/draw_gd/assets/graphics/dark_themes/palette/add_palette.png" type="Texture" id=3]
+[ext_resource path="res://addons/draw_gd/assets/graphics/dark_themes/palette/remove_palette.png" type="Texture" id=4]
 [ext_resource path="res://addons/draw_gd/src/Palette/PaletteImportFileDialog.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/draw_gd/src/Palette/NewPaletteDialog.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/draw_gd/src/Palette/EditPalettePopup.tscn" type="PackedScene" id=7]
+
 
 
 [sub_resource type="ButtonGroup" id=1]

@@ -30,7 +30,7 @@ var key_move_press_time := [0.0, 0.0, 0.0, 0.0]
 var layers_changed_skip := false
 var can_draw := false
 var has_focus := false
-var cursor_image = preload("res://assets/graphics/cursor_icons/cursor.png")
+var cursor_image = preload("res://addons/draw_gd/assets/graphics/cursor_icons/cursor.png")
 var left_cursor_tool_texture := ImageTexture.new()
 var right_cursor_tool_texture := ImageTexture.new()
 

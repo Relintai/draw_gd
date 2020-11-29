@@ -89,11 +89,11 @@ func update_config() -> void:
 func update_brush() -> void:
 	match _brush.type:
 		Brushes.PIXEL:
-			_brush_texture.create_from_image(load("res://assets/graphics/pixel_image.png"), 0)
+			_brush_texture.create_from_image(load("res://addons/draw_gd/assets/graphics/pixel_image.png"), 0)
 		Brushes.CIRCLE:
-			_brush_texture.create_from_image(load("res://assets/graphics/circle_9x9.png"), 0)
+			_brush_texture.create_from_image(load("res://addons/draw_gd/assets/graphics/circle_9x9.png"), 0)
 		Brushes.FILLED_CIRCLE:
-			_brush_texture.create_from_image(load("res://assets/graphics/circle_filled_9x9.png"), 0)
+			_brush_texture.create_from_image(load("res://addons/draw_gd/assets/graphics/circle_filled_9x9.png"), 0)
 		Brushes.FILE, Brushes.RANDOM_FILE, Brushes.CUSTOM:
 			if _brush.random.size() <= 1:
 				_brush_image = _create_blended_brush_image(_brush.image)

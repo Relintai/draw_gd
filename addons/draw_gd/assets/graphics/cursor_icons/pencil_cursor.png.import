@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/pencil_cursor.png-42d4db45a0ff99e952cbf9ea42a3783b.image"
+
+[deps]
+
+source_file="res://addons/draw_gd/assets/graphics/cursor_icons/pencil_cursor.png"
+dest_files=[ "res://.import/pencil_cursor.png-42d4db45a0ff99e952cbf9ea42a3783b.image" ]
+
+[params]
+

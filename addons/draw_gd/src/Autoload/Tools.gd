@@ -146,9 +146,9 @@ func update_tool_buttons() -> void:
 
 
 func update_tool_cursors() -> void:
-	var image = "res://assets/graphics/cursor_icons/%s_cursor.png" % _slots[BUTTON_LEFT].tool_node.name.to_lower()
+	var image = "res://addons/draw_gd/assets/graphics/cursor_icons/%s_cursor.png" % _slots[BUTTON_LEFT].tool_node.name.to_lower()
 	DrawGD.left_cursor_tool_texture.create_from_image(load(image), 0)
-	image = "res://assets/graphics/cursor_icons/%s_cursor.png" % _slots[BUTTON_RIGHT].tool_node.name.to_lower()
+	image = "res://addons/draw_gd/assets/graphics/cursor_icons/%s_cursor.png" % _slots[BUTTON_RIGHT].tool_node.name.to_lower()
 	DrawGD.right_cursor_tool_texture.create_from_image(load(image), 0)
 
 

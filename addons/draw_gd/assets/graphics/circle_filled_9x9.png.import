@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/circle_filled_9x9.png-5e80012c7f9fa348d93eac2f6388a318.image"
+
+[deps]
+
+source_file="res://addons/draw_gd/assets/graphics/circle_filled_9x9.png"
+dest_files=[ "res://.import/circle_filled_9x9.png-5e80012c7f9fa348d93eac2f6388a318.image" ]
+
+[params]
+

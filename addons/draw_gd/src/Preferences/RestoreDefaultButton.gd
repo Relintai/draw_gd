@@ -10,9 +10,9 @@ var node : Node
 func _ready() -> void:
 	# Handle themes
 	if DrawGD.theme_type == DrawGD.Theme_Types.LIGHT:
-		texture_normal = load("res://assets/graphics/light_themes/misc/icon_reload.png")
+		texture_normal = load("res://addons/draw_gd/assets/graphics/light_themes/misc/icon_reload.png")
 	elif DrawGD.theme_type == DrawGD.Theme_Types.CARAMEL:
-		texture_normal = load("res://assets/graphics/caramel_themes/misc/icon_reload.png")
+		texture_normal = load("res://addons/draw_gd/assets/graphics/caramel_themes/misc/icon_reload.png")
 
 
 func _on_RestoreDefaultButton_pressed() -> void:

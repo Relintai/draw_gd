@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/eraser_cursor.png-b912e738c902f50d9d3b725e98779dbb.image"
+
+[deps]
+
+source_file="res://addons/draw_gd/assets/graphics/cursor_icons/eraser_cursor.png"
+dest_files=[ "res://.import/eraser_cursor.png-b912e738c902f50d9d3b725e98779dbb.image" ]
+
+[params]
+
