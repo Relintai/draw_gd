@@ -32,23 +32,19 @@ func init():
 	line_edit = DrawGD.find_node_by_name(self, "LineEdit")
 
 	if DrawGD.current_project.layers[i].visible:
-		DrawGD.change_button_texturerect(visibility_button.get_child(0), "layer_visible.png")
-		visibility_button.get_child(0).rect_size = Vector2(24, 14)
-		visibility_button.get_child(0).rect_position = Vector2(4, 9)
+		DrawGD.change_button_texturerect(visibility_button.get_child(0).get_child(0), "layer_visible.png")
 	else:
-		DrawGD.change_button_texturerect(visibility_button.get_child(0), "layer_invisible.png")
-		visibility_button.get_child(0).rect_size = Vector2(24, 8)
-		visibility_button.get_child(0).rect_position = Vector2(4, 12)
+		DrawGD.change_button_texturerect(visibility_button.get_child(0).get_child(0), "layer_invisible.png")
 
 	if DrawGD.current_project.layers[i].locked:
-		DrawGD.change_button_texturerect(lock_button.get_child(0), "lock.png")
+		DrawGD.change_button_texturerect(lock_button.get_child(0).get_child(0), "lock.png")
 	else:
-		DrawGD.change_button_texturerect(lock_button.get_child(0), "unlock.png")
+		DrawGD.change_button_texturerect(lock_button.get_child(0).get_child(0), "unlock.png")
 
 	if DrawGD.current_project.layers[i].new_cels_linked: # If new layers will be linked
-		DrawGD.change_button_texturerect(linked_button.get_child(0), "linked_layer.png")
+		DrawGD.change_button_texturerect(linked_button.get_child(0).get_child(0), "linked_layer.png")
 	else:
-		DrawGD.change_button_texturerect(linked_button.get_child(0), "unlinked_layer.png")
+		DrawGD.change_button_texturerect(linked_button.get_child(0).get_child(0), "unlinked_layer.png")
 
 
 func _input(event : InputEvent) -> void:
