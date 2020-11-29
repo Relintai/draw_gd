@@ -1,12 +1,13 @@
 tool
 extends EditorPlugin
 
+const _icon : Texture = preload("res://addons/draw_gd/icons/icon_copy.png")
+
 func has_main_screen():
 	return true
 	
 func get_plugin_icon():
-	
-	return null
+	return _icon
 	
 func get_plugin_name():
 	return "DrawGD"
