@@ -12,77 +12,77 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "AnimationTag",
 "language": "GDScript",
-"path": "res://src/Classes/AnimationTag.gd"
+"path": "res://addons/draw_gd/src/Classes/AnimationTag.gd"
 }, {
 "base": "Popup",
 "class": "Brushes",
 "language": "GDScript",
-"path": "res://src/UI/BrushesPopup.gd"
+"path": "res://addons/draw_gd/src/UI/BrushesPopup.gd"
 }, {
 "base": "Node2D",
 "class": "Canvas",
 "language": "GDScript",
-"path": "res://src/UI/Canvas/Canvas.gd"
+"path": "res://addons/draw_gd/src/UI/Canvas/Canvas.gd"
 }, {
 "base": "Reference",
 "class": "Cel",
 "language": "GDScript",
-"path": "res://src/Classes/Cel.gd"
+"path": "res://addons/draw_gd/src/Classes/Cel.gd"
 }, {
 "base": "Reference",
 "class": "Drawer",
 "language": "GDScript",
-"path": "res://src/Classes/Drawers.gd"
+"path": "res://addons/draw_gd/src/Classes/Drawers.gd"
 }, {
 "base": "Reference",
 "class": "Frame",
 "language": "GDScript",
-"path": "res://src/Classes/Frame.gd"
+"path": "res://addons/draw_gd/src/Classes/Frame.gd"
 }, {
 "base": "Line2D",
 "class": "Guide",
 "language": "GDScript",
-"path": "res://src/UI/Canvas/Rulers/Guide.gd"
+"path": "res://addons/draw_gd/src/UI/Canvas/Rulers/Guide.gd"
 }, {
 "base": "AcceptDialog",
 "class": "ImageEffect",
 "language": "GDScript",
-"path": "res://src/Classes/ImageEffect.gd"
+"path": "res://addons/draw_gd/src/Classes/ImageEffect.gd"
 }, {
 "base": "Reference",
 "class": "Layer",
 "language": "GDScript",
-"path": "res://src/Classes/Layer.gd"
+"path": "res://addons/draw_gd/src/Classes/Layer.gd"
 }, {
 "base": "Button",
 "class": "LayerButton",
 "language": "GDScript",
-"path": "res://src/UI/Timeline/LayerButton.gd"
+"path": "res://addons/draw_gd/src/UI/Timeline/LayerButton.gd"
 }, {
 "base": "Reference",
 "class": "Palette",
 "language": "GDScript",
-"path": "res://src/Palette/Palette.gd"
+"path": "res://addons/draw_gd/src/Palette/Palette.gd"
 }, {
 "base": "Reference",
 "class": "PaletteColor",
 "language": "GDScript",
-"path": "res://src/Palette/PaletteColor.gd"
+"path": "res://addons/draw_gd/src/Palette/PaletteColor.gd"
 }, {
 "base": "PopupPanel",
 "class": "Patterns",
 "language": "GDScript",
-"path": "res://src/UI/PatternsPopup.gd"
+"path": "res://addons/draw_gd/src/UI/PatternsPopup.gd"
 }, {
 "base": "Reference",
 "class": "Project",
 "language": "GDScript",
-"path": "res://src/Classes/Project.gd"
+"path": "res://addons/draw_gd/src/Classes/Project.gd"
 }, {
 "base": "Guide",
 "class": "SymmetryGuide",
 "language": "GDScript",
-"path": "res://src/UI/Canvas/Rulers/SymmetryGuide.gd"
+"path": "res://addons/draw_gd/src/UI/Canvas/Rulers/SymmetryGuide.gd"
 } ]
 _global_script_class_icons={
 "AnimationTag": "",
@@ -106,7 +106,7 @@ _global_script_class_icons={
 
 config/name="DrawGD"
 config/description="A free & open-source 2D sprite editor editor plugin, based on Pixelorama."
-run/main_scene="res://src/Main.tscn"
+run/main_scene="res://addons/draw_gd/src/Main.tscn"
 run/low_processor_mode=true
 boot_splash/image="res://assets/graphics/splash.png"
 boot_splash/bg_color=Color( 0.145098, 0.145098, 0.164706, 1 )
@@ -121,7 +121,7 @@ driver="Dummy"
 
 [autoload]
 
-DrawGD="*res://src/Autoload/DrawGD.gd"
+DrawGD="*res://addons/draw_gd/src/Autoload/DrawGD.gd"
 
 [debug]
 
@@ -132,6 +132,10 @@ gdscript/warnings/return_value_discarded=false
 
 window/size/width=1280
 window/size/height=720
+
+[editor_plugins]
+
+enabled=PoolStringArray( "draw_gd" )
 
 [importer_defaults]
 
