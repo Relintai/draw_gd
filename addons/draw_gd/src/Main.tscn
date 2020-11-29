@@ -143,14 +143,13 @@ dialog_text = "Can't load file '--editor'.
 Error code: 7"
 
 [node name="BackupConfirmation" type="ConfirmationDialog" parent="DrawGDControl/Dialogs"]
-margin_left = 429.0
-margin_top = 316.0
-margin_right = 851.0
-margin_bottom = 404.0
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 786.0
+margin_bottom = 112.0
 rect_min_size = Vector2( 250, 87.5 )
 popup_exclusive = true
-dialog_text = "Autosaved backup for [user://backup-1606662249-0] was found.
-Do you want to reload it?"
+dialog_text = "Autosaved backup was found. Do you want to reload it?"
 
 [node name="LeftCursor" type="Sprite" parent="DrawGDControl"]
 visible = false

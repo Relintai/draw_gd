@@ -38,8 +38,8 @@ func _enter_tree() -> void:
 
 	if not DrawGD.config_cache.has_section_key("preferences", "startup"):
 		DrawGD.config_cache.set_value("preferences", "startup", true)
+		
 	show_splash_screen()
-
 	handle_backup()
 
 	# If the user wants to run Pixelorama with arguments in terminal mode
@@ -47,7 +47,10 @@ func _enter_tree() -> void:
 	if OS.get_cmdline_args():
 		DrawGD.opensave.handle_loading_files(OS.get_cmdline_args())
 	get_tree().connect("files_dropped", self, "_on_files_dropped")
-
+	
+func show_splash_screen():
+	yield(get_tree().create_timer(0.2), "timeout")
+	DrawGD.can_draw = true
 
 func _input(event : InputEvent) -> void:
 #	DrawGD.left_cursor.position = get_global_mouse_position() + Vector2(-32, 32)
@@ -87,37 +90,34 @@ func setup_application_window_size() -> void:
 			OS.window_size = DrawGD.config_cache.get_value("window", "size")
 
 
-func show_splash_screen() -> void:
-	# Wait for the window to adjust itself, so the popup is correctly centered
-	yield(get_tree().create_timer(0.2), "timeout")
-	DrawGD.can_draw = true
-
-
 func handle_backup() -> void:
 	# If backup file exists then Pixelorama was not closed properly (probably crashed) - reopen backup
-	var backup_confirmation : ConfirmationDialog = $Dialogs/BackupConfirmation
-	backup_confirmation.get_cancel().text = tr("Delete")
-	if DrawGD.config_cache.has_section("backups"):
-		var project_paths = DrawGD.config_cache.get_section_keys("backups")
-		if project_paths.size() > 0:
-			# Get backup paths
-			var backup_paths := []
-			for p_path in project_paths:
-				backup_paths.append(DrawGD.config_cache.get_value("backups", p_path))
-			# Temporatily stop autosave until user confirms backup
-			DrawGD.opensave.autosave_timer.stop()
-			backup_confirmation.dialog_text = tr("Autosaved backup for %s was found. Do you want to reload it?") % project_paths
-			backup_confirmation.connect("confirmed", self, "_on_BackupConfirmation_confirmed", [project_paths, backup_paths])
-			backup_confirmation.get_cancel().connect("pressed", self, "_on_BackupConfirmation_delete", [project_paths, backup_paths])
-			backup_confirmation.popup_centered()
-			DrawGD.can_draw = false
-			modulate = Color(0.5, 0.5, 0.5)
-		else:
-			if DrawGD.open_last_project:
-				load_last_project()
-	else:
-		if DrawGD.open_last_project:
-			load_last_project()
+#	var backup_confirmation : ConfirmationDialog = $Dialogs/BackupConfirmation
+#	backup_confirmation.get_cancel().text = tr("Delete")
+#	if DrawGD.config_cache.has_section("backups"):
+#		var project_paths = DrawGD.config_cache.get_section_keys("backups")
+#		if project_paths.size() > 0:
+#			# Get backup paths
+#			var backup_paths := []
+#			for p_path in project_paths:
+#				backup_paths.append(DrawGD.config_cache.get_value("backups", p_path))
+#			# Temporatily stop autosave until user confirms backup
+#			DrawGD.opensave.autosave_timer.stop()
+#			backup_confirmation.dialog_text = tr("Autosaved backup was found. Do you want to reload it?")
+#			backup_confirmation.connect("confirmed", self, "_on_BackupConfirmation_confirmed", [project_paths, backup_paths])
+#			backup_confirmation.get_cancel().connect("pressed", self, "_on_BackupConfirmation_delete", [project_paths, backup_paths])
+#			backup_confirmation.popup_centered()
+#			DrawGD.can_draw = false
+#			modulate = Color(0.5, 0.5, 0.5)
+#		else:
+#			if DrawGD.open_last_project:
+#				load_last_project()
+#	else:
+#		if DrawGD.open_last_project:
+#			load_last_project()
+			
+	if DrawGD.open_last_project:
+		load_last_project()
 
 
 func _notification(what : int) -> void:
