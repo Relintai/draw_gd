@@ -250,11 +250,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FrameTimer" type="Timer" parent="."]
-__meta__ = {
-"_editor_description_": "Timer to advance animation frames in animation preview."
-}
-
 [connection signal="about_to_show" from="." to="." method="_on_ExportDialog_about_to_show"]
 [connection signal="confirmed" from="." to="." method="_on_ExportDialog_confirmed"]
 [connection signal="custom_action" from="." to="." method="_on_ExportDialog_custom_action"]
@@ -268,4 +263,3 @@ __meta__ = {
 [connection signal="dir_selected" from="Popups/PathDialog" to="." method="_on_FileDialog_dir_selected"]
 [connection signal="confirmed" from="Popups/FileExistsAlert" to="." method="_on_FileExistsAlert_confirmed"]
 [connection signal="custom_action" from="Popups/FileExistsAlert" to="." method="_on_FileExistsAlert_custom_action"]
-[connection signal="timeout" from="FrameTimer" to="." method="_on_FrameTimer_timeout"]
