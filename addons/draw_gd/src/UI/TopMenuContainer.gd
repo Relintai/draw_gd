@@ -316,8 +316,6 @@ func toggle_show_anim_timeline() -> void:
 
 
 func toggle_zen_mode() -> void:
-	if DrawGD.show_animation_timeline:
-		DrawGD.animation_timeline.visible = zen_mode
 	DrawGD.control.get_node("MenuAndUI/UI/ToolPanel").visible = zen_mode
 	DrawGD.control.get_node("MenuAndUI/UI/RightPanel").visible = zen_mode
 	DrawGD.control.get_node("MenuAndUI/UI/CanvasAndTimeline/ViewportAndRulers/TabsContainer").visible = zen_mode
