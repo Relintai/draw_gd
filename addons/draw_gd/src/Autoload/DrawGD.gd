@@ -192,6 +192,10 @@ func _ready() -> void:
 	image_clipboard = Image.new()
 	Input.set_custom_mouse_cursor(DrawGD.cursor_image, Input.CURSOR_CROSS, Vector2(15, 15))
 
+	refresh_nodes()
+
+
+func refresh_nodes():
 	var root = get_tree().get_root()
 	control = find_node_by_name(root, "DrawGDControl")
 	top_menu_container = find_node_by_name(control, "TopMenuContainer")

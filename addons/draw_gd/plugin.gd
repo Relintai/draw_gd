@@ -25,6 +25,8 @@ func _enter_tree():
 	
 	make_visible(false)
 	
+#	DrawGD.refresh_nodes()
+	
 
 func _exit_tree():
 	#remove_autoload_singleton("DrawGD")
