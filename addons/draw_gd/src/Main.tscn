@@ -134,10 +134,13 @@ __meta__ = {
 }
 
 [node name="ErrorDialog" type="AcceptDialog" parent="DrawGDControl/Dialogs"]
-margin_right = 151.0
-margin_bottom = 60.0
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 172.0
+margin_bottom = 99.0
 window_title = "Error"
-dialog_text = "This is an error message!"
+dialog_text = "Can't load file '--editor'.
+Error code: 7"
 
 [node name="BackupConfirmation" type="ConfirmationDialog" parent="DrawGDControl/Dialogs"]
 margin_left = 429.0

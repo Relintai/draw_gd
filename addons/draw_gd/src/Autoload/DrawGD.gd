@@ -200,7 +200,7 @@ func _enter_tree() -> void:
 func refresh_nodes():
 	#var root = get_tree().get_root()
 #	control = find_node_by_name(root, "DrawGDControl")
-	control = get_parent()
+	control = get_node("DrawGDControl")
 	top_menu_container = find_node_by_name(control, "TopMenuContainer")
 	left_cursor = find_node_by_name(control, "LeftCursor")
 	right_cursor = find_node_by_name(control, "RightCursor")

@@ -106,7 +106,7 @@ func handle_backup() -> void:
 				backup_paths.append(DrawGD.config_cache.get_value("backups", p_path))
 			# Temporatily stop autosave until user confirms backup
 			DrawGD.opensave.autosave_timer.stop()
-			backup_confirmation.dialog_text = tr(backup_confirmation.dialog_text) % project_paths
+			backup_confirmation.dialog_text = tr("Autosaved backup for %s was found. Do you want to reload it?") % project_paths
 			backup_confirmation.connect("confirmed", self, "_on_BackupConfirmation_confirmed", [project_paths, backup_paths])
 			backup_confirmation.get_cancel().connect("pressed", self, "_on_BackupConfirmation_delete", [project_paths, backup_paths])
 			backup_confirmation.popup_centered()

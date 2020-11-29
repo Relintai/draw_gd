@@ -4,10 +4,20 @@ extends Button
 var frame := 0
 var layer := 0
 
-onready var popup_menu : PopupMenu = $PopupMenu
+var DrawGD : Node = null
 
+var popup_menu : PopupMenu = null
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+
+	popup_menu = get_node("PopupMenu")
+
 	hint_tooltip = tr("Frame: %s, Layer: %s") % [frame + 1, layer]
 	if DrawGD.current_project.frames[frame] in DrawGD.current_project.layers[layer].linked_cels:
 		get_node("LinkedIndicator").visible = true

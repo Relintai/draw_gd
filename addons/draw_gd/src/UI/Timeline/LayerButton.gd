@@ -91,4 +91,4 @@ func _on_LinkButton_pressed() -> void:
 	if DrawGD.current_project.layers[i].new_cels_linked && !DrawGD.current_project.layers[i].linked_cels:
 		# If button is pressed and there are no linked cels in the layer
 		DrawGD.current_project.layers[i].linked_cels.append(DrawGD.current_project.frames[DrawGD.current_project.current_frame])
-		DrawGD.current_project.layers[i].frame_container.get_child(DrawGD.current_project.current_frame)._ready()
+		#DrawGD.current_project.layers[i].frame_container.get_child(DrawGD.current_project.current_frame)._ready()
