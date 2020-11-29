@@ -8,6 +8,7 @@ var lock_button : BaseButton
 var linked_button : BaseButton
 var label : Label
 var line_edit : LineEdit
+var cel_button : Node
 
 var DrawGD : Node = null
 
@@ -25,6 +26,7 @@ func _enter_tree() -> void:
 	init()
 
 func init():
+	cel_button = $HBoxContainer/CelButton
 	visibility_button = DrawGD.find_node_by_name(self, "VisibilityButton")
 	lock_button = DrawGD.find_node_by_name(self, "LockButton")
 	linked_button = DrawGD.find_node_by_name(self, "LinkButton")

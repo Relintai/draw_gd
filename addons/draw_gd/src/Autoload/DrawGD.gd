@@ -116,9 +116,7 @@ var patterns_popup : Popup
 
 var animation_timeline : Panel
 
-var frame_ids : HBoxContainer
 var layers_container : VBoxContainer
-var frames_container : VBoxContainer
 var tag_container : Control
 var tag_dialog : AcceptDialog
 
@@ -219,8 +217,6 @@ func refresh_nodes():
 	animation_timeline = find_node_by_name(control, "AnimationTimeline")
 
 	layers_container = find_node_by_name(animation_timeline, "LayersContainer")
-	frames_container = find_node_by_name(animation_timeline, "FramesContainer")
-	frame_ids = find_node_by_name(animation_timeline, "FrameIDs")
 	tag_container = find_node_by_name(animation_timeline, "TagContainer")
 	tag_dialog = find_node_by_name(animation_timeline, "FrameTagDialog")
 

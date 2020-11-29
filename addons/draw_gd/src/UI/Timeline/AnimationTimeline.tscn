@@ -292,16 +292,18 @@ margin_bottom = 123.0
 size_flags_vertical = 3
 
 [node name="LayersAndFrames" type="HBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll"]
-margin_right = 252.0
+margin_right = 888.0
 margin_bottom = 116.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="LayerVBoxCont" type="VBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames"]
-margin_right = 212.0
+margin_right = 888.0
 margin_bottom = 116.0
+size_flags_horizontal = 3
 
 [node name="LayerLabel" type="Label" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames/LayerVBoxCont"]
-margin_right = 212.0
+margin_right = 888.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 0, 16 )
 text = "Layers"
@@ -310,34 +312,12 @@ valign = 1
 
 [node name="LayersContainer" type="VBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames/LayerVBoxCont"]
 margin_top = 20.0
-margin_right = 212.0
+margin_right = 888.0
 margin_bottom = 56.0
+size_flags_horizontal = 3
 
 [node name="LayerContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames/LayerVBoxCont/LayersContainer" instance=ExtResource( 18 )]
-margin_right = 212.0
-
-[node name="FrameButtonsAndIds" type="VBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames"]
-margin_left = 216.0
-margin_right = 252.0
-margin_bottom = 116.0
-
-[node name="FrameIDs" type="HBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames/FrameButtonsAndIds"]
-margin_right = 36.0
-margin_bottom = 16.0
-rect_min_size = Vector2( 0, 16 )
-
-[node name="Label" type="Label" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames/FrameButtonsAndIds/FrameIDs"]
-margin_top = 1.0
-margin_right = 36.0
-margin_bottom = 15.0
-rect_min_size = Vector2( 36, 0 )
-text = "1"
-align = 1
-
-[node name="FramesContainer" type="VBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames/FrameButtonsAndIds"]
-margin_top = 20.0
-margin_right = 36.0
-margin_bottom = 20.0
+margin_right = 888.0
 
 [node name="AnimationTimer" type="Timer" parent="."]
 

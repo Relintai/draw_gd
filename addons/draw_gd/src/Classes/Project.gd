@@ -98,12 +98,6 @@ func change_project() -> void:
 	for container in DrawGD.layers_container.get_children():
 		container.queue_free()
 
-	remove_cel_buttons()
-
-	for frame_id in DrawGD.frame_ids.get_children():
-		DrawGD.frame_ids.remove_child(frame_id)
-		frame_id.queue_free()
-
 	# Create new ones
 	for i in range(layers.size() - 1, -1, -1):
 		# Create layer buttons
@@ -115,28 +109,8 @@ func change_project() -> void:
 		DrawGD.layers_container.add_child(layer_container)
 		layer_container.label.text = layers[i].name
 		layer_container.line_edit.text = layers[i].name
-
-		DrawGD.frames_container.add_child(layers[i].frame_container)
-		for j in range(frames.size()): # Create Cel buttons
-			var cel_button = load("res://addons/draw_gd/src/UI/Timeline/CelButton.tscn").instance()
-			cel_button.frame = j
-			cel_button.layer = i
-			cel_button.texture = frames[j].cels[i].image_texture
-			if j == current_frame and i == current_layer:
-				cel_button.pressed = true
-
-			layers[i].frame_container.add_child(cel_button)
-
-	for j in range(frames.size()): # Create frame ID labels
-		var label := Label.new()
-		label.rect_min_size.x = 36
-		label.align = Label.ALIGN_CENTER
-		label.text = str(j + 1)
 		
-		#if j == current_frame:
-			#label.add_color_override("font_color", DrawGD.control.theme.get_color("Selected Color", "Label"))
-			
-		DrawGD.frame_ids.add_child(label)
+		layer_container.cel_button.texture = frames[0].cels[0].image_texture
 
 	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
 	layer_button.pressed = true
@@ -350,7 +324,6 @@ func size_changed(value : Vector2) -> void:
 
 func frames_changed(value : Array) -> void:
 	frames = value
-	remove_cel_buttons()
 
 	for frame_id in DrawGD.frame_ids.get_children():
 		DrawGD.frame_ids.remove_child(frame_id)
@@ -384,8 +357,6 @@ func layers_changed(value : Array) -> void:
 	for container in DrawGD.layers_container.get_children():
 		container.queue_free()
 
-	remove_cel_buttons()
-
 	for i in range(layers.size() - 1, -1, -1):
 		var layer_container = load("res://addons/draw_gd/src/UI/Timeline/LayerButton.tscn").instance()
 		layer_container.i = i
@@ -398,29 +369,15 @@ func layers_changed(value : Array) -> void:
 		DrawGD.layers_container.add_child(layer_container)
 		layer_container.label.text = layers[i].name
 		layer_container.line_edit.text = layers[i].name
+		
+		if frames.size() > 0:
+			layer_container.cel_button.texture = frames[0].cels[0].image_texture
 
-		DrawGD.frames_container.add_child(layers[i].frame_container)
-		for j in range(frames.size()):
-			var cel_button = load("res://addons/draw_gd/src/UI/Timeline/CelButton.tscn").instance()
-			cel_button.frame = j
-			cel_button.layer = i
-			cel_button.texture = frames[j].cels[i].image_texture
-
-			layers[i].frame_container.add_child(cel_button)
 
 	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
 	layer_button.pressed = true
 	self.current_frame = current_frame # Call frame_changed to update UI
 	toggle_layer_buttons_layers()
-
-
-func remove_cel_buttons() -> void:
-	for container in DrawGD.frames_container.get_children():
-		for button in container.get_children():
-			container.remove_child(button)
-			button.queue_free()
-		DrawGD.frames_container.remove_child(container)
-
 
 func frame_changed(value : int) -> void:
 	current_frame = value
@@ -429,7 +386,7 @@ func frame_changed(value : int) -> void:
 		var text_color := Color.white
 		if DrawGD.theme_type == DrawGD.Theme_Types.CARAMEL || DrawGD.theme_type == DrawGD.Theme_Types.LIGHT:
 			text_color = Color.black
-		DrawGD.frame_ids.get_child(i).add_color_override("font_color", text_color)
+			
 		for layer in layers: # De-select all the other frames
 			if i < layer.frame_container.get_child_count():
 				layer.frame_container.get_child(i).pressed = false
