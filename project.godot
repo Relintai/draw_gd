@@ -122,7 +122,6 @@ driver="Dummy"
 [autoload]
 
 Global="*res://src/Autoload/Global.gd"
-Import="*res://src/Autoload/Import.gd"
 OpenSave="*res://src/Autoload/OpenSave.gd"
 DrawingAlgos="*res://src/Autoload/DrawingAlgos.gd"
 Tools="*res://src/Autoload/Tools.gd"

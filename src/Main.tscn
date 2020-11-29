@@ -59,8 +59,6 @@ margin_left = 108.0
 margin_top = 40.0
 margin_right = 623.0
 margin_bottom = 388.0
-current_dir = "/home/relintai/Projects/draw_gd"
-current_path = "/home/relintai/Projects/draw_gd/untitled"
 
 [node name="SaveSpriteHTML5" parent="Dialogs" instance=ExtResource( 8 )]
 

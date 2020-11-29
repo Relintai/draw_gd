@@ -11,6 +11,8 @@ var from_palette : Palette
 onready var palette_from_sprite_dialog = $"../../../../PaletteFromSpriteDialog"
 onready var remove_palette_warning = $"../../../../RemovePaletteWarning"
 
+var Import = preload("res://src/Autoload/Import.gd")
+
 
 func _ready() -> void:
 	_load_palettes()

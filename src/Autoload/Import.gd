@@ -1,4 +1,4 @@
-extends Node
+extends Reference
 
 
 # Get hold of the brushes, including random brushes (subdirectories and % files

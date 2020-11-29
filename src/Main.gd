@@ -1,5 +1,7 @@
 extends Control
 
+var Import = preload("res://src/Autoload/Import.gd")
+
 var opensprite_file_selected := false
 var redone := false
 var is_quitting_on_save := false
