@@ -172,7 +172,7 @@ func add_brush() -> void:
 		file_name_ext = file_name_replace(file_name_ext, "Brushes")
 		var file_name : String = file_name_ext.get_basename()
 
-		Brushes.add_file_brush([image], file_name)
+		Brushes.add_file_brush(DrawGD, [image], file_name)
 
 		# Copy the image file into the "pixelorama/Brushes" directory
 		var location := "Brushes".plus_file(file_name_ext)
@@ -182,7 +182,7 @@ func add_brush() -> void:
 	elif brush_type == BrushTypes.PROJECT:
 		var file_name : String =  path.get_file().get_basename()
 		DrawGD.current_project.brushes.append(image)
-		Brushes.add_project_brush(image, file_name)
+		Brushes.add_project_brush(DrawGD, image, file_name)
 
 	elif brush_type == BrushTypes.RANDOM:
 		var brush_name = new_brush_name.get_node("BrushNameLineEdit").text.to_lower()

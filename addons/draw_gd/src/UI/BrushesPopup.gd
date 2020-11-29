@@ -70,9 +70,7 @@ static func create_button(image : Image) -> Node:
 	return button
 
 
-static func add_file_brush(images : Array, hint := "") -> void:
-	var DrawGD : Node = null
-	
+static func add_file_brush(DrawGD : Node, images : Array, hint := "") -> void:
 	var button = create_button(images[0])
 	button.brush.type = FILE if images.size() == 1 else RANDOM_FILE
 	button.brush.image = images[0]
@@ -83,9 +81,7 @@ static func add_file_brush(images : Array, hint := "") -> void:
 	button.brush.index = button.get_index()
 
 
-static func add_project_brush(image : Image, hint := "") -> void:
-	var DrawGD : Node = null
-	
+static func add_project_brush(DrawGD : Node, image : Image, hint := "") -> void:
 	var button = create_button(image)
 	button.brush.type = CUSTOM
 	button.brush.image = image
@@ -95,9 +91,7 @@ static func add_project_brush(image : Image, hint := "") -> void:
 	button.brush.index = button.get_index()
 
 
-static func clear_project_brush() -> void:
-	var DrawGD : Node = null
-	
+static func clear_project_brush(DrawGD : Node) -> void:
 	var container = DrawGD.brushes_popup.get_node("TabContainer/Project/ProjectBrushContainer")
 	for child in container.get_children():
 		child.queue_free()

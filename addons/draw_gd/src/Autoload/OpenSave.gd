@@ -103,7 +103,7 @@ func open_pxo_file(path : String, untitled_backup : bool = false) -> void:
 				var image := Image.new()
 				image.create_from_data(b_width, b_height, false, Image.FORMAT_RGBA8, buffer)
 				new_project.brushes.append(image)
-				Brushes.add_project_brush(image)
+				Brushes.add_project_brush(DrawGD, image)
 
 	file.close()
 	if !empty_project:
@@ -259,7 +259,7 @@ func open_old_pxo_file(file : File, new_project : Project, first_line : String) 
 		var image := Image.new()
 		image.create_from_data(b_width, b_height, false, Image.FORMAT_RGBA8, buffer)
 		new_project.brushes.append(image)
-		Brushes.add_project_brush(image)
+		Brushes.add_project_brush(DrawGD, image)
 		brush_line = file.get_line()
 
 	if file_major_version >= 0 and file_minor_version > 6:

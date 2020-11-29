@@ -13,7 +13,14 @@ var _undo_data := {}
 
 var DrawGD : Node = null
 
-func _ready() -> void:
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+
 	_clear_image.create(1, 1, false, Image.FORMAT_RGBA8)
 	_clear_image.fill(Color(0, 0, 0, 0))
 
@@ -40,6 +47,7 @@ func set_rect(rect : Rect2) -> void:
 	visible = not rect.has_no_area()
 
 	var project : Project = DrawGD.current_project
+	
 	if rect.has_no_area():
 		project.select_all_pixels()
 	else:
@@ -116,7 +124,7 @@ func copy() -> void:
 		return
 	var brush = _clipboard.get_rect(_clipboard.get_used_rect())
 	project.brushes.append(brush)
-	Brushes.add_project_brush(brush)
+	Brushes.add_project_brush(DrawGD, brush)
 
 func cut() -> void: # This is basically the same as copy + delete
 	if _selected_rect.has_no_area():
@@ -134,7 +142,7 @@ func cut() -> void: # This is basically the same as copy + delete
 	_clear_image.resize(size.x, size.y, Image.INTERPOLATE_NEAREST)
 	var brush = _clipboard.get_rect(_clipboard.get_used_rect())
 	project.brushes.append(brush)
-	Brushes.add_project_brush(brush)
+	Brushes.add_project_brush(DrawGD, brush)
 	move_end() # The selection_rectangle can be used while is moving, this prevents malfunctioning
 	image.blit_rect(_clear_image, rect, _selected_rect.position)
 	commit_undo("Draw", undo_data)

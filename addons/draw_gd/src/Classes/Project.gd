@@ -2,7 +2,8 @@ tool
 class_name Project extends Reference
 # A class for project properties.
 
-var Export = preload("res://addons/draw_gd/src/Autoload/Export.gd")
+var export_script = preload("res://addons/draw_gd/src/Autoload/Export.gd")
+var Export = export_script.new()
 
 var DrawGD : Node = null
 
@@ -120,7 +121,7 @@ func change_project() -> void:
 			var cel_button = load("res://addons/draw_gd/src/UI/Timeline/CelButton.tscn").instance()
 			cel_button.frame = j
 			cel_button.layer = i
-			cel_button.get_child(0).texture = frames[j].cels[i].image_texture
+			cel_button.texture = frames[j].cels[i].image_texture
 			if j == current_frame and i == current_layer:
 				cel_button.pressed = true
 
@@ -131,8 +132,10 @@ func change_project() -> void:
 		label.rect_min_size.x = 36
 		label.align = Label.ALIGN_CENTER
 		label.text = str(j + 1)
-		if j == current_frame:
-			label.add_color_override("font_color", DrawGD.control.theme.get_color("Selected Color", "Label"))
+		
+		#if j == current_frame:
+			#label.add_color_override("font_color", DrawGD.control.theme.get_color("Selected Color", "Label"))
+			
 		DrawGD.frame_ids.add_child(label)
 
 	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
@@ -140,9 +143,6 @@ func change_project() -> void:
 
 	DrawGD.current_frame_mark_label.text = "%s/%s" % [str(current_frame + 1), frames.size()]
 
-	DrawGD.disable_button(DrawGD.remove_frame_button, frames.size() == 1)
-	DrawGD.disable_button(DrawGD.move_left_frame_button, frames.size() == 1 or current_frame == 0)
-	DrawGD.disable_button(DrawGD.move_right_frame_button, frames.size() == 1 or current_frame == frames.size() - 1)
 	toggle_layer_buttons_layers()
 	toggle_layer_buttons_current_layer()
 
@@ -165,9 +165,9 @@ func change_project() -> void:
 				guide.visible = false
 
 	# Change the project brushes
-	Brushes.clear_project_brush()
+	Brushes.clear_project_brush(DrawGD)
 	for brush in brushes:
-		Brushes.add_project_brush(brush)
+		Brushes.add_project_brush(DrawGD, brush)
 
 	var cameras = [DrawGD.camera, DrawGD.camera2, DrawGD.camera_preview]
 	var i := 0

@@ -107,7 +107,7 @@ func add_randomised_brush(fpaths : Array, tooltip_name : String) -> void:
 
 	if len(loaded_images) > 0:  # actually have images
 		# to use.
-		Brushes.add_file_brush(loaded_images, tooltip_name)
+		Brushes.add_file_brush(DrawGD, loaded_images, tooltip_name)
 
 # Add a plain brush from the given path to the list of brushes.
 # Taken, again, from find_brushes
@@ -118,7 +118,7 @@ func add_plain_brush(path: String, tooltip_name: String) -> void:
 		return
 	# do the standard conversion thing...
 	image.convert(Image.FORMAT_RGBA8)
-	Brushes.add_file_brush([image], tooltip_name)
+	Brushes.add_file_brush(DrawGD, [image], tooltip_name)
 
 
 # Import brushes, in priority order, from the paths in question in priority order

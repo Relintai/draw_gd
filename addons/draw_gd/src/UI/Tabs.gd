@@ -3,6 +3,14 @@ extends Tabs
 
 var DrawGD : Node = null
 
+func _enter_tree():
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+
 func _on_Tabs_tab_changed(tab : int) -> void:
 	DrawGD.current_project_index = tab
 
