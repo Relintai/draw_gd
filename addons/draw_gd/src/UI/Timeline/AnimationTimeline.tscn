@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/draw_gd/src/UI/Timeline/AnimationTimeline.gd" type="Script" id=1]
 [ext_resource path="res://addons/draw_gd/assets/graphics/dark_themes/layers/new_layer.png" type="Texture" id=2]
@@ -26,27 +26,6 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 expand_margin_bottom = 32.0
 
-[sub_resource type="StyleBoxEmpty" id=3]
-
-[sub_resource type="StyleBoxEmpty" id=4]
-
-[sub_resource type="StyleBoxEmpty" id=5]
-
-[sub_resource type="StyleBoxEmpty" id=6]
-
-[sub_resource type="StyleBoxEmpty" id=7]
-
-[sub_resource type="Theme" id=8]
-HScrollBar/icons/decrement = null
-HScrollBar/icons/decrement_highlight = null
-HScrollBar/icons/increment = null
-HScrollBar/icons/increment_highlight = null
-HScrollBar/styles/grabber = SubResource( 3 )
-HScrollBar/styles/grabber_highlight = SubResource( 4 )
-HScrollBar/styles/grabber_pressed = SubResource( 5 )
-HScrollBar/styles/scroll = SubResource( 6 )
-HScrollBar/styles/scroll_focus = SubResource( 7 )
-
 [node name="AnimationTimeline" type="Panel"]
 margin_top = 438.0
 margin_right = 902.0
@@ -71,15 +50,9 @@ margin_right = 902.0
 margin_bottom = 200.0
 size_flags_horizontal = 3
 
-[node name="SpacerControl" type="Control" parent="AnimationContainer/TimelineContainer"]
-margin_right = 902.0
-margin_bottom = 4.0
-rect_min_size = Vector2( 0, 4 )
-
 [node name="TimelineButtons" type="HBoxContainer" parent="AnimationContainer/TimelineContainer"]
-margin_top = 8.0
 margin_right = 902.0
-margin_bottom = 46.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 
 [node name="LayerButtonPanelContainer" type="PanelContainer" parent="AnimationContainer/TimelineContainer/TimelineButtons"]
@@ -260,27 +233,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="AnimationContainer/TimelineContainer/TimelineButtons"]
-margin_left = 225.0
-margin_right = 902.0
-margin_bottom = 38.0
-size_flags_horizontal = 3
-
 [node name="OpacityAndTagContainer" type="HBoxContainer" parent="AnimationContainer/TimelineContainer"]
-margin_top = 50.0
+margin_top = 42.0
 margin_right = 902.0
-margin_bottom = 82.0
+margin_bottom = 66.0
 custom_constants/separation = 2
 
 [node name="SpacerControl" type="Control" parent="AnimationContainer/TimelineContainer/OpacityAndTagContainer"]
 margin_right = 4.0
-margin_bottom = 32.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 4, 0 )
 
 [node name="OpacityContainer" type="HBoxContainer" parent="AnimationContainer/TimelineContainer/OpacityAndTagContainer"]
 margin_left = 6.0
 margin_right = 220.0
-margin_bottom = 32.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 214, 0 )
 
 [node name="OpacityLabel" type="Label" parent="AnimationContainer/TimelineContainer/OpacityAndTagContainer/OpacityContainer"]
@@ -294,7 +261,7 @@ valign = 1
 [node name="OpacitySlider" type="HSlider" parent="AnimationContainer/TimelineContainer/OpacityAndTagContainer/OpacityContainer"]
 margin_left = 57.0
 margin_right = 136.0
-margin_bottom = 32.0
+margin_bottom = 24.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 size_flags_horizontal = 3
@@ -304,33 +271,15 @@ ticks_on_borders = true
 
 [node name="OpacitySpinBox" type="SpinBox" parent="AnimationContainer/TimelineContainer/OpacityAndTagContainer/OpacityContainer"]
 margin_left = 140.0
-margin_top = 4.0
 margin_right = 214.0
-margin_bottom = 28.0
+margin_bottom = 24.0
 mouse_default_cursor_shape = 2
 size_flags_vertical = 4
 value = 100.0
 align = 1
 
-[node name="TagScroll" type="ScrollContainer" parent="AnimationContainer/TimelineContainer/OpacityAndTagContainer"]
-margin_left = 222.0
-margin_right = 902.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 0, 32 )
-size_flags_horizontal = 3
-theme = SubResource( 8 )
-scroll_vertical_enabled = false
-
-[node name="TagContainer" type="Control" parent="AnimationContainer/TimelineContainer/OpacityAndTagContainer/TagScroll"]
-
-[node name="SpacerControl2" type="Control" parent="AnimationContainer/TimelineContainer"]
-margin_top = 86.0
-margin_right = 902.0
-margin_bottom = 94.0
-rect_min_size = Vector2( 0, 8 )
-
 [node name="PanelContainer" type="PanelContainer" parent="AnimationContainer/TimelineContainer"]
-margin_top = 98.0
+margin_top = 70.0
 margin_right = 902.0
 margin_bottom = 200.0
 size_flags_vertical = 3
@@ -339,17 +288,17 @@ size_flags_vertical = 3
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 895.0
-margin_bottom = 95.0
+margin_bottom = 123.0
 size_flags_vertical = 3
 
 [node name="LayersAndFrames" type="HBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll"]
 margin_right = 252.0
-margin_bottom = 88.0
+margin_bottom = 116.0
 size_flags_vertical = 3
 
 [node name="LayerVBoxCont" type="VBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames"]
 margin_right = 212.0
-margin_bottom = 88.0
+margin_bottom = 116.0
 
 [node name="LayerLabel" type="Label" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames/LayerVBoxCont"]
 margin_right = 212.0
@@ -370,7 +319,7 @@ margin_right = 212.0
 [node name="FrameButtonsAndIds" type="VBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames"]
 margin_left = 216.0
 margin_right = 252.0
-margin_bottom = 88.0
+margin_bottom = 116.0
 
 [node name="FrameIDs" type="HBoxContainer" parent="AnimationContainer/TimelineContainer/PanelContainer/TimelineScroll/LayersAndFrames/FrameButtonsAndIds"]
 margin_right = 36.0
@@ -393,18 +342,6 @@ margin_bottom = 20.0
 [node name="AnimationTimer" type="Timer" parent="."]
 
 [node name="FrameTagDialog" parent="." instance=ExtResource( 42 )]
-
-[node name="FakeVSplitContainerGrabber" type="TextureRect" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -24.0
-margin_top = -6.0
-margin_right = 24.0
-margin_bottom = -4.76837e-07
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="pressed" from="AnimationContainer/TimelineContainer/TimelineButtons/LayerButtonPanelContainer/LayerButtons/AddLayer" to="." method="add_layer" binds= [ true ]]
 [connection signal="pressed" from="AnimationContainer/TimelineContainer/TimelineButtons/LayerButtonPanelContainer/LayerButtons/RemoveLayer" to="." method="_on_RemoveLayer_pressed"]

@@ -2,7 +2,7 @@ tool
 extends AcceptDialog
 
 var ExportScript = preload("res://addons/draw_gd/src/Autoload/Export.gd")
-var Export = ExportScript.new()
+var Export = null
 
 # called when user resumes export after filename collision
 signal resume_export_function()
@@ -36,6 +36,9 @@ func _enter_tree() -> void:
 			DrawGD = n
 			break
 		n = n.get_parent()
+		
+	Export = ExportScript.new()
+	Export.DrawGD = DrawGD
 		
 	export_progress_popup = get_node("Popups/ExportProgressBar")
 	file_exists_alert_popup = get_node("Popups/FileExistsAlert")

@@ -16,7 +16,7 @@ var frames := [] setget frames_changed # Array of Frames (that contain Cels)
 var layers := [] setget layers_changed # Array of Layers
 var current_frame := 0 setget frame_changed
 var current_layer := 0 setget layer_changed
-var animation_tags := [] setget animation_tags_changed # Array of AnimationTags
+var animation_tags := [] 
 var guides := [] # Array of Guides
 
 var brushes := [] # Array of Images
@@ -374,8 +374,6 @@ func frames_changed(value : Array) -> void:
 
 			layers[i].frame_container.add_child(cel_button)
 
-	set_timeline_first_and_last_frames()
-
 
 func layers_changed(value : Array) -> void:
 	layers = value
@@ -497,44 +495,6 @@ func toggle_layer_buttons_current_layer() -> void:
 		else:
 			if layers.size() > 1:
 				DrawGD.disable_button(DrawGD.remove_layer_button, false)
-
-
-func animation_tags_changed(value : Array) -> void:
-	animation_tags = value
-	for child in DrawGD.tag_container.get_children():
-		child.queue_free()
-
-	for tag in animation_tags:
-		var tag_c : Container = load("res://addons/draw_gd/src/UI/Timeline/AnimationTag.tscn").instance()
-		DrawGD.tag_container.add_child(tag_c)
-		var tag_position : int = DrawGD.tag_container.get_child_count() - 1
-		DrawGD.tag_container.move_child(tag_c, tag_position)
-		tag_c.get_node("Label").text = tag.name
-		tag_c.get_node("Label").modulate = tag.color
-		tag_c.get_node("Line2D").default_color = tag.color
-
-		tag_c.rect_position.x = (tag.from - 1) * 39 + tag.from
-
-		var tag_size : int = tag.to - tag.from
-		tag_c.rect_min_size.x = (tag_size + 1) * 39
-		tag_c.get_node("Line2D").points[2] = Vector2(tag_c.rect_min_size.x, 0)
-		tag_c.get_node("Line2D").points[3] = Vector2(tag_c.rect_min_size.x, 32)
-
-	set_timeline_first_and_last_frames()
-
-
-func set_timeline_first_and_last_frames() -> void:
-	# This is useful in case tags get modified DURING the animation is playing
-	# otherwise, this code is useless in this context, since these values are being set
-	# when the play buttons get pressed anyway
-	DrawGD.animation_timeline.first_frame = 0
-	DrawGD.animation_timeline.last_frame = frames.size() - 1
-	if DrawGD.play_only_tags:
-		for tag in animation_tags:
-			if current_frame + 1 >= tag.from && current_frame + 1 <= tag.to:
-				DrawGD.animation_timeline.first_frame = tag.from - 1
-				DrawGD.animation_timeline.last_frame = min(frames.size() - 1, tag.to - 1)
-
 
 func has_changed_changed(value : bool) -> void:
 	has_changed = value

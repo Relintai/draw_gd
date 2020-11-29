@@ -202,7 +202,7 @@ custom_constants/autohide = 0
 
 [node name="ViewportAndRulers" type="VBoxContainer" parent="CanvasAndTimeline"]
 margin_right = 902.0
-margin_bottom = 480.0
+margin_bottom = 692.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
@@ -235,20 +235,20 @@ script = ExtResource( 14 )
 [node name="HSplitContainer" type="HSplitContainer" parent="CanvasAndTimeline/ViewportAndRulers"]
 margin_top = 58.0
 margin_right = 902.0
-margin_bottom = 480.0
+margin_bottom = 692.0
 size_flags_vertical = 3
 custom_constants/autohide = 0
 
 [node name="ViewportandVerticalRuler" type="HBoxContainer" parent="CanvasAndTimeline/ViewportAndRulers/HSplitContainer"]
 margin_right = 890.0
-margin_bottom = 422.0
+margin_bottom = 634.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
 
 [node name="VerticalRuler" type="Button" parent="CanvasAndTimeline/ViewportAndRulers/HSplitContainer/ViewportandVerticalRuler"]
 margin_right = 16.0
-margin_bottom = 422.0
+margin_bottom = 634.0
 rect_min_size = Vector2( 16, 0 )
 focus_mode = 0
 mouse_default_cursor_shape = 15
@@ -261,7 +261,7 @@ script = ExtResource( 3 )
 [node name="ViewportContainer" type="ViewportContainer" parent="CanvasAndTimeline/ViewportAndRulers/HSplitContainer/ViewportandVerticalRuler"]
 margin_left = 16.0
 margin_right = 890.0
-margin_bottom = 422.0
+margin_bottom = 634.0
 focus_mode = 2
 mouse_default_cursor_shape = 3
 size_flags_horizontal = 3
@@ -270,7 +270,7 @@ stretch = true
 script = ExtResource( 21 )
 
 [node name="Viewport" type="Viewport" parent="CanvasAndTimeline/ViewportAndRulers/HSplitContainer/ViewportandVerticalRuler/ViewportContainer"]
-size = Vector2( 874, 422 )
+size = Vector2( 874, 634 )
 handle_input_locally = false
 usage = 0
 render_target_update_mode = 3
@@ -296,13 +296,13 @@ script = ExtResource( 11 )
 [node name="ViewportContainer2" type="ViewportContainer" parent="CanvasAndTimeline/ViewportAndRulers/HSplitContainer"]
 margin_left = 902.0
 margin_right = 902.0
-margin_bottom = 422.0
+margin_bottom = 634.0
 size_flags_vertical = 3
 stretch = true
 script = ExtResource( 21 )
 
 [node name="Viewport" type="Viewport" parent="CanvasAndTimeline/ViewportAndRulers/HSplitContainer/ViewportContainer2"]
-size = Vector2( 0, 422 )
+size = Vector2( 0, 634 )
 handle_input_locally = false
 render_target_update_mode = 3
 
@@ -314,11 +314,6 @@ render_target_update_mode = 3
 current = true
 zoom = Vector2( 0.15, 0.15 )
 script = ExtResource( 9 )
-
-[node name="AnimationTimeline" parent="CanvasAndTimeline" instance=ExtResource( 18 )]
-margin_top = 492.0
-margin_bottom = 692.0
-custom_styles/panel = SubResource( 1 )
 
 [node name="RightPanel" type="Panel" parent="."]
 margin_left = 950.0
@@ -343,16 +338,22 @@ margin_right = 315.0
 [node name="ToolAndPaletteVSplit" type="VSplitContainer" parent="RightPanel/PreviewAndPalettes"]
 margin_top = 168.0
 margin_right = 330.0
-margin_bottom = 676.0
+margin_bottom = 472.0
 size_flags_vertical = 3
 custom_constants/autohide = 0
 
 [node name="ColorAndToolOptions" parent="RightPanel/PreviewAndPalettes/ToolAndPaletteVSplit" instance=ExtResource( 2 )]
-margin_bottom = 248.0
+margin_bottom = 124.0
 
 [node name="PalettePanelContainer" parent="RightPanel/PreviewAndPalettes/ToolAndPaletteVSplit" instance=ExtResource( 17 )]
-margin_top = 260.0
-margin_bottom = 508.0
+margin_top = 136.0
+margin_bottom = 304.0
+
+[node name="AnimationTimeline" parent="RightPanel/PreviewAndPalettes" instance=ExtResource( 18 )]
+margin_top = 476.0
+margin_right = 330.0
+margin_bottom = 676.0
+custom_styles/panel = SubResource( 1 )
 
 [connection signal="reposition_active_tab_request" from="CanvasAndTimeline/ViewportAndRulers/TabsContainer/Tabs" to="CanvasAndTimeline/ViewportAndRulers/TabsContainer/Tabs" method="_on_Tabs_reposition_active_tab_request"]
 [connection signal="tab_changed" from="CanvasAndTimeline/ViewportAndRulers/TabsContainer/Tabs" to="CanvasAndTimeline/ViewportAndRulers/TabsContainer/Tabs" method="_on_Tabs_tab_changed"]
