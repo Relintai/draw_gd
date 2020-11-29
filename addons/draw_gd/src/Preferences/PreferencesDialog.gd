@@ -4,7 +4,17 @@ extends AcceptDialog
 var DrawGD : Node = null
 
 # Preferences table: [Prop name in DrawGD, relative node path, value type, default value]
-var preferences = [
+var preferences = []
+
+var selected_item := 0
+
+onready var list : ItemList = $HSplitContainer/List
+onready var right_side : VBoxContainer = $HSplitContainer/ScrollContainer/VBoxContainer
+onready var autosave_interval : SpinBox = $HSplitContainer/ScrollContainer/VBoxContainer/Backup/AutosaveContainer/AutosaveInterval
+onready var restore_default_button_scene = preload("res://addons/draw_gd/src/Preferences/RestoreDefaultButton.tscn")
+
+func load_prefs():
+	preferences = [
 	["open_last_project", "Startup/StartupContainer/OpenLastProject", "pressed", DrawGD.open_last_project],
 	["smooth_zoom", "Canvas/ZoomOptions/SmoothZoom", "pressed", DrawGD.smooth_zoom],
 	["pressure_sensitivity_mode", "Startup/PressureSentivity/PressureSensitivityOptionButton", "selected", DrawGD.pressure_sensitivity_mode],
@@ -30,17 +40,18 @@ var preferences = [
 	["checker_color_2", "Canvas/CheckerOptions/CheckerColor2", "color", DrawGD.checker_color_2],
 	["checker_follow_movement", "Canvas/CheckerOptions/CheckerFollowMovement", "pressed", DrawGD.checker_follow_movement],
 	["checker_follow_scale", "Canvas/CheckerOptions/CheckerFollowScale", "pressed", DrawGD.checker_follow_scale],
-]
-
-var selected_item := 0
-
-onready var list : ItemList = $HSplitContainer/List
-onready var right_side : VBoxContainer = $HSplitContainer/ScrollContainer/VBoxContainer
-onready var autosave_interval : SpinBox = $HSplitContainer/ScrollContainer/VBoxContainer/Backup/AutosaveContainer/AutosaveInterval
-onready var restore_default_button_scene = preload("res://addons/draw_gd/src/Preferences/RestoreDefaultButton.tscn")
-
+	]
 
 func _ready() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
+	load_prefs()
+	
 	# Replace OK with Close since preference changes are being applied immediately, not after OK confirmation
 	get_ok().text = tr("Close")
 

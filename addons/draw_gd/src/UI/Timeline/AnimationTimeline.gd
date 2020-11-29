@@ -13,6 +13,13 @@ var tag_scroll_container : ScrollContainer
 var DrawGD : Node = null
 
 func _ready() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	timeline_scroll = DrawGD.find_node_by_name(self, "TimelineScroll")
 	tag_scroll_container = DrawGD.find_node_by_name(self, "TagScroll")
 	timeline_scroll.get_h_scrollbar().connect("value_changed", self, "_h_scroll_changed")

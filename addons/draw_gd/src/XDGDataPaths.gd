@@ -1,5 +1,5 @@
 tool
-extends Reference
+extends Node
 
 var DrawGD : Node = null
 
@@ -31,7 +31,9 @@ func use_xdg_standard() -> bool:
 	return OS.get_name() == "X11"
 
 
-func _init() -> void:
+func _enter_tree() -> void:
+	DrawGD = get_parent()
+	
 	if use_xdg_standard():
 		print("Detected system where we should use XDG basedir standard (currently Linux or BSD)")
 		var home := OS.get_environment("HOME")

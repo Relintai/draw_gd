@@ -15,8 +15,14 @@ onready var tools := [
 
 var DrawGD : Node = null
 
-
 func _ready() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	for t in tools:
 		t[0].connect("pressed", self, "_on_Tool_pressed", [t[0]])
 	DrawGD.update_hint_tooltips()

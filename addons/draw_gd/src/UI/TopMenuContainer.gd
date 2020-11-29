@@ -12,7 +12,14 @@ var was_exported = false
 
 var DrawGD : Node = null
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+	
 	setup_file_menu()
 	setup_edit_menu()
 	setup_view_menu()
@@ -60,16 +67,28 @@ func setup_file_menu() -> void:
 
 
 func setup_edit_menu() -> void:
+#	var edit_menu_items := {
+#		"Undo" : InputMap.get_action_list("undo")[0].get_scancode_with_modifiers(),
+#		"Redo" : InputMap.get_action_list("redo")[0].get_scancode_with_modifiers(),
+#		"Copy" : InputMap.get_action_list("copy")[0].get_scancode_with_modifiers(),
+#		"Cut" : InputMap.get_action_list("cut")[0].get_scancode_with_modifiers(),
+#		"Paste" : InputMap.get_action_list("paste")[0].get_scancode_with_modifiers(),
+#		"Delete" : InputMap.get_action_list("delete")[0].get_scancode_with_modifiers(),
+#		"Clear Selection" : 0,
+#		"Preferences" : 0
+#		}
+		
 	var edit_menu_items := {
-		"Undo" : InputMap.get_action_list("undo")[0].get_scancode_with_modifiers(),
-		"Redo" : InputMap.get_action_list("redo")[0].get_scancode_with_modifiers(),
-		"Copy" : InputMap.get_action_list("copy")[0].get_scancode_with_modifiers(),
-		"Cut" : InputMap.get_action_list("cut")[0].get_scancode_with_modifiers(),
-		"Paste" : InputMap.get_action_list("paste")[0].get_scancode_with_modifiers(),
-		"Delete" : InputMap.get_action_list("delete")[0].get_scancode_with_modifiers(),
+		"Undo" : 0,
+		"Redo" : 0,
+		"Copy" : 0,
+		"Cut" : 0,
+		"Paste" : 0,
+		"Delete" : 0,
 		"Clear Selection" : 0,
 		"Preferences" : 0
 		}
+		
 	var edit_menu : PopupMenu = DrawGD.edit_menu.get_popup()
 	var i := 0
 
@@ -81,15 +100,26 @@ func setup_edit_menu() -> void:
 
 
 func setup_view_menu() -> void:
+#	var view_menu_items := {
+#		"Tile Mode" : InputMap.get_action_list("tile_mode")[0].get_scancode_with_modifiers(),
+#		"Show Grid" : InputMap.get_action_list("show_grid")[0].get_scancode_with_modifiers(),
+#		"Show Rulers" : InputMap.get_action_list("show_rulers")[0].get_scancode_with_modifiers(),
+#		"Show Guides" : InputMap.get_action_list("show_guides")[0].get_scancode_with_modifiers(),
+#		"Show Animation Timeline" : 0,
+#		"Zen Mode" : InputMap.get_action_list("zen_mode")[0].get_scancode_with_modifiers(),
+#		"Fullscreen Mode" : InputMap.get_action_list("toggle_fullscreen")[0].get_scancode_with_modifiers(),
+#		}
+		
 	var view_menu_items := {
-		"Tile Mode" : InputMap.get_action_list("tile_mode")[0].get_scancode_with_modifiers(),
-		"Show Grid" : InputMap.get_action_list("show_grid")[0].get_scancode_with_modifiers(),
-		"Show Rulers" : InputMap.get_action_list("show_rulers")[0].get_scancode_with_modifiers(),
-		"Show Guides" : InputMap.get_action_list("show_guides")[0].get_scancode_with_modifiers(),
+		"Tile Mode" : 0,
+		"Show Grid" : 0,
+		"Show Rulers" : 0,
+		"Show Guides" : 0,
 		"Show Animation Timeline" : 0,
-		"Zen Mode" : InputMap.get_action_list("zen_mode")[0].get_scancode_with_modifiers(),
-		"Fullscreen Mode" : InputMap.get_action_list("toggle_fullscreen")[0].get_scancode_with_modifiers(),
+		"Zen Mode" : 0,
+		"Fullscreen Mode" : 0,
 		}
+		
 	view_menu = DrawGD.view_menu.get_popup()
 
 	var i := 0

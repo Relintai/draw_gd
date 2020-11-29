@@ -12,6 +12,13 @@ var line_edit : LineEdit
 var DrawGD : Node = null
 
 func _ready() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	visibility_button = DrawGD.find_node_by_name(self, "VisibilityButton")
 	lock_button = DrawGD.find_node_by_name(self, "LockButton")
 	linked_button = DrawGD.find_node_by_name(self, "LinkButton")

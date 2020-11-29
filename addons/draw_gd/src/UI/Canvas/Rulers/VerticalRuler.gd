@@ -13,6 +13,13 @@ var last : Vector2
 var DrawGD : Node = null
 
 func _ready() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
 	DrawGD.main_viewport.connect("item_rect_changed", self, "update")
 
 

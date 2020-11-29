@@ -9,11 +9,11 @@ var opensprite_file_selected := false
 var redone := false
 var is_quitting_on_save := false
 
-onready var DrawGD : Node = $DrawGDSingleton
+onready var DrawGD : Node = get_node("..")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	get_tree().set_auto_accept_quit(false)
+	#get_tree().set_auto_accept_quit(false)
 	setup_application_window_size()
 
 	DrawGD.window_title = tr("untitled") + " - Pixelorama " + DrawGD.current_version

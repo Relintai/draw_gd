@@ -16,7 +16,7 @@ var root_directory := "."
 var window_title := "" setget title_changed # Why doesn't Godot have get_window_title()?
 var config_cache := ConfigFile.new()
 var XDGDataPaths = preload("res://addons/draw_gd/src/XDGDataPaths.gd")
-var directory_module : Reference
+var directory_module : Node
 
 var projects := [] # Array of Projects
 var current_project : Project
@@ -173,7 +173,7 @@ var tools = null
 var opensave_script = preload("res://addons/draw_gd/src/Autoload/OpenSave.gd")
 var opensave = null
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	randomize()
 	if OS.has_feature("standalone"):
 		root_directory = OS.get_executable_path().get_base_dir()
@@ -188,7 +188,7 @@ func _ready() -> void:
 
 	# The fact that root_dir is set earlier than this is important
 	# XDGDataDirs depends on it nyaa
-	directory_module = XDGDataPaths.new()
+	directory_module = $XDGDataPaths
 	image_clipboard = Image.new()
 	Input.set_custom_mouse_cursor(cursor_image, Input.CURSOR_CROSS, Vector2(15, 15))
 
@@ -429,9 +429,7 @@ func change_button_texturerect(texture_button : TextureRect, new_file_name : Str
 
 
 func update_hint_tooltips() -> void:
-	var root = get_tree().get_root()
-
-	var rect_select : BaseButton = find_node_by_name(root, "RectSelect")
+	var rect_select : BaseButton = find_node_by_name(self, "RectSelect")
 	rect_select.hint_tooltip = tr("""Rectangular Selection
 
 %s for left mouse button
@@ -439,21 +437,21 @@ func update_hint_tooltips() -> void:
 
 Press %s to move the content""") % [InputMap.get_action_list("left_rectangle_select_tool")[0].as_text(), InputMap.get_action_list("right_rectangle_select_tool")[0].as_text(), "Shift"]
 
-	var zoom_tool : BaseButton = find_node_by_name(root, "Zoom")
+	var zoom_tool : BaseButton = find_node_by_name(self, "Zoom")
 	zoom_tool.hint_tooltip = tr("""Zoom
 
 %s for left mouse button
 %s for right mouse button""") % [InputMap.get_action_list("left_zoom_tool")[0].as_text(), InputMap.get_action_list("right_zoom_tool")[0].as_text()]
 
 
-	var color_picker : BaseButton = find_node_by_name(root, "ColorPicker")
+	var color_picker : BaseButton = find_node_by_name(self, "ColorPicker")
 	color_picker.hint_tooltip = tr("""Color Picker
 Select a color from a pixel of the sprite
 
 %s for left mouse button
 %s for right mouse button""") % [InputMap.get_action_list("left_colorpicker_tool")[0].as_text(), InputMap.get_action_list("right_colorpicker_tool")[0].as_text()]
 
-	var pencil : BaseButton = find_node_by_name(root, "Pencil")
+	var pencil : BaseButton = find_node_by_name(self, "Pencil")
 	pencil.hint_tooltip = tr("""Pencil
 
 %s for left mouse button
@@ -461,7 +459,7 @@ Select a color from a pixel of the sprite
 
 Hold %s to make a line""") % [InputMap.get_action_list("left_pencil_tool")[0].as_text(), InputMap.get_action_list("right_pencil_tool")[0].as_text(), "Shift"]
 
-	var eraser : BaseButton = find_node_by_name(root, "Eraser")
+	var eraser : BaseButton = find_node_by_name(self, "Eraser")
 	eraser.hint_tooltip = tr("""Eraser
 
 %s for left mouse button
@@ -469,27 +467,27 @@ Hold %s to make a line""") % [InputMap.get_action_list("left_pencil_tool")[0].as
 
 Hold %s to make a line""") % [InputMap.get_action_list("left_eraser_tool")[0].as_text(), InputMap.get_action_list("right_eraser_tool")[0].as_text(), "Shift"]
 
-	var bucket : BaseButton = find_node_by_name(root, "Bucket")
+	var bucket : BaseButton = find_node_by_name(self, "Bucket")
 	bucket.hint_tooltip = tr("""Bucket
 
 %s for left mouse button
 %s for right mouse button""") % [InputMap.get_action_list("left_fill_tool")[0].as_text(), InputMap.get_action_list("right_fill_tool")[0].as_text()]
 
-	var ld : BaseButton = find_node_by_name(root, "LightenDarken")
+	var ld : BaseButton = find_node_by_name(self, "LightenDarken")
 	ld.hint_tooltip = tr("""Lighten/Darken
 
 %s for left mouse button
 %s for right mouse button""") % [InputMap.get_action_list("left_lightdark_tool")[0].as_text(), InputMap.get_action_list("right_lightdark_tool")[0].as_text()]
 
-	var color_switch : BaseButton = find_node_by_name(root, "ColorSwitch")
+	var color_switch : BaseButton = find_node_by_name(self, "ColorSwitch")
 	color_switch.hint_tooltip = tr("""Switch left and right colors
 (%s)""") % InputMap.get_action_list("switch_colors")[0].as_text()
 
-	var first_frame : BaseButton = find_node_by_name(root, "FirstFrame")
+	var first_frame : BaseButton = find_node_by_name(self, "FirstFrame")
 	first_frame.hint_tooltip = tr("""Jump to the first frame
 (%s)""") % InputMap.get_action_list("go_to_first_frame")[0].as_text()
 
-	var previous_frame : BaseButton = find_node_by_name(root, "PreviousFrame")
+	var previous_frame : BaseButton = find_node_by_name(self, "PreviousFrame")
 	previous_frame.hint_tooltip = tr("""Go to the previous frame
 (%s)""") % InputMap.get_action_list("go_to_previous_frame")[0].as_text()
 
@@ -499,11 +497,11 @@ Hold %s to make a line""") % [InputMap.get_action_list("left_eraser_tool")[0].as
 	play_forward.hint_tooltip = tr("""Play the animation forward (from beginning to end)
 (%s)""") % InputMap.get_action_list("play_forward")[0].as_text()
 
-	var next_frame : BaseButton = find_node_by_name(root, "NextFrame")
+	var next_frame : BaseButton = find_node_by_name(self, "NextFrame")
 	next_frame.hint_tooltip = tr("""Go to the next frame
 (%s)""") % InputMap.get_action_list("go_to_next_frame")[0].as_text()
 
-	var last_frame : BaseButton = find_node_by_name(root, "LastFrame")
+	var last_frame : BaseButton = find_node_by_name(self, "LastFrame")
 	last_frame.hint_tooltip = tr("""Jump to the last frame
 (%s)""") % InputMap.get_action_list("go_to_last_frame")[0].as_text()
 
