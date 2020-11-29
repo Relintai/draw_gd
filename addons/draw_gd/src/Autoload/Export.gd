@@ -3,9 +3,6 @@ extends Node
 
 var DrawGD : Node = null
 
-enum ExportTab { FRAME = 0, SPRITESHEET = 1, ANIMATION = 2 }
-var current_tab : int = ExportTab.FRAME
-
 # Frame options
 var frame_number := 0
 
@@ -50,13 +47,7 @@ var export_progress := 0.0
 
 
 func external_export() -> void:
-	match current_tab:
-		ExportTab.FRAME:
-			process_frame()
-		ExportTab.SPRITESHEET:
-			process_spritesheet()
-		ExportTab.ANIMATION:
-			process_animation()
+	process_frame()
 	export_processed_images(true, DrawGD.export_dialog)
 
 
@@ -67,67 +58,6 @@ func process_frame() -> void:
 	image.create(DrawGD.current_project.size.x, DrawGD.current_project.size.y, false, Image.FORMAT_RGBA8)
 	blend_layers(image, frame)
 	processed_images.append(image)
-
-
-func process_spritesheet() -> void:
-	processed_images.clear()
-	# Range of frames determined by tags
-	var frames := []
-	if frame_current_tag > 0:
-		var frame_start = DrawGD.current_project.animation_tags[frame_current_tag - 1].from
-		var frame_end = DrawGD.current_project.animation_tags[frame_current_tag - 1].to
-		frames = DrawGD.current_project.frames.slice(frame_start-1, frame_end-1, 1, true)
-	else:
-		frames = DrawGD.current_project.frames
-
-	# Then store the size of frames for other functions
-	number_of_frames = frames.size()
-
-	# If rows mode selected calculate columns count and vice versa
-	var spritesheet_columns = lines_count if orientation == Orientation.ROWS else frames_divided_by_spritesheet_lines()
-	var spritesheet_rows = lines_count if orientation == Orientation.COLUMNS else frames_divided_by_spritesheet_lines()
-
-	var width = DrawGD.current_project.size.x * spritesheet_columns
-	var height = DrawGD.current_project.size.y * spritesheet_rows
-
-	var whole_image := Image.new()
-	whole_image.create(width, height, false, Image.FORMAT_RGBA8)
-	var origin := Vector2.ZERO
-	var hh := 0
-	var vv := 0
-
-	for frame in frames:
-		if orientation == Orientation.ROWS:
-			if vv < spritesheet_columns:
-				origin.x = DrawGD.current_project.size.x * vv
-				vv += 1
-			else:
-				hh += 1
-				origin.x = 0
-				vv = 1
-				origin.y = DrawGD.current_project.size.y * hh
-		else:
-			if hh < spritesheet_rows:
-				origin.y = DrawGD.current_project.size.y * hh
-				hh += 1
-			else:
-				vv += 1
-				origin.y = 0
-				hh = 1
-				origin.x = DrawGD.current_project.size.x * vv
-		blend_layers(whole_image, frame, origin)
-
-	processed_images.append(whole_image)
-
-
-func process_animation() -> void:
-	processed_images.clear()
-	for frame in DrawGD.current_project.frames:
-		var image := Image.new()
-		image.create(DrawGD.current_project.size.x, DrawGD.current_project.size.y, false, Image.FORMAT_RGBA8)
-		blend_layers(image, frame)
-		processed_images.append(image)
-
 
 func export_processed_images(ignore_overwrites: bool, export_dialog: AcceptDialog ) -> bool:
 	# Stop export if directory path or file name are not valid
@@ -140,7 +70,7 @@ func export_processed_images(ignore_overwrites: bool, export_dialog: AcceptDialo
 	var export_paths = []
 	for i in range(processed_images.size()):
 		stop_export = false
-		var multiple_files := true if (current_tab == ExportTab.ANIMATION and animation_type == AnimationType.MULTIPLE_FILES) else false
+		var multiple_files := false
 		var export_path = create_export_path(multiple_files, i + 1)
 		# If user want to create new directory for each animation tag then check if directories exist and create them if not
 		if multiple_files and new_dir_for_each_frame_tag:
@@ -161,28 +91,23 @@ func export_processed_images(ignore_overwrites: bool, export_dialog: AcceptDialo
 					# User decided to stop export
 					return
 		export_paths.append(export_path)
+		
 		# Only get one export path if single file animated image is exported
-		if current_tab == ExportTab.ANIMATION and animation_type == AnimationType.ANIMATED:
-			break
+#		if current_tab == ExportTab.ANIMATION and animation_type == AnimationType.ANIMATED:
+#			break
 
 	# Scale images that are to export
 	scale_processed_images()
 
-	if current_tab == ExportTab.ANIMATION and animation_type == AnimationType.ANIMATED:
-		pass
-	else:
-		for i in range(processed_images.size()):
-			var err = processed_images[i].save_png(export_paths[i])
-			if err != OK:
-				OS.alert("Can't save file. Error code: %s" % err)
+	for i in range(processed_images.size()):
+		var err = processed_images[i].save_png(export_paths[i])
+		if err != OK:
+			OS.alert("Can't save file. Error code: %s" % err)
 
 	# Store settings for quick export and when the dialog is opened again
 	was_exported = true
 	DrawGD.file_menu.get_popup().set_item_text(5, tr("Export") + " %s" % (file_name + file_format_string(file_format)))
 
-	# Only show when not exporting gif - gif export finishes in thread
-	if not (current_tab == ExportTab.ANIMATION and animation_type == AnimationType.ANIMATED):
-		DrawGD.notification_label("File(s) exported")
 	return true
 
 func increase_export_progress(export_dialog: Node) -> void:

@@ -10,7 +10,6 @@ signal resume_export_function()
 var animated_preview_current_frame := 0
 var animated_preview_frames = []
 
-onready var tabs = $VBoxContainer/Tabs
 onready var popups = $Popups
 onready var file_exists_alert_popup = $Popups/FileExistsAlert
 onready var path_validation_alert_popup = $Popups/PathValidationAlert
@@ -20,22 +19,6 @@ onready var export_progress_bar = $Popups/ExportProgressBar/MarginContainer/Prog
 
 onready var animation_options_multiple_animations_directories = $VBoxContainer/AnimationOptions/MultipleAnimationsDirectories
 onready var previews = $VBoxContainer/PreviewPanel/PreviewScroll/Previews
-onready var frame_timer = $FrameTimer
-
-onready var frame_options = $VBoxContainer/FrameOptions
-onready var frame_options_frame_number = $VBoxContainer/FrameOptions/FrameNumber/FrameNumber
-
-onready var spritesheet_options = $VBoxContainer/SpritesheetOptions
-onready var spritesheet_options_frames = $VBoxContainer/SpritesheetOptions/Frames/Frames
-onready var spritesheet_options_orientation = $VBoxContainer/SpritesheetOptions/Orientation/Orientation
-onready var spritesheet_options_lines_count = $VBoxContainer/SpritesheetOptions/Orientation/LinesCount
-onready var spritesheet_options_lines_count_label = $VBoxContainer/SpritesheetOptions/Orientation/LinesCountLabel
-
-onready var animation_options = $VBoxContainer/AnimationOptions
-onready var animation_options_animation_type = $VBoxContainer/AnimationOptions/AnimationType
-onready var animation_options_animation_options = $VBoxContainer/AnimationOptions/AnimatedOptions
-onready var animation_options_direction = $VBoxContainer/AnimationOptions/AnimatedOptions/Direction
-
 
 onready var options_resize = $VBoxContainer/Options/Resize
 onready var options_interpolation = $VBoxContainer/Options/Interpolation
@@ -46,10 +29,17 @@ onready var file_file_format = $VBoxContainer/File/FileFormat
 
 var DrawGD : Node = null
 
-func _ready() -> void:
-	tabs.add_tab("Frame")
-	tabs.add_tab("Spritesheet")
-	tabs.add_tab("Animation")
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+		
+	export_progress_popup = get_node("Popups/ExportProgressBar")
+	file_exists_alert_popup = get_node("Popups/FileExistsAlert")
+		
 	if OS.get_name() == "Windows":
 		add_button("Cancel", true, "cancel")
 		file_exists_alert_popup.add_button("Cancel Export", true, "cancel")
@@ -62,46 +52,10 @@ func _ready() -> void:
 
 
 func show_tab() -> void:
-	frame_options.hide()
-	spritesheet_options.hide()
-	animation_options.hide()
+	Export.file_format = Export.FileFormat.PNG
+	file_file_format.selected = Export.FileFormat.PNG
 
-	match Export.current_tab:
-		Export.ExportTab.FRAME:
-			Export.file_format = Export.FileFormat.PNG
-			file_file_format.selected = Export.FileFormat.PNG
-			frame_timer.stop()
-			if not Export.was_exported:
-				Export.frame_number = DrawGD.current_project.current_frame + 1
-			frame_options_frame_number.max_value = DrawGD.current_project.frames.size() + 1
-			var prev_frame_number = frame_options_frame_number.value
-			frame_options_frame_number.value = Export.frame_number
-			if prev_frame_number == Export.frame_number:
-				Export.process_frame()
-			frame_options.show()
-		Export.ExportTab.SPRITESHEET:
-			create_frame_tag_list()
-			Export.file_format = Export.FileFormat.PNG
-			if not Export.was_exported:
-				Export.orientation = Export.Orientation.ROWS
-				Export.lines_count = int(ceil(sqrt(Export.number_of_frames)))
-			Export.process_spritesheet()
-			file_file_format.selected = Export.FileFormat.PNG
-			spritesheet_options_frames.select(Export.frame_current_tag)
-			frame_timer.stop()
-			spritesheet_options_orientation.selected = Export.orientation
-			spritesheet_options_lines_count.max_value = Export.number_of_frames
-			spritesheet_options_lines_count.value = Export.lines_count
-			spritesheet_options_lines_count_label.text = "Columns:"
-			spritesheet_options.show()
-		Export.ExportTab.ANIMATION:
-			set_file_format_selector()
-			Export.process_animation()
-			animation_options_animation_type.selected = Export.animation_type
-			animation_options_direction.selected = Export.direction
-			animation_options.show()
 	set_preview()
-	tabs.current_tab = Export.current_tab
 
 
 func set_preview() -> void:
@@ -153,7 +107,6 @@ func add_animated_preview() -> void:
 	container.add_child(preview)
 
 	previews.add_child(container)
-	frame_timer.start()
 
 
 func create_preview_container() -> VBoxContainer:
@@ -176,34 +129,6 @@ func create_preview_rect() -> TextureRect:
 func remove_previews() -> void:
 	for child in previews.get_children():
 		child.free()
-
-
-func set_file_format_selector() -> void:
-	animation_options_multiple_animations_directories.visible = false
-	match Export.animation_type:
-		Export.AnimationType.MULTIPLE_FILES:
-			Export.file_format = Export.FileFormat.PNG
-			file_file_format.selected = Export.FileFormat.PNG
-			frame_timer.stop()
-			animation_options_animation_options.hide()
-			animation_options_multiple_animations_directories.pressed = Export.new_dir_for_each_frame_tag
-			animation_options_multiple_animations_directories.visible = true
-		Export.AnimationType.ANIMATED:
-			Export.file_format = Export.FileFormat.GIF
-			file_file_format.selected = Export.FileFormat.GIF
-			frame_timer.wait_time = DrawGD.animation_timer.wait_time
-			animation_options_animation_options.show()
-
-
-func create_frame_tag_list() -> void:
-	# Clear existing tag list from entry if it exists
-	spritesheet_options_frames.clear()
-	spritesheet_options_frames.add_item("All Frames", 0) # Re-add removed 'All Frames' item
-
-	# Repopulate list with current tag list
-	for item in DrawGD.current_project.animation_tags:
-		spritesheet_options_frames.add_item(item.name)
-
 
 func open_path_validation_alert_popup() -> void:
 	path_validation_alert_popup.popup_centered()
@@ -243,8 +168,8 @@ func _on_ExportDialog_about_to_show() -> void:
 	file_file_format.selected = Export.file_format
 	show_tab()
 
-	for child in popups.get_children(): # Set the theme for the popups
-		child.theme = DrawGD.control.theme
+#	for child in popups.get_children(): # Set the theme for the popups
+#		child.theme = DrawGD.control.theme
 
 	Export.file_exists_alert = tr("File %s already exists. Overwrite?") # Update translation
 
@@ -261,41 +186,6 @@ func _on_Frame_value_changed(value: float) -> void:
 	Export.frame_number = value
 	Export.process_frame()
 	set_preview()
-
-
-func _on_Orientation_item_selected(id : int) -> void:
-	Export.orientation = id
-	if Export.orientation == Export.Orientation.ROWS:
-		spritesheet_options_lines_count_label.text = "Columns:"
-	else:
-		spritesheet_options_lines_count_label.text = "Rows:"
-	spritesheet_options_lines_count.value = Export.frames_divided_by_spritesheet_lines()
-	Export.process_spritesheet()
-	set_preview()
-
-
-func _on_LinesCount_value_changed(value : float) -> void:
-	Export.lines_count = value
-	Export.process_spritesheet()
-	set_preview()
-
-
-func _on_AnimationType_item_selected(id : int) -> void:
-	Export.animation_type = id
-	set_file_format_selector()
-	set_preview()
-
-
-func _on_Direction_item_selected(id : int) -> void:
-	Export.direction = id
-	match id:
-		Export.AnimationDirection.FORWARD:
-			animated_preview_current_frame = 0
-		Export.AnimationDirection.BACKWARDS:
-			animated_preview_current_frame = Export.processed_images.size() - 1
-		Export.AnimationDirection.PING_PONG:
-			animated_preview_current_frame = 0
-			pingpong_direction = Export.AnimationDirection.FORWARD
 
 
 func _on_Resize_value_changed(value : float) -> void:
@@ -357,54 +247,5 @@ func _on_FileExistsAlert_custom_action(action : String) -> void:
 		file_exists_alert_popup.hide()
 
 
-var pingpong_direction = Export.AnimationDirection.FORWARD
-func _on_FrameTimer_timeout() -> void:
-	$VBoxContainer/PreviewPanel/PreviewScroll/Previews/PreviewContainer/Preview.texture = animated_preview_frames[animated_preview_current_frame]
-
-	match Export.direction:
-		Export.AnimationDirection.FORWARD:
-			if animated_preview_current_frame == animated_preview_frames.size() - 1:
-				animated_preview_current_frame = 0
-			else:
-				animated_preview_current_frame += 1
-
-		Export.AnimationDirection.BACKWARDS:
-			if animated_preview_current_frame == 0:
-				animated_preview_current_frame = Export.processed_images.size() - 1
-			else:
-				animated_preview_current_frame -= 1
-
-		Export.AnimationDirection.PING_PONG:
-			match pingpong_direction:
-				Export.AnimationDirection.FORWARD:
-					if animated_preview_current_frame == animated_preview_frames.size() - 1:
-						pingpong_direction = Export.AnimationDirection.BACKWARDS
-						animated_preview_current_frame -= 1
-						if animated_preview_current_frame <= 0:
-							animated_preview_current_frame = 0
-					else:
-						animated_preview_current_frame += 1
-				Export.AnimationDirection.BACKWARDS:
-					if animated_preview_current_frame == 0:
-						animated_preview_current_frame += 1
-						if animated_preview_current_frame >= animated_preview_frames.size() - 1:
-							animated_preview_current_frame = 0
-						pingpong_direction = Export.AnimationDirection.FORWARD
-					else:
-						animated_preview_current_frame -= 1
-
-
-func _on_ExportDialog_popup_hide() -> void:
-	frame_timer.stop()
-
-
 func _on_MultipleAnimationsDirectories_toggled(button_pressed : bool) -> void:
 	Export.new_dir_for_each_frame_tag = button_pressed
-
-
-func _on_Frames_item_selected(id : int) -> void:
-	Export.frame_current_tag = id
-	Export.process_spritesheet()
-	set_preview()
-	spritesheet_options_lines_count.max_value = Export.number_of_frames
-	spritesheet_options_lines_count.value = Export.lines_count
