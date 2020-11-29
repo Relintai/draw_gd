@@ -18,16 +18,29 @@ func _ready() -> void:
 	setup_image_menu()
 
 func setup_file_menu() -> void:
+	
+#	var file_menu_items := {
+#		"New..." : InputMap.get_action_list("new_file")[0].get_scancode_with_modifiers(),
+#		"Open..." : InputMap.get_action_list("open_file")[0].get_scancode_with_modifiers(),
+#		'Open last project...' : 0,
+#		"Save..." : InputMap.get_action_list("save_file")[0].get_scancode_with_modifiers(),
+#		"Save as..." : InputMap.get_action_list("save_file_as")[0].get_scancode_with_modifiers(),
+#		"Export..." : InputMap.get_action_list("export_file")[0].get_scancode_with_modifiers(),
+#		"Export as..." : InputMap.get_action_list("export_file_as")[0].get_scancode_with_modifiers(),
+#		"Quit" : InputMap.get_action_list("quit")[0].get_scancode_with_modifiers(),
+#		}
+		
 	var file_menu_items := {
-		"New..." : InputMap.get_action_list("new_file")[0].get_scancode_with_modifiers(),
-		"Open..." : InputMap.get_action_list("open_file")[0].get_scancode_with_modifiers(),
+		"New..." : 0,
+		"Open..." : 0,
 		'Open last project...' : 0,
-		"Save..." : InputMap.get_action_list("save_file")[0].get_scancode_with_modifiers(),
-		"Save as..." : InputMap.get_action_list("save_file_as")[0].get_scancode_with_modifiers(),
-		"Export..." : InputMap.get_action_list("export_file")[0].get_scancode_with_modifiers(),
-		"Export as..." : InputMap.get_action_list("export_file_as")[0].get_scancode_with_modifiers(),
-		"Quit" : InputMap.get_action_list("quit")[0].get_scancode_with_modifiers(),
+		"Save..." : 0,
+		"Save as..." : 0,
+		"Export..." : 0,
+		"Export as..." : 0,
+		"Quit" : 0,
 		}
+		
 	file_menu = DrawGD.file_menu.get_popup()
 	var i := 0
 
