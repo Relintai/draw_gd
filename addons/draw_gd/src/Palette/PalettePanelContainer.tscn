@@ -8,8 +8,6 @@
 [ext_resource path="res://addons/draw_gd/src/Palette/NewPaletteDialog.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/draw_gd/src/Palette/EditPalettePopup.tscn" type="PackedScene" id=7]
 
-
-
 [sub_resource type="ButtonGroup" id=1]
 
 [node name="PalettePanelContainer" type="PanelContainer"]
@@ -186,6 +184,8 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 507.0
 margin_bottom = 307.0
+current_dir = "/home/relintai/Projects/draw_gd"
+current_path = "/home/relintai/Projects/draw_gd/"
 
 [node name="EditPalettePopup" parent="." instance=ExtResource( 7 )]
 margin_left = 7.0
@@ -251,6 +251,7 @@ selected = 0
 margin_right = 200.0
 margin_bottom = 70.0
 dialog_text = "Are you sure you want to remove this palette? (Cannot be undone)"
+
 [connection signal="pressed" from="PaletteVBoxContainer/CenterContainer/PaletteButtons/AddPalette" to="PaletteVBoxContainer/ScrollPalette/CenterPalette/PaletteContainer" method="_on_AddPalette_pressed"]
 [connection signal="pressed" from="PaletteVBoxContainer/CenterContainer/PaletteButtons/EditPalette" to="PaletteVBoxContainer/ScrollPalette/CenterPalette/PaletteContainer" method="on_edit_palette"]
 [connection signal="pressed" from="PaletteVBoxContainer/CenterContainer/PaletteButtons/RemovePalette" to="PaletteVBoxContainer/ScrollPalette/CenterPalette/PaletteContainer" method="_on_RemovePalette_pressed"]

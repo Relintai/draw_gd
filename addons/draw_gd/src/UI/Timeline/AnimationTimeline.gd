@@ -152,7 +152,7 @@ func _on_MergeDownLayer_pressed() -> void:
 
 
 func _on_OpacitySlider_value_changed(value) -> void:
-	DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels[DrawGD.current_project.current_layer].opacity = value / 100
+	DrawGD.current_project.frames.cels[DrawGD.current_project.current_layer].opacity = value / 100
 	DrawGD.layer_opacity_slider.value = value
 	DrawGD.layer_opacity_slider.value = value
 	DrawGD.layer_opacity_spinbox.value = value
