@@ -5,7 +5,7 @@ class_name ImageEffect extends AcceptDialog
 
 var Export = preload("res://addons/draw_gd/src/Autoload/Export.gd")
 
-enum {CEL, FRAME, ALL_FRAMES, ALL_PROJECTS}
+enum {CEL, FRAME, ALL_PROJECTS}
 
 var affect : int = CEL
 var pixels := []
@@ -43,9 +43,11 @@ func _enter_tree() -> void:
 
 
 func _about_to_show() -> void:
-	current_cel = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels[DrawGD.current_project.current_layer].image
+	current_cel = DrawGD.current_project.frames.cels[DrawGD.current_project.current_layer].image
 	current_frame.fill(Color(0, 0, 0, 0))
-	var frame = DrawGD.current_project.frames[DrawGD.current_project.current_frame]
+	
+	var frame = DrawGD.current_project.frames
+	
 	Export.blend_layers(current_frame, frame)
 	if selection_checkbox:
 		_on_SelectionCheckBox_toggled(selection_checkbox.pressed)
@@ -65,13 +67,6 @@ func _confirmed() -> void:
 			commit_action(cel.image, pixels)
 		DrawGD.canvas.handle_redo("Draw", DrawGD.current_project, -1)
 
-	elif affect == ALL_FRAMES:
-		DrawGD.canvas.handle_undo("Draw", DrawGD.current_project, -1, -1)
-		for frame in DrawGD.current_project.frames:
-			for cel in frame.cels:
-				commit_action(cel.image, pixels)
-		DrawGD.canvas.handle_redo("Draw", DrawGD.current_project, -1, -1)
-
 	elif affect == ALL_PROJECTS:
 		for project in DrawGD.projects:
 			var _pixels := []
@@ -83,9 +78,11 @@ func _confirmed() -> void:
 						_pixels.append(Vector2(x, y))
 
 			DrawGD.canvas.handle_undo("Draw", project, -1, -1)
-			for frame in project.frames:
-				for cel in frame.cels:
-					commit_action(cel.image, _pixels, project)
+			var frame = project.frames
+			
+			for cel in frame.cels:
+				commit_action(cel.image, _pixels, project)
+				
 			DrawGD.canvas.handle_redo("Draw", project, -1, -1)
 
 

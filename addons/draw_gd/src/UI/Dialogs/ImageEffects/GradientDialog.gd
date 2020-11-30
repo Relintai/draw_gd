@@ -21,7 +21,7 @@ func set_nodes() -> void:
 
 
 func commit_action(_cel : Image, _pixels : Array, _project : Project = DrawGD.current_project) -> void:
-	DrawingAlgos.generate_gradient(_cel, [color1.color, color2.color], steps.value, direction.selected, _pixels)
+	DrawingAlgos.generate_gradient(DrawGD, _cel, [color1.color, color2.color], steps.value, direction.selected, _pixels)
 
 
 func _on_ColorPickerButton_color_changed(_color : Color) -> void:

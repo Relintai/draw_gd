@@ -18,6 +18,14 @@ onready var preview_rect : TextureRect = $VBoxContainer/Preview
 
 var DrawGD : Node = null
 
+func _enter_tree() -> void:
+	var n : Node = get_parent()
+	while n:
+		if n.name == "DrawGDSingleton":
+			DrawGD = n
+			break
+		n = n.get_parent()
+
 func _on_ResizeCanvas_about_to_show() -> void:
 	if first_time:
 		width_spinbox.value = DrawGD.current_project.size.x
@@ -27,7 +35,7 @@ func _on_ResizeCanvas_about_to_show() -> void:
 	image.create(DrawGD.current_project.size.x, DrawGD.current_project.size.y, false, Image.FORMAT_RGBA8)
 	image.lock()
 	var layer_i := 0
-	for cel in DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels:
+	for cel in DrawGD.current_project.frames.cels:
 		if DrawGD.current_project.layers[layer_i].visible:
 			var cel_image := Image.new()
 			cel_image.copy_from(cel.image)
@@ -46,7 +54,7 @@ func _on_ResizeCanvas_about_to_show() -> void:
 
 
 func _on_ResizeCanvas_confirmed() -> void:
-	DrawingAlgos.resize_canvas(width, height, offset_x, offset_y)
+	DrawingAlgos.resize_canvas(DrawGD, width, height, offset_x, offset_y)
 	first_time = false
 
 

@@ -182,11 +182,12 @@ func commit_undo(action : String, undo_data : Dictionary) -> void:
 	project.undo_redo.add_do_property(project, "selected_rect", redo_data["selected_rect"])
 	project.undo_redo.add_undo_property(project, "selected_rect", undo_data["selected_rect"])
 	if "image_data" in undo_data:
-		var image : Image = project.frames[project.current_frame].cels[project.current_layer].image
+		var image : Image = project.frames.cels[project.current_layer].image
 		project.undo_redo.add_do_property(image, "data", redo_data["image_data"])
 		project.undo_redo.add_undo_property(image, "data", undo_data["image_data"])
-	project.undo_redo.add_do_method(DrawGD, "redo", project.current_frame, project.current_layer)
-	project.undo_redo.add_undo_method(DrawGD, "undo", project.current_frame, project.current_layer)
+		
+	project.undo_redo.add_do_method(DrawGD, "redo", 0, project.current_layer)
+	project.undo_redo.add_undo_method(DrawGD, "undo", 0, project.current_layer)
 	project.undo_redo.commit_action()
 
 
@@ -195,7 +196,7 @@ func _get_undo_data(undo_image : bool) -> Dictionary:
 	var project = DrawGD.current_project
 	data["selected_rect"] = DrawGD.current_project.selected_rect
 	if undo_image:
-		var image : Image = project.frames[project.current_frame].cels[project.current_layer].image
+		var image : Image = project.frames.cels[project.current_layer].image
 		image.unlock()
 		data["image_data"] = image.data
 		image.lock()

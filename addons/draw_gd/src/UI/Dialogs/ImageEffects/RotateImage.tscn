@@ -3,7 +3,6 @@
 [ext_resource path="res://addons/draw_gd/src/UI/Dialogs/ImageEffects/RotateImage.gd" type="Script" id=1]
 [ext_resource path="res://addons/draw_gd/src/UI/TransparentChecker.tscn" type="PackedScene" id=2]
 
-
 [node name="RotateImage" type="ConfirmationDialog"]
 margin_right = 245.0
 margin_bottom = 241.0
@@ -56,6 +55,9 @@ margin_bottom = 20.0
 mouse_default_cursor_shape = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+text = "Rotxel"
+items = [ "Rotxel", null, false, 0, null, "Upscale, Rotate and Downscale", null, false, 1, null, "Nearest neighbour", null, false, 2, null ]
+selected = 0
 
 [node name="AngleOptions" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 228.0
@@ -87,6 +89,7 @@ margin_bottom = 24.0
 mouse_default_cursor_shape = 2
 max_value = 359.0
 suffix = "°"
+
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer2/TypeOptionButton" to="." method="_on_TypeOptionButton_item_selected"]
 [connection signal="value_changed" from="VBoxContainer/AngleOptions/AngleHSlider" to="." method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/AngleOptions/AngleSpinBox" to="." method="_on_SpinBox_value_changed"]

@@ -11,7 +11,6 @@
 [ext_resource path="res://addons/draw_gd/src/UI/Dialogs/ImageEffects/OutlineDialog.tscn" type="PackedScene" id=13]
 [ext_resource path="res://addons/draw_gd/src/UI/Dialogs/ImageEffects/ScaleImage.tscn" type="PackedScene" id=14]
 
-
 [node name="ImageEffects" type="Control"]
 mouse_filter = 2
 __meta__ = {

@@ -301,13 +301,13 @@ func toggle_zen_mode() -> void:
 func image_menu_id_pressed(id : int) -> void:
 	if DrawGD.current_project.layers[DrawGD.current_project.current_layer].locked: # No changes if the layer is locked
 		return
-	var image : Image = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels[DrawGD.current_project.current_layer].image
+	var image : Image = DrawGD.current_project.frames.cels[DrawGD.current_project.current_layer].image
 	match id:
 		0: # Scale Image
 			show_scale_image_popup()
 
 		1: # Crop Image
-			DrawingAlgos.crop_image(image)
+			DrawingAlgos.crop_image(DrawGD, image)
 
 		2: # Resize Canvas
 			show_resize_canvas_popup()

@@ -1,12 +1,9 @@
 tool
 extends Reference
 
-var DrawGD : Node = null
-
 enum GradientDirection {TOP, BOTTOM, LEFT, RIGHT}
 
-
-func scale3X(sprite : Image, tol : float = 50) -> Image:
+static func scale3X(sprite : Image, tol : float = 50) -> Image:
 	var scaled = Image.new()
 	scaled.create(sprite.get_width()*3, sprite.get_height()*3, false, Image.FORMAT_RGBA8)
 	scaled.lock()
@@ -178,7 +175,7 @@ func rotxel(sprite : Image, angle : float) -> void:
 	aux.unlock()
 
 
-func fake_rotsprite(sprite : Image, angle : float) -> void:
+static func fake_rotsprite(sprite : Image, angle : float) -> void:
 	sprite.copy_from(scale3X(sprite))
 	nn_rotate(sprite,angle)
 # warning-ignore:integer_division
@@ -186,7 +183,7 @@ func fake_rotsprite(sprite : Image, angle : float) -> void:
 	sprite.resize(sprite.get_width() / 3, sprite.get_height() / 3, 0)
 
 
-func nn_rotate(sprite : Image, angle : float) -> void:
+static func nn_rotate(sprite : Image, angle : float) -> void:
 	var aux : Image = Image.new()
 	aux.copy_from(sprite)
 	sprite.lock()
@@ -208,36 +205,37 @@ func nn_rotate(sprite : Image, angle : float) -> void:
 	aux.unlock()
 
 
-func similarColors(c1 : Color, c2 : Color, tol : float = 100) -> bool:
+static func similarColors(c1 : Color, c2 : Color, tol : float = 100) -> bool:
 	var dist = colorDistance(c1, c2)
 	return dist <= tol
 
 
-func colorDistance(c1 : Color, c2 : Color) -> float:
+static func colorDistance(c1 : Color, c2 : Color) -> float:
 		return sqrt(pow((c1.r - c2.r)*255, 2) + pow((c1.g - c2.g)*255, 2)
 		+ pow((c1.b - c2.b)*255, 2) + pow((c1.a - c2.a)*255, 2))
 
 # Image effects
 
-func scale_image(width : int, height : int, interpolation : int) -> void:
+static func scale_image(DrawGD, width : int, height : int, interpolation : int) -> void:
 	DrawGD.current_project.undos += 1
 	DrawGD.current_project.undo_redo.create_action("Scale")
 	DrawGD.current_project.undo_redo.add_do_property(DrawGD.current_project, "size", Vector2(width, height).floor())
 
-	for f in DrawGD.current_project.frames:
-		for i in range(f.cels.size() - 1, -1, -1):
-			var sprite := Image.new()
-			sprite.copy_from(f.cels[i].image)
-			# Different method for scale3x
-			if interpolation == 5:
-				var times : Vector2 = Vector2(ceil(width/(3.0*sprite.get_width())),ceil(height/(3.0*sprite.get_height())))
-				for _j in range(max(times.x,times.y)):
-					sprite.copy_from(scale3X(sprite))
-				sprite.resize(width, height, 0)
-			else:
-				sprite.resize(width, height, interpolation)
-			DrawGD.current_project.undo_redo.add_do_property(f.cels[i].image, "data", sprite.data)
-			DrawGD.current_project.undo_redo.add_undo_property(f.cels[i].image, "data", f.cels[i].image.data)
+	var f = DrawGD.current_project.frames
+	
+	for i in range(f.cels.size() - 1, -1, -1):
+		var sprite := Image.new()
+		sprite.copy_from(f.cels[i].image)
+		# Different method for scale3x
+		if interpolation == 5:
+			var times : Vector2 = Vector2(ceil(width/(3.0*sprite.get_width())),ceil(height/(3.0*sprite.get_height())))
+			for _j in range(max(times.x,times.y)):
+				sprite.copy_from(scale3X(sprite))
+			sprite.resize(width, height, 0)
+		else:
+			sprite.resize(width, height, interpolation)
+		DrawGD.current_project.undo_redo.add_do_property(f.cels[i].image, "data", sprite.data)
+		DrawGD.current_project.undo_redo.add_undo_property(f.cels[i].image, "data", f.cels[i].image.data)
 
 	DrawGD.current_project.undo_redo.add_undo_property(DrawGD.current_project, "size", DrawGD.current_project.size)
 	DrawGD.current_project.undo_redo.add_undo_method(DrawGD, "undo")
@@ -245,23 +243,23 @@ func scale_image(width : int, height : int, interpolation : int) -> void:
 	DrawGD.current_project.undo_redo.commit_action()
 
 
-func crop_image(image : Image) -> void:
+static func crop_image(DrawGD, image : Image) -> void:
 	# Use first cel as a starting rectangle
 	var used_rect : Rect2 = image.get_used_rect()
 
-	for f in DrawGD.current_project.frames:
-		# However, if first cel is empty, loop through all cels until we find one that isn't
-		for cel in f.cels:
-			if used_rect != Rect2(0, 0, 0, 0):
-				break
-			else:
-				if cel.image.get_used_rect() != Rect2(0, 0, 0, 0):
-					used_rect = cel.image.get_used_rect()
+	var f = DrawGD.current_project.frames
+	# However, if first cel is empty, loop through all cels until we find one that isn't
+	for cel in f.cels:
+		if used_rect != Rect2(0, 0, 0, 0):
+			break
+		else:
+			if cel.image.get_used_rect() != Rect2(0, 0, 0, 0):
+				used_rect = cel.image.get_used_rect()
 
 		# Merge all layers with content
-		for cel in f.cels:
-				if cel.image.get_used_rect() != Rect2(0, 0, 0, 0):
-					used_rect = used_rect.merge(cel.image.get_used_rect())
+	for cel in f.cels:
+		if cel.image.get_used_rect() != Rect2(0, 0, 0, 0):
+			used_rect = used_rect.merge(cel.image.get_used_rect())
 
 	# If no layer has any content, just return
 	if used_rect == Rect2(0, 0, 0, 0):
@@ -272,12 +270,12 @@ func crop_image(image : Image) -> void:
 	DrawGD.current_project.undos += 1
 	DrawGD.current_project.undo_redo.create_action("Scale")
 	DrawGD.current_project.undo_redo.add_do_property(DrawGD.current_project, "size", Vector2(width, height).floor())
-	for f in DrawGD.current_project.frames:
-		# Loop through all the layers to crop them
-		for j in range(DrawGD.current_project.layers.size() - 1, -1, -1):
-			var sprite : Image = f.cels[j].image.get_rect(used_rect)
-			DrawGD.current_project.undo_redo.add_do_property(f.cels[j].image, "data", sprite.data)
-			DrawGD.current_project.undo_redo.add_undo_property(f.cels[j].image, "data", f.cels[j].image.data)
+
+	# Loop through all the layers to crop them
+	for j in range(DrawGD.current_project.layers.size() - 1, -1, -1):
+		var sprite : Image = f.cels[j].image.get_rect(used_rect)
+		DrawGD.current_project.undo_redo.add_do_property(f.cels[j].image, "data", sprite.data)
+		DrawGD.current_project.undo_redo.add_undo_property(f.cels[j].image, "data", f.cels[j].image.data)
 
 	DrawGD.current_project.undo_redo.add_undo_property(DrawGD.current_project, "size", DrawGD.current_project.size)
 	DrawGD.current_project.undo_redo.add_undo_method(DrawGD, "undo")
@@ -285,17 +283,17 @@ func crop_image(image : Image) -> void:
 	DrawGD.current_project.undo_redo.commit_action()
 
 
-func resize_canvas(width : int, height : int, offset_x : int, offset_y : int) -> void:
+static func resize_canvas(DrawGD, width : int, height : int, offset_x : int, offset_y : int) -> void:
 	DrawGD.current_project.undos += 1
 	DrawGD.current_project.undo_redo.create_action("Scale")
 	DrawGD.current_project.undo_redo.add_do_property(DrawGD.current_project, "size", Vector2(width, height).floor())
-	for f in DrawGD.current_project.frames:
-		for c in f.cels:
-			var sprite := Image.new()
-			sprite.create(width, height, false, Image.FORMAT_RGBA8)
-			sprite.blend_rect(c.image, Rect2(Vector2.ZERO, DrawGD.current_project.size), Vector2(offset_x, offset_y))
-			DrawGD.current_project.undo_redo.add_do_property(c.image, "data", sprite.data)
-			DrawGD.current_project.undo_redo.add_undo_property(c.image, "data", c.image.data)
+	var f = DrawGD.current_project.frames
+	for c in f.cels:
+		var sprite := Image.new()
+		sprite.create(width, height, false, Image.FORMAT_RGBA8)
+		sprite.blend_rect(c.image, Rect2(Vector2.ZERO, DrawGD.current_project.size), Vector2(offset_x, offset_y))
+		DrawGD.current_project.undo_redo.add_do_property(c.image, "data", sprite.data)
+		DrawGD.current_project.undo_redo.add_undo_property(c.image, "data", c.image.data)
 
 	DrawGD.current_project.undo_redo.add_undo_property(DrawGD.current_project, "size", DrawGD.current_project.size)
 	DrawGD.current_project.undo_redo.add_undo_method(DrawGD, "undo")
@@ -303,7 +301,7 @@ func resize_canvas(width : int, height : int, offset_x : int, offset_y : int) ->
 	DrawGD.current_project.undo_redo.commit_action()
 
 
-func invert_image_colors(image : Image, pixels : Array, red := true, green := true, blue := true, alpha := false) -> void:
+static func invert_image_colors(image : Image, pixels : Array, red := true, green := true, blue := true, alpha := false) -> void:
 	image.lock()
 	for i in pixels:
 		var px_color := image.get_pixelv(i)
@@ -319,7 +317,7 @@ func invert_image_colors(image : Image, pixels : Array, red := true, green := tr
 		image.set_pixelv(i, px_color)
 
 
-func desaturate_image(image : Image, pixels : Array, red := true, green := true, blue := true, alpha := false) -> void:
+static func desaturate_image(image : Image, pixels : Array, red := true, green := true, blue := true, alpha := false) -> void:
 	image.lock()
 	for i in pixels:
 		var px_color := image.get_pixelv(i)
@@ -336,7 +334,7 @@ func desaturate_image(image : Image, pixels : Array, red := true, green := true,
 		image.set_pixelv(i, px_color)
 
 
-func generate_outline(image : Image, pixels : Array, outline_color : Color, thickness : int, diagonal : bool, inside_image : bool) -> void:
+static func generate_outline(DrawGD, image : Image, pixels : Array, outline_color : Color, thickness : int, diagonal : bool, inside_image : bool) -> void:
 	if image.is_invisible():
 		return
 	var new_image := Image.new()
@@ -471,7 +469,7 @@ func generate_outline(image : Image, pixels : Array, outline_color : Color, thic
 	image.copy_from(new_image)
 
 
-func adjust_hsv(img: Image, delta_h : float, delta_s : float, delta_v : float, pixels : Array) -> void:
+static func adjust_hsv(img: Image, delta_h : float, delta_s : float, delta_v : float, pixels : Array) -> void:
 	img.lock()
 	for i in pixels:
 		var c : Color = img.get_pixelv(i)
@@ -506,7 +504,12 @@ func adjust_hsv(img: Image, delta_h : float, delta_s : float, delta_v : float, p
 	img.unlock()
 
 
-func generate_gradient(image : Image, colors : Array, steps := 2, direction : int = GradientDirection.TOP, pixels = DrawGD.current_project.selected_pixels) -> void:
+static func generate_gradient(DrawGD, image : Image, colors : Array, steps := 2, direction : int = GradientDirection.TOP, pixels = null) -> void:
+	
+	if !pixels:
+		 pixels = DrawGD.current_project.selected_pixels
+	
+	
 	if colors.size() < 2:
 		return
 

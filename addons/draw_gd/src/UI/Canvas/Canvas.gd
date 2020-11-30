@@ -123,26 +123,21 @@ func handle_undo(action : String, project : Project = DrawGD.current_project, la
 
 	if layer_index <= -2:
 		layer_index = project.current_layer
-	if frame_index <= -2:
-		frame_index = project.current_frame
 
 	var cels := []
-	var frames := []
 	var layers := []
-	if frame_index == -1:
-		frames = project.frames
-	else:
-		frames.append(project.frames[frame_index])
+	
+	var frames = project.frames
 
 	if layer_index == -1:
 		layers = project.layers
 	else:
 		layers.append(project.layers[layer_index])
 
-	for f in frames:
-		for l in layers:
-			var index = project.layers.find(l)
-			cels.append(f.cels[index])
+	var f = frames
+	for l in layers:
+		var index = project.layers.find(l)
+		cels.append(f.cels[index])
 
 	project.undos += 1
 	project.undo_redo.create_action(action)
@@ -164,26 +159,21 @@ func handle_redo(_action : String, project : Project = DrawGD.current_project, l
 
 	if layer_index <= -2:
 		layer_index = project.current_layer
-	if frame_index <= -2:
-		frame_index = project.current_frame
 
 	var cels := []
-	var frames := []
 	var layers := []
-	if frame_index == -1:
-		frames = project.frames
-	else:
-		frames.append(project.frames[frame_index])
+	
+	var frames = project.frames
 
 	if layer_index == -1:
 		layers = project.layers
 	else:
 		layers.append(project.layers[layer_index])
 
-	for f in frames:
-		for l in layers:
-			var index = project.layers.find(l)
-			cels.append(f.cels[index])
+	var f = frames
+	for l in layers:
+		var index = project.layers.find(l)
+		cels.append(f.cels[index])
 
 	for cel in cels:
 		project.undo_redo.add_do_property(cel.image, "data", cel.image.data)
