@@ -43,10 +43,6 @@ func _init(pDrawGD, _frames = null, _name := tr("untitled"), _size := Vector2(64
 	else:
 		frames = _frames
 		
-	if _frames is Array:
-		print("dadad")
-		
-		
 	name = _name
 	size = _size
 	select_all_pixels()

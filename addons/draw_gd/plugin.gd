@@ -15,6 +15,10 @@ func get_plugin_icon():
 func get_plugin_name():
 	return "DrawGD"
 	
+func _input(event):
+	if main_node && main_node.visible && main_node.canvas:
+		main_node.canvas._input(event)
+		
 
 func _enter_tree():
 	#add_autoload_singleton("DrawGD", "res://addons/draw_gd/src/Autoload/DrawGD.gd")
@@ -22,7 +26,7 @@ func _enter_tree():
 	main_node = _scene.instance()
 	
 	get_editor_interface().get_editor_viewport().add_child(main_node)
-	
+
 	make_visible(false)
 	
 #	DrawGD.refresh_nodes()

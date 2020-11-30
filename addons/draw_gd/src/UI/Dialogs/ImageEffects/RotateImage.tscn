@@ -56,7 +56,7 @@ mouse_default_cursor_shape = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Rotxel"
-items = [ "Rotxel", null, false, 0, null, "Upscale, Rotate and Downscale", null, false, 1, null, "Nearest neighbour", null, false, 2, null ]
+items = [ "Rotxel", null, false, 0, null, "Upscale, Rotate and Downscale", null, false, 1, null, "Nearest neighbour", null, false, 2, null, "Rotxel", null, false, 3, null, "Upscale, Rotate and Downscale", null, false, 4, null, "Nearest neighbour", null, false, 5, null, "Rotxel", null, false, 6, null, "Upscale, Rotate and Downscale", null, false, 7, null, "Nearest neighbour", null, false, 8, null, "Rotxel", null, false, 9, null, "Upscale, Rotate and Downscale", null, false, 10, null, "Nearest neighbour", null, false, 11, null, "Rotxel", null, false, 12, null, "Upscale, Rotate and Downscale", null, false, 13, null, "Nearest neighbour", null, false, 14, null, "Rotxel", null, false, 15, null, "Upscale, Rotate and Downscale", null, false, 16, null, "Nearest neighbour", null, false, 17, null, "Rotxel", null, false, 18, null, "Upscale, Rotate and Downscale", null, false, 19, null, "Nearest neighbour", null, false, 20, null, "Rotxel", null, false, 21, null, "Upscale, Rotate and Downscale", null, false, 22, null, "Nearest neighbour", null, false, 23, null, "Rotxel", null, false, 24, null, "Upscale, Rotate and Downscale", null, false, 25, null, "Nearest neighbour", null, false, 26, null ]
 selected = 0
 
 [node name="AngleOptions" type="HBoxContainer" parent="VBoxContainer"]

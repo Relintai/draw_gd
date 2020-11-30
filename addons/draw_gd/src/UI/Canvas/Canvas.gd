@@ -55,7 +55,7 @@ func _input(event : InputEvent) -> void:
 #		return
 
 	current_pixel = get_local_mouse_position() + location
-
+	
 	if DrawGD.has_focus:
 		update()
 
