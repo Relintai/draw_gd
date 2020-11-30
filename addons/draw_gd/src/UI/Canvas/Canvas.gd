@@ -204,7 +204,8 @@ func update_texture(layer_index : int, frame_index := -1, project : Project = Dr
 	if project == DrawGD.current_project:
 		var frame_texture_rect : TextureRect
 		
-		var aaaa= project.layers[layer_index]
+		#TODO FIX LATER
+		return
 		
 		frame_texture_rect = DrawGD.find_node_by_name(project.layers[layer_index].frame_container.get_child(frame_index), "CelTexture")
 		frame_texture_rect.texture = current_cel.image_texture
