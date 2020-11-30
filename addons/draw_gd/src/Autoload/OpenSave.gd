@@ -277,9 +277,9 @@ func save_pxo_file(path : String, autosave : bool, use_zstd_compression := true,
 
 		var to_save = JSON.print(project.serialize())
 		file.store_line(to_save)
-		for frame in project.frames:
-			for cel in frame.cels:
-				file.store_buffer(cel.image.get_data())
+		var frame = project.frames
+		for cel in frame.cels:
+			file.store_buffer(cel.image.get_data())
 
 		for brush in project.brushes:
 			file.store_buffer(brush.get_data())
