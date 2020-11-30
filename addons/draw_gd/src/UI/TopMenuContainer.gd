@@ -62,9 +62,6 @@ func setup_file_menu() -> void:
 
 	file_menu.connect("id_pressed", self, "file_menu_id_pressed")
 
-	if OS.get_name() == "HTML5":
-		file_menu.set_item_disabled(2, true)
-
 
 func setup_edit_menu() -> void:
 #	var edit_menu_items := {
@@ -115,9 +112,7 @@ func setup_view_menu() -> void:
 		"Show Grid" : 0,
 		"Show Rulers" : 0,
 		"Show Guides" : 0,
-		"Show Animation Timeline" : 0,
 		"Zen Mode" : 0,
-		"Fullscreen Mode" : 0,
 		}
 		
 	view_menu = DrawGD.view_menu.get_popup()
@@ -129,10 +124,8 @@ func setup_view_menu() -> void:
 
 	view_menu.set_item_checked(2, true) # Show Rulers
 	view_menu.set_item_checked(3, true) # Show Guides
-	view_menu.set_item_checked(4, true) # Show Animation Timeline
 	view_menu.hide_on_checkable_item_selection = false
 	view_menu.connect("id_pressed", self, "view_menu_id_pressed")
-
 
 func setup_image_menu() -> void:
 	var image_menu_items := {
@@ -260,12 +253,8 @@ func view_menu_id_pressed(id : int) -> void:
 			toggle_show_rulers()
 		3: # Show guides
 			toggle_show_guides()
-		4: # Show animation timeline
-			toggle_show_anim_timeline()
-		5: # Zen mode
+		4: # Zen mode
 			toggle_zen_mode()
-		6: # Fullscreen mode
-			toggle_fullscreen()
 
 	DrawGD.canvas.update()
 
@@ -301,25 +290,12 @@ func toggle_show_guides() -> void:
 					guide.visible = DrawGD.show_y_symmetry_axis and DrawGD.show_guides
 
 
-func toggle_show_anim_timeline() -> void:
-	if zen_mode:
-		return
-	DrawGD.show_animation_timeline = !DrawGD.show_animation_timeline
-	view_menu.set_item_checked(4, DrawGD.show_animation_timeline)
-	DrawGD.animation_timeline.visible = DrawGD.show_animation_timeline
-
-
 func toggle_zen_mode() -> void:
 	DrawGD.control.get_node("MenuAndUI/UI/ToolPanel").visible = zen_mode
 	DrawGD.control.get_node("MenuAndUI/UI/RightPanel").visible = zen_mode
-	DrawGD.control.get_node("MenuAndUI/UI/CanvasAndTimeline/ViewportAndRulers/TabsContainer").visible = zen_mode
+	#DrawGD.control.get_node("MenuAndUI/UI/CanvasAndTimeline/ViewportAndRulers/TabsContainer").visible = zen_mode
 	zen_mode = !zen_mode
-	view_menu.set_item_checked(5, zen_mode)
-
-
-func toggle_fullscreen() -> void:
-	OS.window_fullscreen = !OS.window_fullscreen
-	view_menu.set_item_checked(6, OS.window_fullscreen)
+	view_menu.set_item_checked(4, zen_mode)
 
 
 func image_menu_id_pressed(id : int) -> void:

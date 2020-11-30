@@ -17,7 +17,6 @@ onready var path_dialog_popup = $Popups/PathDialog
 onready var export_progress_popup = $Popups/ExportProgressBar
 onready var export_progress_bar = $Popups/ExportProgressBar/MarginContainer/ProgressBar
 
-onready var animation_options_multiple_animations_directories = $VBoxContainer/AnimationOptions/MultipleAnimationsDirectories
 onready var previews = $VBoxContainer/PreviewPanel/PreviewScroll/Previews
 
 onready var options_resize = $VBoxContainer/Options/Resize
