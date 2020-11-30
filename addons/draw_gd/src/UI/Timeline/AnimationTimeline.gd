@@ -1,18 +1,9 @@
 tool
 extends Panel
 
-var fps := 6.0
-var animation_loop := 1 # 0 is no loop, 1 is cycle loop, 2 is ping-pong loop
-var animation_forward := true
-var first_frame := 0
-var last_frame := 0
-
-var timeline_scroll : ScrollContainer
-var tag_scroll_container : ScrollContainer
-
 var DrawGD : Node = null
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	var n : Node = get_parent()
 	while n:
 		if n.name == "DrawGDSingleton":
@@ -20,22 +11,6 @@ func _ready() -> void:
 			break
 		n = n.get_parent()
 		
-	timeline_scroll = DrawGD.find_node_by_name(self, "TimelineScroll")
-	tag_scroll_container = DrawGD.find_node_by_name(self, "TagScroll")
-	timeline_scroll.get_h_scrollbar().connect("value_changed", self, "_h_scroll_changed")
-
-
-func _h_scroll_changed(value : float) -> void:
-	# Let the main timeline ScrollContainer affect the tag ScrollContainer too
-	tag_scroll_container.get_child(0).rect_min_size.x = timeline_scroll.get_child(0).rect_size.x - 212
-	tag_scroll_container.scroll_horizontal = value
-
-
-func _on_FrameTagButton_pressed() -> void:
-	DrawGD.tag_dialog.popup_centered()
-
-# Layer buttons
-
 func add_layer(is_new := true) -> void:
 	var new_layers : Array = DrawGD.current_project.layers.duplicate()
 	var l := Layer.new()
@@ -179,8 +154,4 @@ func _on_OpacitySlider_value_changed(value) -> void:
 	DrawGD.layer_opacity_slider.value = value
 	DrawGD.layer_opacity_spinbox.value = value
 	DrawGD.canvas.update()
-
-
-func _on_OnionSkinningSettings_popup_hide() -> void:
-	DrawGD.can_draw = true
 
