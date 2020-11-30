@@ -16,7 +16,6 @@ var frames := []
 var layers := [] setget layers_changed # Array of Layers
 var current_frame := 0 setget frame_changed
 var current_layer := 0 setget layer_changed
-var animation_tags := [] 
 var guides := [] # Array of Guides
 
 var brushes := [] # Array of Images
@@ -118,8 +117,6 @@ func change_project() -> void:
 	toggle_layer_buttons_layers()
 	toggle_layer_buttons_current_layer()
 
-	self.animation_tags = animation_tags
-
 	# Change the selection rectangle
 	DrawGD.selection_rectangle.set_rect(selected_rect)
 
@@ -194,15 +191,6 @@ func serialize() -> Dictionary:
 			"linked_cels" : linked_cels,
 		})
 
-	var tag_data := []
-	for tag in animation_tags:
-		tag_data.append({
-			"name" : tag.name,
-			"color" : tag.color.to_html(),
-			"from" : tag.from,
-			"to" : tag.to,
-		})
-
 	var guide_data := []
 	for guide in guides:
 		if guide is SymmetryGuide:
@@ -240,7 +228,6 @@ func serialize() -> Dictionary:
 		"size_y" : size.y,
 		"save_path" : DrawGD.opensave.current_save_paths[DrawGD.projects.find(self)],
 		"layers" : layer_data,
-		"tags" : tag_data,
 		"guides" : guide_data,
 		"symmetry_points" : [x_symmetry_point, y_symmetry_point],
 		"frames" : frame_data,
@@ -279,10 +266,6 @@ func deserialize(dict : Dictionary) -> void:
 				var layer := Layer.new(saved_layer.name, saved_layer.visible, saved_layer.locked, HBoxContainer.new(), saved_layer.new_cels_linked, linked_cels)
 				layers.append(layer)
 				layer_i += 1
-	if dict.has("tags"):
-		for tag in dict.tags:
-			animation_tags.append(AnimationTag.new(tag.name, Color(tag.color), tag.from, tag.to))
-		self.animation_tags = animation_tags
 	if dict.has("guides"):
 		for g in dict.guides:
 			var guide := Guide.new()
