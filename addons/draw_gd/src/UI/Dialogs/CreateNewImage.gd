@@ -99,7 +99,7 @@ func _on_CreateNewImage_confirmed() -> void:
 	DrawGD.canvas.fill_color = fill_color
 
 	var frame : Frame = DrawGD.canvas.new_empty_frame(false, true, Vector2(width, height))
-	var new_project := Project.new(DrawGD, [frame], tr("untitled"), Vector2(width, height).floor())
+	var new_project := Project.new(DrawGD, frame, tr("untitled"), Vector2(width, height).floor())
 	new_project.layers.append(Layer.new())
 	DrawGD.projects.append(new_project)
 	DrawGD.tabs.current_tab = DrawGD.tabs.get_tab_count() - 1

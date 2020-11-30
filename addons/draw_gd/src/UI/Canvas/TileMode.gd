@@ -15,7 +15,7 @@ func _enter_tree():
 		n = n.get_parent()
 
 func _draw() -> void:
-	var current_cels : Array = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels
+	var current_cels : Array = DrawGD.current_project.frames.cels
 	var size : Vector2 = DrawGD.current_project.size
 	var positions := [
 		Vector2(location.x, location.y + size.y), # Down

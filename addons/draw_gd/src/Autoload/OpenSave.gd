@@ -67,16 +67,7 @@ func open_pxo_file(path : String, untitled_backup : bool = false) -> void:
 		file.close()
 		return
 
-	var empty_project : bool = DrawGD.current_project.frames.size() == 1 and DrawGD.current_project.layers.size() == 1 and DrawGD.current_project.frames[0].cels[0].image.is_invisible() and DrawGD.current_project.animation_tags.size() == 0
-	var new_project : Project
-	if empty_project:
-		new_project = DrawGD.current_project
-		new_project.frames = []
-		new_project.layers = []
-		new_project.animation_tags.clear()
-		new_project.name = path.get_file()
-	else:
-		new_project = Project.new(DrawGD, [], path.get_file())
+	var new_project = Project.new(DrawGD, null, path.get_file())
 
 	var first_line := file.get_line()
 	var dict := JSON.parse(first_line)
@@ -106,12 +97,9 @@ func open_pxo_file(path : String, untitled_backup : bool = false) -> void:
 				Brushes.add_project_brush(DrawGD, image)
 
 	file.close()
-	if !empty_project:
-		DrawGD.projects.append(new_project)
-		DrawGD.tabs.current_tab = DrawGD.tabs.get_tab_count() - 1
-	else:
-		new_project.frames = new_project.frames # Just to call frames_changed
-		new_project.layers = new_project.layers # Just to call layers_changed
+
+	DrawGD.projects.append(new_project)
+	DrawGD.tabs.current_tab = DrawGD.tabs.get_tab_count() - 1
 	DrawGD.canvas.camera_zoom()
 
 	if not untitled_backup:

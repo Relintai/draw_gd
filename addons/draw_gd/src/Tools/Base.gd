@@ -95,7 +95,7 @@ func _get_tile_mode_rect() -> Rect2:
 
 func _get_draw_image() -> Image:
 	var project : Project = DrawGD.current_project
-	return project.frames[project.current_frame].cels[project.current_layer].image
+	return project.frames.cels[project.current_layer].image
 
 
 func _flip_rect(rect : Rect2, size : Vector2, horizontal : bool, vertical : bool) -> Rect2:

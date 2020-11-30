@@ -17,11 +17,8 @@ func _enter_tree():
 		
 func _draw() -> void:
 	var current_project : Project = DrawGD.current_project
-	if frame >= current_project.frames.size():
-		frame = current_project.current_frame
 
-		
-	var current_cels : Array = current_project.frames[frame].cels
+	var current_cels : Array = current_project.frames.cels
 
 	# Draw current frame layers
 	for i in range(current_cels.size()):

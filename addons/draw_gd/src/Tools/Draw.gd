@@ -158,10 +158,8 @@ func prepare_undo() -> void:
 func commit_undo(action : String) -> void:
 	var redo_data = _get_undo_data()
 	var project : Project = DrawGD.current_project
-	var frame := -1
 	var layer := -1
 
-	frame = project.current_frame
 	layer = project.current_layer
 
 	project.undos += 1
@@ -170,8 +168,8 @@ func commit_undo(action : String) -> void:
 		project.undo_redo.add_do_property(image, "data", redo_data[image])
 	for image in _undo_data:
 		project.undo_redo.add_undo_property(image, "data", _undo_data[image])
-	project.undo_redo.add_do_method(DrawGD, "redo", frame, layer)
-	project.undo_redo.add_undo_method(DrawGD, "undo", frame, layer)
+	project.undo_redo.add_do_method(DrawGD, "redo", 0, layer)
+	project.undo_redo.add_undo_method(DrawGD, "undo", 0, layer)
 	project.undo_redo.commit_action()
 
 	_undo_data.clear()
@@ -510,13 +508,10 @@ func _line_angle_constraint(start : Vector2, end : Vector2) -> Dictionary:
 func _get_undo_data() -> Dictionary:
 	var data = {}
 	var project : Project = DrawGD.current_project
-	var frames := project.frames
+	var frame = project.frames
 
-	frames = [project.frames[project.current_frame]]
-	
-	for frame in frames:
-		var image : Image = frame.cels[project.current_layer].image
-		image.unlock()
-		data[image] = image.data
-		image.lock()
+	var image : Image = frame.cels[project.current_layer].image
+	image.unlock()
+	data[image] = image.data
+	image.lock()
 	return data

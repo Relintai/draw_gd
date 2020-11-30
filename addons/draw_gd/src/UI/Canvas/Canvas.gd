@@ -2,7 +2,6 @@ tool
 class_name Canvas
 extends Node2D
 
-
 var location := Vector2.ZERO
 var fill_color := Color(0, 0, 0, 0)
 var current_pixel := Vector2.ZERO # pretty much same as mouse_pos, but can be accessed externally
@@ -16,7 +15,6 @@ onready var indicators = $Indicators
 
 var DrawGD : Node = null
 
-
 # Called when the node enters the scene tree for the first time.
 func _enter_tree() -> void:
 	var n : Node = get_parent()
@@ -27,16 +25,15 @@ func _enter_tree() -> void:
 		n = n.get_parent()
 	
 	var frame : Frame = new_empty_frame(true)
-	DrawGD.current_project.frames.append(frame)
+	DrawGD.current_project.frames = frame
 	yield(get_tree().create_timer(0.2), "timeout")
 	camera_zoom()
-
 
 func _draw() -> void:
 	DrawGD.second_viewport.get_child(0).get_node("CanvasPreview").update()
 	DrawGD.small_preview_viewport.get_child(0).get_node("CanvasPreview").update()
 
-	var current_cels : Array = DrawGD.current_project.frames[DrawGD.current_project.current_frame].cels
+	var current_cels : Array = DrawGD.current_project.frames.cels
 
 	# Draw current frame layers
 	for i in range(DrawGD.current_project.layers.size()):
@@ -45,7 +42,6 @@ func _draw() -> void:
 			draw_texture(current_cels[i].image_texture, location, modulate_color)
 
 	tile_mode.update()
-
 
 func _input(event : InputEvent) -> void:
 	# Don't process anything below if the input isn't a mouse event, or Shift/Ctrl.
@@ -196,9 +192,7 @@ func handle_redo(_action : String, project : Project = DrawGD.current_project, l
 
 
 func update_texture(layer_index : int, frame_index := -1, project : Project = DrawGD.current_project) -> void:
-	if frame_index == -1:
-		frame_index = project.current_frame
-	var current_cel : Cel = project.frames[frame_index].cels[layer_index]
+	var current_cel : Cel = project.frames.cels[layer_index]
 	current_cel.image_texture.create_from_image(current_cel.image, 0)
 
 	if project == DrawGD.current_project:

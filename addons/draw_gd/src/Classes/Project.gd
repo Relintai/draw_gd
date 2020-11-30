@@ -12,9 +12,8 @@ var size : Vector2 setget size_changed
 var undo_redo : UndoRedo
 var undos := 0 # The number of times we added undo properties
 var has_changed := false setget has_changed_changed
-var frames := [] 
+var frames = null
 var layers := [] setget layers_changed # Array of Layers
-var current_frame := 0 setget frame_changed
 var current_layer := 0 setget layer_changed
 var guides := [] # Array of Guides
 
@@ -38,8 +37,16 @@ var file_name := "untitled"
 var file_format : int = Export.FileFormat.PNG
 
 
-func _init(pDrawGD, _frames := [], _name := tr("untitled"), _size := Vector2(64, 64)) -> void:
-	frames = _frames
+func _init(pDrawGD, _frames = null, _name := tr("untitled"), _size := Vector2(64, 64)) -> void:
+	if !_frames:
+		frames = Frame.new()
+	else:
+		frames = _frames
+		
+	if _frames is Array:
+		print("dadad")
+		
+		
 	name = _name
 	size = _size
 	select_all_pixels()
@@ -109,7 +116,8 @@ func change_project() -> void:
 		layer_container.label.text = layers[i].name
 		layer_container.line_edit.text = layers[i].name
 		
-		layer_container.cel_button.texture = frames[0].cels[0].image_texture
+		if frames && frames.cels.size() > 0:
+			layer_container.cel_button.texture = frames.cels[0].image_texture
 
 	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
 	layer_button.pressed = true
@@ -179,16 +187,10 @@ func change_project() -> void:
 func serialize() -> Dictionary:
 	var layer_data := []
 	for layer in layers:
-		var linked_cels := []
-		for cel in layer.linked_cels:
-			linked_cels.append(frames.find(cel))
-
 		layer_data.append({
 			"name" : layer.name,
 			"visible" : layer.visible,
 			"locked" : layer.locked,
-			"new_cels_linked" : layer.new_cels_linked,
-			"linked_cels" : linked_cels,
 		})
 
 	var guide_data := []
@@ -204,16 +206,16 @@ func serialize() -> Dictionary:
 		guide_data.append({"type" : guide.type, "pos" : coords})
 
 	var frame_data := []
-	for frame in frames:
-		var cel_data := []
-		for cel in frame.cels:
-			cel_data.append({
-				"opacity" : cel.opacity,
-#				"image_data" : cel.image.get_data()
-			})
-		frame_data.append({
-			"cels" : cel_data
+	var cel_data := []
+	for cel in frames.cels:
+		cel_data.append({
+			"opacity" : cel.opacity,
+#			"image_data" : cel.image.get_data()
 		})
+	frame_data.append({
+		"cels" : cel_data
+	})
+	
 	var brush_data := []
 	for brush in brushes:
 		brush_data.append({
@@ -249,23 +251,23 @@ func deserialize(dict : Dictionary) -> void:
 		select_all_pixels()
 	if dict.has("save_path"):
 		DrawGD.opensave.current_save_paths[DrawGD.projects.find(self)] = dict.save_path
+		
 	if dict.has("frames"):
-		for frame in dict.frames:
-			var cels := []
-			for cel in frame.cels:
-				cels.append(Cel.new(Image.new(), cel.opacity))
-			frames.append(Frame.new(cels))
+		var frame = dict.frames
+		var cels := []
+		for cel in frame.cels:
+			cels.append(Cel.new(Image.new(), cel.opacity))
+			
+		frames = Frame.new(cels)
+		
 		if dict.has("layers"):
 			var layer_i :=  0
 			for saved_layer in dict.layers:
-				var linked_cels := []
-				for linked_cel_number in saved_layer.linked_cels:
-					linked_cels.append(frames[linked_cel_number])
-					frames[linked_cel_number].cels[layer_i].image = linked_cels[0].cels[layer_i].image
-					frames[linked_cel_number].cels[layer_i].image_texture = linked_cels[0].cels[layer_i].image_texture
-				var layer := Layer.new(saved_layer.name, saved_layer.visible, saved_layer.locked, HBoxContainer.new(), saved_layer.new_cels_linked, linked_cels)
+				var layer := Layer.new(saved_layer.name, saved_layer.visible, saved_layer.locked, HBoxContainer.new())
 				layers.append(layer)
 				layer_i += 1
+				
+				
 	if dict.has("guides"):
 		for g in dict.guides:
 			var guide := Guide.new()
@@ -279,6 +281,7 @@ func deserialize(dict : Dictionary) -> void:
 			guide.has_focus = false
 			DrawGD.canvas.add_child(guide)
 			guides.append(guide)
+			
 	if dict.has("symmetry_points"):
 		x_symmetry_point = dict.symmetry_points[0]
 		y_symmetry_point = dict.symmetry_points[1]
@@ -286,6 +289,7 @@ func deserialize(dict : Dictionary) -> void:
 		x_symmetry_axis.points[1].y = floor(y_symmetry_point / 2 + 1)
 		y_symmetry_axis.points[0].x = floor(x_symmetry_point / 2 + 1)
 		y_symmetry_axis.points[1].x = floor(x_symmetry_point / 2 + 1)
+		
 	if dict.has("export_directory_path"):
 		directory_path = dict.export_directory_path
 	if dict.has("export_file_name"):
@@ -326,40 +330,39 @@ func layers_changed(value : Array) -> void:
 		layer_container.label.text = layers[i].name
 		layer_container.line_edit.text = layers[i].name
 		
-		if frames.size() > 0:
-			layer_container.cel_button.texture = frames[0].cels[0].image_texture
-
-
-	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
-	layer_button.pressed = true
-	self.current_frame = current_frame # Call frame_changed to update UI
-	toggle_layer_buttons_layers()
-
-func frame_changed(value : int) -> void:
-	current_frame = value
-
-	for i in frames.size():
-		var text_color := Color.white
-		if DrawGD.theme_type == DrawGD.Theme_Types.CARAMEL || DrawGD.theme_type == DrawGD.Theme_Types.LIGHT:
-			text_color = Color.black
+		if frames && frames.cels.size() > 0:
+			layer_container.cel_button.texture = frames.cels[0].image_texture
 			
-		for layer in layers: # De-select all the other frames
-			if i < layer.frame_container.get_child_count():
-				layer.frame_container.get_child(i).pressed = false
-
-	# Select the new frame
-	if layers and current_frame < layers[current_layer].frame_container.get_child_count():
-		layers[current_layer].frame_container.get_child(current_frame).pressed = true
-
 	DrawGD.canvas.update()
 	DrawGD.transparent_checker._ready() # To update the rect size
 
 
+	var layer_button = DrawGD.layers_container.get_child(DrawGD.layers_container.get_child_count() - 1 - current_layer)
+	layer_button.pressed = true
+	toggle_layer_buttons_layers()
+
+#func frame_changed(value : int) -> void:
+#	var text_color := Color.white
+#	if DrawGD.theme_type == DrawGD.Theme_Types.CARAMEL || DrawGD.theme_type == DrawGD.Theme_Types.LIGHT:
+#		text_color = Color.black
+#
+#	for layer in layers: # De-select all the other frames
+#		if 0 < layer.frame_container.get_child_count():
+#			layer.frame_container.get_child(0).pressed = false
+#
+#	# Select the new frame
+#	if layers and current_frame < layers[current_layer].frame_container.get_child_count():
+#		layers[current_layer].frame_container.get_child(current_frame).pressed = true
+#
+#	DrawGD.canvas.update()
+#	DrawGD.transparent_checker._ready() # To update the rect size
+
+
 func layer_changed(value : int) -> void:
 	current_layer = value
-	if current_frame < frames.size():
-		DrawGD.layer_opacity_slider.value = frames[current_frame].cels[current_layer].opacity * 100
-		DrawGD.layer_opacity_spinbox.value = frames[current_frame].cels[current_layer].opacity * 100
+
+	DrawGD.layer_opacity_slider.value = frames.cels[current_layer].opacity * 100
+	DrawGD.layer_opacity_spinbox.value = frames.cels[current_layer].opacity * 100
 
 	for container in DrawGD.layers_container.get_children():
 		container.pressed = false
@@ -371,7 +374,6 @@ func layer_changed(value : int) -> void:
 	toggle_layer_buttons_current_layer()
 
 	yield(DrawGD.get_tree().create_timer(0.01), "timeout")
-	self.current_frame = current_frame # Call frame_changed to update UI
 
 
 func toggle_layer_buttons_layers() -> void:
